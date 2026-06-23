@@ -1,24 +1,122 @@
 {
   "effortLevel": "high",
   "permissions": {
+    "defaultMode": "plan",
     "allow": [
       "Bash(npm run dev)",
       "Bash(npm run build)",
       "Bash(npm run lint)",
       "Bash(npm run test)",
+      "Bash(npm run preview)",
       "Bash(npm install*)",
-      "Bash(npx*)",
+      "Bash(npx prettier*)",
+      "Bash(npx eslint*)",
       "Bash(git status)",
       "Bash(git diff*)",
+      "Bash(git log*)",
       "Bash(git add*)",
-      "Bash(git commit*)"
+      "Bash(git commit*)",
+      "Bash(git checkout*)",
+      "Bash(git branch*)"
     ],
     "deny": [
       "Bash(git push*)",
       "Bash(rm -rf*)",
       "Bash(sudo*)",
+      "Bash(curl * | bash)",
       "Read(./.env)",
-      "Read(./.env.*)"
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Write(./.env)",
+      "Write(./.env.*)"
+    ]
+  },
+  "hooks": {
+    "Setup": [
+      {
+        "matcher": "init",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/setup.sh",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/session-context.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/protect-files.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/validate-command.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write --ignore-unknown 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/audit-edit.sh",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Review what was just completed. Were ALL requested tasks finished? Were tests run if code was changed? If anything is incomplete, return {\"decision\": \"block\", \"reason\": \"<what is missing>\"}. If everything is done, return {\"decision\": \"allow\"}."
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permissionprompt|idleprompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/notify.sh",
+            "async": true
+          }
+        ]
+      }
     ]
   }
 }
