@@ -36,11 +36,7 @@
       {
         "matcher": "init",
         "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/setup.sh",
-            "timeout": 120
-          }
+          { "type": "command", "command": ".claude/hooks/setup.sh", "timeout": 120 }
         ]
       }
     ],
@@ -48,10 +44,7 @@
       {
         "matcher": "startup|resume|compact",
         "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/session-context.sh"
-          }
+          { "type": "command", "command": ".claude/hooks/session-context.sh" }
         ]
       }
     ],
@@ -59,19 +52,13 @@
       {
         "matcher": "Edit|Write|Read",
         "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/protect-files.sh"
-          }
+          { "type": "command", "command": ".claude/hooks/protect-files.sh" }
         ]
       },
       {
         "matcher": "Bash",
         "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/validate-command.sh"
-          }
+          { "type": "command", "command": ".claude/hooks/validate-command.sh" }
         ]
       }
     ],
@@ -81,13 +68,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write --ignore-unknown 2>/dev/null || true"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
+            "command": "jq -r '.tool_input.file_path // empty' | xargs -I{} npx prettier --write --ignore-unknown {} 2>/dev/null || true"
+          },
           {
             "type": "command",
             "command": ".claude/hooks/audit-edit.sh",
@@ -96,12 +78,19 @@
         ]
       }
     ],
+    "PreCompact": [
+      {
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/pre-compact.sh" }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Review what was just completed. Were ALL requested tasks finished? Were tests run if code was changed? If anything is incomplete, return {\"decision\": \"block\", \"reason\": \"<what is missing>\"}. If everything is done, return {\"decision\": \"allow\"}."
+            "prompt": "Review what was completed for AlmostDoneStudio frontend. Check ALL:\n1. All requested tasks finished?\n2. No `any` in TypeScript — all props typed?\n3. `npm run lint` run if code changed?\n4. No hardcoded values outside src/constants/?\n5. Phaser scene: no object creation in update(), no React imports?\n6. React component: no Phaser imports, no inline styles?\n7. Tappable elements ≥ 44×44px?\n8. No .env or secrets in changed files?\nIf incomplete: {\"decision\": \"block\", \"reason\": \"<what is missing>\"}.\nIf all good: {\"decision\": \"allow\"}."
           }
         ]
       }
@@ -110,11 +99,7 @@
       {
         "matcher": "permissionprompt|idleprompt",
         "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/notify.sh",
-            "async": true
-          }
+          { "type": "command", "command": ".claude/hooks/notify.sh", "async": true }
         ]
       }
     ]

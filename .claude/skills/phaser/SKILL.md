@@ -5,7 +5,7 @@ description: Phaser 3 patterns for mobile top-down game. Apply when working on s
 
 # Phaser 3 — Mobile Top-Down Patterns
 
-## Scene structure (always follow this order)
+## Scene structure
 ```ts
 export class GameScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite
@@ -19,7 +19,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    // Setup scene, physics, animations, input
     this.player = this.physics.add.sprite(200, 200, 'monk')
     this.setupAnimations()
     this.setupInput()
@@ -32,61 +31,43 @@ export class GameScene extends Phaser.Scene {
 }
 ```
 
-## Mobile touch input (no keyboard)
+## Mobile touch input
 ```ts
 private setupInput() {
-  // Virtual joystick (rexvirtualjoystick plugin)
   this.joystick = this.plugins.get('rexvirtualjoystick').add(this, {
     x: 100, y: 600, radius: 60, fixed: true
   })
-
-  // Direct touch fallback
   this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
     if (p.isDown) this.moveToward(p.worldX, p.worldY)
   })
 }
 ```
 
-## Scale config (always use this for mobile)
+## Scale config (always)
 ```ts
-const config: Phaser.Types.Core.GameConfig = {
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 390,
-    height: 844
-  }
+scale: {
+  mode: Phaser.Scale.FIT,
+  autoCenter: Phaser.Scale.CENTER_BOTH,
+  width: 390,
+  height: 844
 }
 ```
 
-## EventBus (only way to talk to React)
+## EventBus
 ```ts
-// In Phaser scene
+// Phaser → React
 EventBus.emit('location-changed', { name: 'Forest' })
 
-// In React component
+// React → Phaser (in useEffect)
 useEffect(() => {
   EventBus.on('location-changed', ({ name }) => setLocation(name))
   return () => EventBus.off('location-changed')
 }, [])
 ```
 
-## Animations
-```ts
-private setupAnimations() {
-  ['up', 'down', 'left', 'right'].forEach(dir => {
-    this.anims.create({
-      key: `walk-${dir}`,
-      frames: this.anims.generateFrameNumbers('monk', { start: 0, end: 2 }),
-      frameRate: 8,
-      repeat: -1
-    })
-  })
-}
-```
-
 ## Never
-- Create objects in update()
-- Import React in a Phaser scene
+- Create objects in `update()`
+- Import React in Phaser scenes
+- Import Phaser in React components
 - Use keyboard input (mobile only)
 - Hardcode positions — use GAME_CONFIG constants
