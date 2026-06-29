@@ -31,9 +31,10 @@ if [ ! -f ".env" ] && [ -f ".env.example" ]; then
   echo "✓ Created .env from .env.example — fill in your values"
 fi
 
-# Inject env vars for session
-echo "PROJECT_ROOT=$(git rev-parse --show-toplevel)" >> "$CLAUDE_ENV_FILE"
-echo "NODE_ENV=development" >> "$CLAUDE_ENV_FILE"
+if [ -n "$CLAUDE_ENV_FILE" ]; then
+  echo "PROJECT_ROOT=$(git rev-parse --show-toplevel)" >> "$CLAUDE_ENV_FILE"
+  echo "NODE_ENV=development" >> "$CLAUDE_ENV_FILE"
+fi
 
 # Check milestone freshness
 MILESTONE_FILE=".claude/MILESTONE"

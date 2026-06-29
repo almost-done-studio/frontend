@@ -27,3 +27,6 @@ React + Phaser + TypeScript + Vite → Capacitor. 390x844. Touch-only. EventBus.
 BACKUP
 
 echo "Backed up to $BACKUP_FILE | Branch: $BRANCH | $MILESTONE"
+
+# Keep only the 10 most recent backups
+ls -t "$BACKUP_DIR"/backup-*.md 2>/dev/null | tail -n +11 | xargs rm -f 2>/dev/null || true
