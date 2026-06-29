@@ -16,7 +16,7 @@ npm run build 2>&1
 2. Check for violations:
    - `grep -r ": any" src/` — must be empty
    - `grep -r "import.*phaser" src/components/` — must be empty
-   - `grep -r "import.*react" src/scenes/` — must be empty
+   - `grep -ri "import.*react" src/scenes/` — must be empty
    - `grep -r "console.log" src/` — must be empty
 3. Review changed files for:
    - Object creation in Phaser `update()` methods

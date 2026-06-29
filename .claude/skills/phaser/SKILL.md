@@ -60,8 +60,9 @@ EventBus.emit('location-changed', { name: 'Forest' })
 
 // React → Phaser (in useEffect)
 useEffect(() => {
-  EventBus.on('location-changed', ({ name }) => setLocation(name))
-  return () => EventBus.off('location-changed')
+  const handler = ({ name }: { name: string }) => setLocation(name)
+  EventBus.on('location-changed', handler)
+  return () => EventBus.off('location-changed', handler)
 }, [])
 ```
 

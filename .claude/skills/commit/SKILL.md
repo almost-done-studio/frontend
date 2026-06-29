@@ -5,6 +5,8 @@ description: Commit message format for AlmostDoneStudio frontend. Apply when cre
 
 # Commit Format — AlmostDoneStudio Frontend
 
+> Overrides Conventional Commits (feat/fix/chore). Use this format for all commits in this repo.
+
 ## Format
 ```
 <type>: <what changed> [scope]

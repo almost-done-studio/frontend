@@ -13,6 +13,9 @@ Create a new Phaser scene for the game.
 3. Adds preload stub for expected assets
 
 ## Template
+
+Replace `$SCENE_NAME` with PascalCase class name (e.g. `ForestScene`), `$SCENE_KEY` with UPPER_SNAKE key (e.g. `FOREST`).
+
 ```ts
 import Phaser from 'phaser'
 import { EventBus } from '../utils/EventBus'
