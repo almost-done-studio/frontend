@@ -5,6 +5,7 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    target-branch: develop
     open-pull-requests-limit: 5
     groups:
       phaser:
@@ -26,4 +27,5 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    target-branch: develop
     open-pull-requests-limit: 3

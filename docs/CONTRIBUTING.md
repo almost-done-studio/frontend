@@ -39,12 +39,12 @@ Configure after CI is merged to `develop`:
 
 ### `main`
 - Require PR before merging
-- Required status checks: `lint · test · build`
+- Required status checks: `ci`
 - Require branches to be up to date
 - Do not allow bypassing (include admins)
 - Require linear history
 
 ### `develop`
 - Require PR before merging
-- Required status checks: `lint · test · build`
+- Required status checks: `ci`
 - Require branches to be up to date

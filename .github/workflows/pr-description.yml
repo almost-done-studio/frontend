@@ -13,10 +13,10 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            const body = context.payload.pull_request.body || ''
+            const body = (context.payload.pull_request.body || '').toLowerCase()
             const missing = []
-            if (!body.includes('## What')) missing.push('## What')
-            if (!body.includes('## Why')) missing.push('## Why')
+            if (!body.includes('## what')) missing.push('## What')
+            if (!body.includes('## why')) missing.push('## Why')
             if (missing.length > 0) {
               core.setFailed(`PR description is missing: ${missing.join(', ')}`)
             }
