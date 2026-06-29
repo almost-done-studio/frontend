@@ -6,5 +6,5 @@ Tasks:
 [ ] src/constants/SCENES.ts
 [ ] Vite + React + Phaser 3 project init
 [ ] Base Phaser game config (390x844, FIT scale)
-[ ] develop branch created
-[ ] CI: lint + test + build on PR
+[x] develop branch created
+[x] CI: lint + test + build on PR
