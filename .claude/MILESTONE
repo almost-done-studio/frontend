@@ -1,0 +1,10 @@
+Milestone 1 — Foundation (2026-06-29 → 2026-07-13)
+
+Tasks:
+[ ] src/utils/EventBus.ts
+[ ] src/constants/GAME_CONFIG.ts
+[ ] src/constants/SCENES.ts
+[ ] Vite + React + Phaser 3 project init
+[ ] Base Phaser game config (390x844, FIT scale)
+[ ] develop branch created
+[ ] CI: lint + test + build on PR

@@ -1,0 +1,4 @@
+audit.log
+backups/
+settings.local.json
+*.local
