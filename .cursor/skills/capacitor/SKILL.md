@@ -25,6 +25,7 @@ npx cap add ios
 ```
 
 Put `appId` / `appName` in `capacitor.config.ts` (not in `.env` — those are Vite-only).
+
 ## Sync loop (every web change)
 ```bash
 npm run build
