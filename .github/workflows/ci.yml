@@ -17,24 +17,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check for Node app lockfile
+        id: app
+        run: |
+          if [ -f package-lock.json ] && [ -f package.json ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "No package.json / package-lock.json yet — skipping lint/test/build."
+            echo "Add the Vite app bootstrap, then this job will run fully."
+          fi
+
       - uses: actions/setup-node@v4
+        if: steps.app.outputs.ready == 'true'
         with:
           node-version: 20
 
       - name: Cache node_modules
+        if: steps.app.outputs.ready == 'true'
         uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
       - name: Install dependencies
+        if: steps.app.outputs.ready == 'true'
         run: npm ci
 
       - name: Lint
+        if: steps.app.outputs.ready == 'true'
         run: npm run lint
 
       - name: Test
+        if: steps.app.outputs.ready == 'true'
         run: npm run test -- --run
 
       - name: Build
+        if: steps.app.outputs.ready == 'true'
         run: npm run build
