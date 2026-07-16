@@ -4,6 +4,6 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 source "$ROOT/hooks/lib/host.sh"
 
 INPUT=$(cat)
-agent_hooks_require_host claude "$INPUT" permission
+agent_hooks_require_host cursor "$INPUT" permission
 
-printf '%s' "$INPUT" | AGENT_HOOK_FORMAT=claude "$ROOT/hooks/shared/protect-files.sh"
+printf '%s' "$INPUT" | AGENT_HOOK_FORMAT=cursor "$ROOT/hooks/shared/protect-files.sh"

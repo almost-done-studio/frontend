@@ -79,7 +79,12 @@ src/
 When compacting: preserve list of modified files, current task, architecture decisions and their rationale.
 
 ## Skills
-`.claude/skills/` — load on demand:
+`.claude/skills/` and `.cursor/skills/` — load on demand:
 - `phaser/`       — Phaser 3 patterns, tilemap, mobile input
 - `commit/`       — commit message format
 - `code-review/`  — pre-PR checklist with auto-checks
+- `ship/`         — prepare PR (Cursor: `/ship`)
+- `new-scene/`    — scaffold Phaser scene (Cursor: `/new-scene`)
+- `integrate/`    — pull designer assets (Cursor: `/integrate`)
+
+Also see `@AGENTS.md` (root) and `.cursor/rules/` for Cursor agent config.

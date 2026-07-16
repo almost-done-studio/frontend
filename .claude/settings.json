@@ -77,7 +77,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path // empty' | xargs -I{} npx prettier --write --ignore-unknown {} 2>/dev/null || true"
+            "command": ".claude/hooks/format-prettier.sh"
           },
           {
             "type": "command",
@@ -91,16 +91,6 @@
       {
         "hooks": [
           { "type": "command", "command": ".claude/hooks/pre-compact.sh" }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "First, check if any files in src/ were edited or written during this session.\n\nIf NO src/ files were changed (analysis, planning, review, config session):\n  Was the substantive work requested by the user completed? A follow-up question or commit prompt from Claude at the end does NOT make a session incomplete — only missing actual work does.\n  If yes: {\"decision\": \"allow\"}. If no: {\"decision\": \"block\", \"reason\": \"<what is missing>\"}.\n\nIf YES src/ files were changed (coding session), check ALL:\n1. All requested tasks finished?\n2. No `any` in TypeScript — all props typed?\n3. `npm run lint` run if code changed?\n4. No hardcoded values outside src/constants/?\n5. Phaser scene: no object creation in update(), no React imports?\n6. React component: no Phaser imports, no inline styles?\n7. Tappable elements ≥ 44×44px?\n8. No .env or secrets in changed files?\nNote: a trailing question from Claude (e.g. 'Commit?' or 'Which approach?') does NOT make a session incomplete.\nIf incomplete: {\"decision\": \"block\", \"reason\": \"<what is missing>\"}.\nIf all good: {\"decision\": \"allow\"}."
-          }
         ]
       }
     ],

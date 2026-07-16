@@ -1,15 +1,20 @@
 #!/bin/bash
-# Runs on: claude --init
+# Runs on: claude --init / Setup
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# shellcheck source=../../hooks/lib/host.sh
+source "$ROOT/hooks/lib/host.sh"
+
+INPUT=$(cat || true)
+agent_hooks_require_host claude "$INPUT" silence
+
 echo "=== AlmostDoneStudio Frontend Setup ==="
 
-# Check Node
 NODE_VERSION=$(node -v 2>/dev/null)
 if [ -z "$NODE_VERSION" ]; then
   echo "ERROR: Node.js not found. Install from nodejs.org" >&2; exit 1
 fi
 echo "✓ Node $NODE_VERSION"
 
-# Check jq — required for PostToolUse prettier hook
 if ! command -v jq &>/dev/null; then
   echo "WARNING: jq not found — installing..."
   if command -v brew &>/dev/null; then brew install jq
@@ -19,13 +24,11 @@ if ! command -v jq &>/dev/null; then
 fi
 echo "✓ jq $(jq --version)"
 
-# Install deps
 if [ ! -d "node_modules" ]; then
   echo "Installing dependencies..."; npm install
 fi
 echo "✓ Dependencies ready"
 
-# Create .env from example
 if [ ! -f ".env" ] && [ -f ".env.example" ]; then
   cp .env.example .env
   echo "✓ Created .env from .env.example — fill in your values"
@@ -36,7 +39,6 @@ if [ -n "$CLAUDE_ENV_FILE" ]; then
   echo "NODE_ENV=development" >> "$CLAUDE_ENV_FILE"
 fi
 
-# Check milestone freshness
 MILESTONE_FILE=".claude/MILESTONE"
 if [ -f "$MILESTONE_FILE" ]; then
   LAST_MODIFIED=$(date -r "$MILESTONE_FILE" +%s 2>/dev/null || stat -c %Y "$MILESTONE_FILE" 2>/dev/null)

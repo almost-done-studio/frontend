@@ -1,12 +1,9 @@
 #!/bin/bash
-INPUT=$(cat)
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
-[ -z "$COMMAND" ] && exit 0
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# shellcheck source=../../hooks/lib/host.sh
+source "$ROOT/hooks/lib/host.sh"
 
-DANGEROUS=("rm -rf /" "rm -rf \*" "curl.*\|.*bash" "curl.*\|.*sh" "git push.*--force" "git push.*-f " "git reset.*--hard" "git add \\.$" "git add -A" "DROP TABLE" "drop table")
-for pattern in "${DANGEROUS[@]}"; do
-  if echo "$COMMAND" | grep -qiE "$pattern"; then
-    echo "BLOCKED: dangerous pattern '$pattern' in: $COMMAND" >&2; exit 2
-  fi
-done
-exit 0
+INPUT=$(cat)
+agent_hooks_require_host claude "$INPUT" permission
+
+printf '%s' "$INPUT" | AGENT_HOOK_FORMAT=claude "$ROOT/hooks/shared/validate-command.sh"
