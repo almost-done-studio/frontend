@@ -1,0 +1,32 @@
+name: Hooks smoke
+
+on:
+  pull_request:
+    paths:
+      - 'hooks/**'
+      - '.cursor/hooks/**'
+      - '.claude/hooks/**'
+      - '.claude/settings.json'
+      - '.cursor/hooks.json'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'hooks/**'
+      - '.cursor/hooks/**'
+      - '.claude/hooks/**'
+      - '.claude/settings.json'
+      - '.cursor/hooks.json'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: hooks smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Run hooks smoke
+        run: bash hooks/smoke.sh

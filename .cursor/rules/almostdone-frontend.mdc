@@ -1,0 +1,32 @@
+---
+description: AlmostDoneStudio frontend — architecture, stack, and critical rules
+alwaysApply: true
+---
+
+# AlmostDoneStudio Frontend
+
+Mobile top-down game, medieval manuscript / marginalia aesthetic.
+Stack: React + Phaser + TypeScript + Vite → Capacitor. Base: 390×844. Touch only.
+
+## Architecture
+- React = UI only (menus, HUD, screens)
+- Phaser = game world only (movement, sprites, collisions)
+- Communicate ONLY via EventBus — never cross-import
+
+## Critical
+- No `any` in TypeScript; props via named interfaces
+- No object creation in Phaser `update()` — only in `create()`
+- Load assets in `preload()`, never in `create()`
+- Constants only in `src/constants/`
+- Tappable targets ≥ 44×44px; no hover states
+- Branch from `develop`: `feature/xxx` or `fix/xxx`
+- Commit: `type: description [scope]`
+- PR targets `develop`; never push to `main`/`develop`
+- Never commit `.env` or secrets
+- No `console.log` in production code
+
+## Commands
+`npm run dev` | `build` | `lint` | `test` | `preview`
+
+## Before every PR
+`npm run lint && npm run test && npm run build`

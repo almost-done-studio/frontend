@@ -1,5 +1,11 @@
 #!/bin/bash
-# Runs on: every session start, resume, and after compaction
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# shellcheck source=../../hooks/lib/host.sh
+source "$ROOT/hooks/lib/host.sh"
+
+INPUT=$(cat || true)
+agent_hooks_require_host claude "$INPUT" silence
+
 BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
 LAST=$(git log --oneline -1 2>/dev/null || echo "no commits")
 MILESTONE=$(cat .claude/MILESTONE 2>/dev/null || echo "Milestone 1")

@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": ".cursor/hooks/session-context.sh"
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": ".cursor/hooks/protect-files.sh",
+        "failClosed": true
+      }
+    ],
+    "preToolUse": [
+      {
+        "matcher": "Write|StrReplace|Delete",
+        "command": ".cursor/hooks/protect-files.sh",
+        "failClosed": true
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/validate-command.sh",
+        "failClosed": true
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/format-prettier.sh"
+      },
+      {
+        "command": ".cursor/hooks/audit-edit.sh"
+      }
+    ],
+    "preCompact": [
+      {
+        "command": ".cursor/hooks/pre-compact.sh"
+      }
+    ],
+    "stop": [
+      {
+        "type": "prompt",
+        "prompt": "If src/ files changed this session, briefly check: tasks done, no any, no cross React/Phaser imports, no secrets. Only if clearly incomplete, return followup_message with what is missing. Else do not follow up.",
+        "loop_limit": 1
+      }
+    ]
+  }
+}

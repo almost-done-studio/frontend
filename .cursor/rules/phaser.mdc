@@ -1,0 +1,15 @@
+---
+description: Phaser scene conventions for AlmostDoneStudio
+globs: src/scenes/**/*.ts
+alwaysApply: false
+---
+
+# Phaser
+
+- One file = one scene (`Phaser.Scene` subclass)
+- Never create objects in `update()` — only method calls
+- Load all assets in `preload()`, never in `create()`
+- No React imports inside Phaser scenes. Ever.
+- Touch only: `pointermove` / `pointerdown` / `pointerup` or rexvirtualjoystick
+- Scale: `Phaser.Scale.FIT` + `CENTER_BOTH`, 390×844
+- Communicate with React via EventBus only

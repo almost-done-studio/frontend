@@ -1,0 +1,22 @@
+name: PR Description Check
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  check:
+    name: require What + Why sections
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = (context.payload.pull_request.body || '').toLowerCase()
+            const missing = []
+            if (!body.includes('## what')) missing.push('## What')
+            if (!body.includes('## why')) missing.push('## Why')
+            if (missing.length > 0) {
+              core.setFailed(`PR description is missing: ${missing.join(', ')}`)
+            }

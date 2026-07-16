@@ -1,0 +1,13 @@
+---
+description: React UI layer conventions for AlmostDoneStudio
+globs: src/components/**/*.{tsx,ts},src/hooks/**/*.{tsx,ts}
+alwaysApply: false
+---
+
+# React
+
+- Functional components only, no classes
+- No inline styles — CSS modules or Tailwind
+- No Phaser imports inside React files. Ever.
+- useEffect must return cleanup when subscribing to EventBus
+- Mutate Zustand only via store actions
