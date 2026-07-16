@@ -7,4 +7,9 @@ Tasks:
 [ ] Vite + React + Phaser 3 project init
 [ ] Base Phaser game config (390x844, FIT scale)
 [x] develop branch created
-[x] CI: lint + test + build on PR
+[x] CI: lint + test + build on every push and PR
+[x] PR description workflow (What + Why)
+[x] Branch protection for main and develop
+[x] .env.example
+[x] Dependabot config
+[x] Capacitor skill (native builds when ready)
