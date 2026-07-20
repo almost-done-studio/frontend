@@ -33,18 +33,23 @@ npm run lint && npm run test -- --run && npm run build
 
 PR description must include `## What` and `## Why` sections — enforced by CI.
 
-## Branch protection setup (GitHub → Settings → Branches)
+## Branch protection
 
-Configure after CI is merged to `develop`:
+Applied via GitHub API on `main` and `develop`:
 
 ### `main`
 - Require PR before merging
-- Required status checks: `ci`
+- Required status checks: `lint · test · build`
 - Require branches to be up to date
-- Do not allow bypassing (include admins)
+- Include administrators (no bypass)
 - Require linear history
 
 ### `develop`
 - Require PR before merging
-- Required status checks: `ci`
+- Required status checks: `lint · test · build`, `require What + Why sections`
 - Require branches to be up to date
+- Include administrators (no bypass)
+
+PR description check skips `dependabot[bot]` so dependency PRs are not blocked on What/Why.
+
+Note: until `package.json` + `package-lock.json` exist, the CI job succeeds by skipping lint/test/build. Branch protection is real only after the Vite app is bootstrapped.

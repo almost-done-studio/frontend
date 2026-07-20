@@ -2,7 +2,10 @@ name: PR Description Check
 
 on:
   pull_request:
-    types: [opened, edited, reopened]
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
 
 jobs:
   check:
@@ -10,13 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v9
         with:
           script: |
-            const body = (context.payload.pull_request.body || '').toLowerCase()
+            if (context.actor === 'dependabot[bot]') {
+              core.info('Skipping What/Why requirement for Dependabot')
+              return
+            }
+            const body = context.payload.pull_request.body || ''
             const missing = []
-            if (!body.includes('## what')) missing.push('## What')
-            if (!body.includes('## why')) missing.push('## Why')
+            if (!/^##\s*what\b/im.test(body)) missing.push('## What')
+            if (!/^##\s*why\b/im.test(body)) missing.push('## Why')
             if (missing.length > 0) {
-              core.setFailed(`PR description is missing: ${missing.join(', ')}`)
+              core.setFailed(
+                `PR description is missing: ${missing.join(', ')}\n\n` +
+                  'Required format:\n## What\n...\n\n## Why\n...'
+              )
             }
