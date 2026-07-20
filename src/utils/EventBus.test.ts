@@ -13,9 +13,9 @@ describe('EventBus', () => {
       received.push(scene)
     })
 
-    EventBus.emit('scene-ready', { scene: SCENES.BOOT })
+    EventBus.emit('scene-ready', { scene: SCENES.WORLD })
 
-    expect(received).toEqual([SCENES.BOOT])
+    expect(received).toEqual([SCENES.WORLD])
   })
 
   it('does not call handlers after off', () => {
@@ -25,7 +25,7 @@ describe('EventBus', () => {
     }
     EventBus.on('scene-ready', handler)
     EventBus.off('scene-ready', handler)
-    EventBus.emit('scene-ready', { scene: SCENES.BOOT })
+    EventBus.emit('scene-ready', { scene: SCENES.WORLD })
     expect(calls).toBe(0)
   })
 })

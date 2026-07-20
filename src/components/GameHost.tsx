@@ -1,10 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { EventBus } from '../utils/EventBus'
 import { useGameStore } from '../store/useGameStore'
+import type { CharacterId } from '../constants/CHARACTERS'
+import type { LocationId } from '../constants/LOCATIONS'
 import type { SceneReadyPayload } from '../types/events'
 import styles from './GameHost.module.css'
 
 interface GameHostProps {
+  characterId: CharacterId
+  locationId: LocationId
   className?: string
 }
 
@@ -12,7 +16,11 @@ interface DestroyableGame {
   destroy: (removeCanvas: boolean, noReturn?: boolean) => void
 }
 
-export function GameHost({ className }: GameHostProps) {
+export function GameHost({
+  characterId,
+  locationId,
+  className,
+}: GameHostProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const setActiveScene = useGameStore((s) => s.setActiveScene)
 
@@ -22,9 +30,17 @@ export function GameHost({ className }: GameHostProps) {
 
     let game: DestroyableGame | null = null
     let cancelled = false
+    let started = false
+
+    const emitStart = () => {
+      if (started || cancelled) return
+      started = true
+      EventBus.emit('game-start', { characterId, locationId })
+    }
 
     const onSceneReady = ({ scene }: SceneReadyPayload) => {
       setActiveScene(scene)
+      emitStart()
     }
     EventBus.on('scene-ready', onSceneReady)
 
@@ -41,9 +57,10 @@ export function GameHost({ className }: GameHostProps) {
     return () => {
       cancelled = true
       EventBus.off('scene-ready', onSceneReady)
+      setActiveScene(null)
       game?.destroy(true)
     }
-  }, [setActiveScene])
+  }, [characterId, locationId, setActiveScene])
 
   const rootClassName = className
     ? `${styles.root} ${className}`

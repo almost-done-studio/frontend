@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { GAME_CONFIG } from '../constants/GAME_CONFIG'
-import { BootScene } from '../scenes/BootScene'
+import { WorldScene } from '../scenes/WorldScene'
 
 export function createPhaserConfig(
   parent: HTMLElement,
@@ -11,7 +11,7 @@ export function createPhaserConfig(
     height: GAME_CONFIG.height,
     parent,
     backgroundColor: GAME_CONFIG.backgroundColor,
-    scene: [BootScene],
+    scene: [WorldScene],
     scale: {
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,

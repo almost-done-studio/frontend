@@ -1,0 +1,108 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+  padding-bottom: max(32px, env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: #e8dcc8;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #a89070;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 14px;
+  border: 1px solid #3d2e1f;
+  border-radius: 0;
+  background: linear-gradient(180deg, #2a1f14 0%, #1a120b 100%);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card:active {
+  border-color: var(--accent, #c4a35a);
+  background: #241910;
+}
+
+.swatch {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #5a4632;
+  background: var(--accent, #c4a35a);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.125rem;
+  color: #e8dcc8;
+}
+
+.blurb {
+  font-size: 0.875rem;
+  color: #a89070;
+}
+
+.card[data-character='monk'] {
+  --accent: #c4a35a;
+}
+
+.card[data-character='pilgrim'] {
+  --accent: #7a9e7e;
+}
+
+.card[data-character='herald'] {
+  --accent: #8b6b4a;
+}
+
+.card[data-character='scribe'] {
+  --accent: #6b7c9c;
+}
+
+.card[data-character='beast'] {
+  --accent: #9c5a5a;
+}
