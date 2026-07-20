@@ -44,3 +44,31 @@ React UI  ←──EventBus──→  Phaser Game
 ```
 
 See `CLAUDE.md` for full rules and agent configuration.
+
+## Deploy (Vercel)
+
+Production and preview deploys come from the Vercel ↔ GitHub integration.
+
+| Branch | Deploy |
+|--------|--------|
+| `main` | Production |
+| `develop` / PRs | Preview |
+
+Config: `vercel.json` (`npm run build` → `dist/`, SPA rewrites).
+
+Env vars (Vercel project → Settings → Environment Variables) must mirror `.env.example` (`VITE_API_URL`, etc.).
+
+### First-time connect (one-off)
+
+1. https://vercel.com/new — Import `almost-done-studio/frontend`
+2. Framework Preset: Vite (or leave auto)
+3. Root Directory: `.`
+4. Set Production Branch to `main` (Previews from other branches/PRs)
+5. Add env from `.env.example`, Deploy
+
+Or CLI (Node 20+):
+
+```bash
+npx vercel link
+npx vercel --prod
+```
