@@ -1,4 +1,5 @@
 .screen {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -11,6 +12,22 @@
   overflow-y: auto;
 }
 
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(14 10 7 / 72%) 0%, rgb(14 10 7 / 88%) 100%),
+    url('/assets/ui/character-selection-bg.png') center / cover no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header,
+.list {
+  position: relative;
+  z-index: 1;
+}
+
 .header {
   display: flex;
   flex-direction: column;
@@ -19,16 +36,16 @@
 
 .title {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.75rem;
   font-weight: 400;
-  color: #e8dcc8;
+  color: var(--color-text-primary);
 }
 
 .subtitle {
   margin: 0;
   font-size: 0.95rem;
-  color: #a89070;
+  color: var(--color-text-secondary);
 }
 
 .list {
@@ -45,11 +62,15 @@
   align-items: center;
   gap: 14px;
   width: 100%;
-  min-height: 64px;
+  min-height: 72px;
   padding: 12px 14px;
-  border: 1px solid #3d2e1f;
+  border: 1px solid var(--color-border);
   border-radius: 0;
-  background: linear-gradient(180deg, #2a1f14 0%, #1a120b 100%);
+  background: linear-gradient(
+    180deg,
+    rgb(42 31 20 / 92%) 0%,
+    rgb(26 18 11 / 96%) 100%
+  );
   color: inherit;
   text-align: left;
   cursor: pointer;
@@ -57,34 +78,49 @@
 }
 
 .card:active {
-  border-color: var(--accent, #c4a35a);
-  background: #241910;
+  border-color: var(--color-border-active);
+  background: rgb(36 25 16 / 96%);
+}
+
+.portrait {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
 }
 
 .swatch {
   flex-shrink: 0;
   width: 44px;
   height: 44px;
-  border: 1px solid #5a4632;
-  background: var(--accent, #c4a35a);
+  border: 1px solid var(--color-swatch-border);
+  background: var(--accent, var(--color-border-active));
 }
 
 .cardBody {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   min-width: 0;
 }
 
+.namePlate {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 18px 6px 14px;
+  background: url('/assets/ui/name-flag.png') left center / auto 100% no-repeat;
+}
+
 .name {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.125rem;
-  color: #e8dcc8;
+  color: var(--color-text-primary);
 }
 
 .blurb {
   font-size: 0.875rem;
-  color: #a89070;
+  color: var(--color-text-secondary);
 }
 
 .card[data-character='monk'] {

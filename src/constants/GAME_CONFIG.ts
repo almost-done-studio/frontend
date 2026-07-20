@@ -1,7 +1,9 @@
+import { THEME } from './THEME'
+
 export const GAME_CONFIG = {
   width: 390,
   height: 844,
-  backgroundColor: '#1a120b',
+  backgroundColor: THEME.colors.bgScene,
   parent: 'game-root',
 } as const
 

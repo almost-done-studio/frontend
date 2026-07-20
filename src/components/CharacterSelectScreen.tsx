@@ -10,6 +10,8 @@ export function CharacterSelectScreen() {
 
   return (
     <section className={styles.screen} aria-labelledby="character-select-title">
+      <div className={styles.backdrop} aria-hidden="true" />
+
       <header className={styles.header}>
         <h1 id="character-select-title" className={styles.title}>
           Choose your figure
@@ -29,9 +31,20 @@ export function CharacterSelectScreen() {
                 void navigate(SCREEN_PATHS[SCREENS.MAP])
               }}
             >
-              <span className={styles.swatch} aria-hidden="true" />
+              {character.portraitSrc ? (
+                <img
+                  className={styles.portrait}
+                  src={character.portraitSrc}
+                  alt=""
+                  aria-hidden="true"
+                />
+              ) : (
+                <span className={styles.swatch} aria-hidden="true" />
+              )}
               <span className={styles.cardBody}>
-                <span className={styles.name}>{character.name}</span>
+                <span className={styles.namePlate}>
+                  <span className={styles.name}>{character.name}</span>
+                </span>
                 <span className={styles.blurb}>{character.blurb}</span>
               </span>
             </button>

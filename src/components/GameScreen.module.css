@@ -14,8 +14,12 @@
   padding: 8px 12px;
   padding-top: max(8px, env(safe-area-inset-top));
   box-sizing: border-box;
-  background: linear-gradient(180deg, #2a1f14 0%, #1a120b 100%);
-  border-bottom: 1px solid #3d2e1f;
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-card-top) 0%,
+    var(--color-bg-scene) 100%
+  );
+  border-bottom: 1px solid var(--color-border);
 }
 
 .back {
@@ -23,17 +27,17 @@
   min-width: 44px;
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid #3d2e1f;
-  background: #120c08;
-  color: #e8dcc8;
-  font-family: Georgia, 'Times New Roman', serif;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-button);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
   font-size: 1rem;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
 .back:active {
-  border-color: #c4a35a;
+  border-color: var(--color-border-active);
 }
 
 .meta {
@@ -45,10 +49,10 @@
 
 .title {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.125rem;
   font-weight: 400;
-  color: #e8dcc8;
+  color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -57,7 +61,7 @@
 .subtitle {
   margin: 0;
   font-size: 0.8125rem;
-  color: #a89070;
+  color: var(--color-text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

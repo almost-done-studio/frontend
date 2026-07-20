@@ -1,0 +1,14 @@
+import { describe, expect, it } from 'vitest'
+import { ASSETS, TEXTURE_KEYS } from './ASSETS'
+
+describe('ASSETS', () => {
+  it('uses public asset paths for placeholder graphics', () => {
+    expect(ASSETS.ui.characterSelectionBg).toMatch(/^\/assets\/ui\//)
+    expect(ASSETS.characters.friarIdle).toMatch(/^\/assets\/characters\//)
+  })
+
+  it('defines Phaser texture keys', () => {
+    expect(TEXTURE_KEYS.WORLD_BG).toBe('world-bg')
+    expect(TEXTURE_KEYS.FRIAR_IDLE).toBe('friar-idle')
+  })
+})

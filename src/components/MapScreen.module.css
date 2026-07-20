@@ -1,4 +1,5 @@
 .screen {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -11,6 +12,22 @@
   overflow-y: auto;
 }
 
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(14 10 7 / 78%) 0%, rgb(14 10 7 / 92%) 100%),
+    url('/assets/ui/map-placeholder-bg.png') center / cover no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header,
+.list {
+  position: relative;
+  z-index: 1;
+}
+
 .header {
   display: flex;
   flex-direction: column;
@@ -18,39 +35,48 @@
 }
 
 .back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   align-self: flex-start;
   min-width: 44px;
   min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid #3d2e1f;
-  background: #1a120b;
-  color: #e8dcc8;
-  font-family: Georgia, 'Times New Roman', serif;
+  padding: 0 12px 0 8px;
+  border: 1px solid var(--color-border);
+  background: rgb(26 18 11 / 88%);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
   font-size: 1rem;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
 .back:active {
-  border-color: #c4a35a;
+  border-color: var(--color-border-active);
+}
+
+.backIcon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .title {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.75rem;
   font-weight: 400;
-  color: #e8dcc8;
+  color: var(--color-text-primary);
 }
 
 .subtitle {
   margin: 0;
   font-size: 0.95rem;
-  color: #a89070;
+  color: var(--color-text-secondary);
 }
 
 .subtitle strong {
-  color: #e8dcc8;
+  color: var(--color-text-primary);
   font-weight: 400;
 }
 
@@ -65,14 +91,17 @@
 
 .card {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
+  align-items: stretch;
+  gap: 12px;
   width: 100%;
-  min-height: 72px;
-  padding: 16px;
-  border: 1px solid #3d2e1f;
-  background: linear-gradient(180deg, #2a1f14 0%, #1a120b 100%);
+  min-height: 88px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  background: linear-gradient(
+    180deg,
+    rgb(42 31 20 / 90%) 0%,
+    rgb(26 18 11 / 94%) 100%
+  );
   color: inherit;
   text-align: left;
   cursor: pointer;
@@ -80,16 +109,32 @@
 }
 
 .card:active {
-  border-color: #c4a35a;
+  border-color: var(--color-border-active);
+}
+
+.cardArt {
+  flex-shrink: 0;
+  width: 72px;
+  background:
+    linear-gradient(180deg, rgb(14 10 7 / 20%) 0%, rgb(14 10 7 / 55%) 100%),
+    url('/assets/ui/name-flag.png') center / contain no-repeat;
+}
+
+.cardCopy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
 }
 
 .name {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.25rem;
-  color: #e8dcc8;
+  color: var(--color-text-primary);
 }
 
 .blurb {
   font-size: 0.875rem;
-  color: #a89070;
+  color: var(--color-text-secondary);
 }

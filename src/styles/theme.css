@@ -1,0 +1,15 @@
+:root {
+  --color-bg-page: #0e0a07;
+  --color-bg-scene: #1a120b;
+  --color-bg-card-top: #2a1f14;
+  --color-bg-card-bottom: #1a120b;
+  --color-bg-card-active: #241910;
+  --color-bg-button: #120c08;
+  --color-text-primary: #e8dcc8;
+  --color-text-secondary: #a89070;
+  --color-border: #3d2e1f;
+  --color-border-active: #c4a35a;
+  --color-swatch-border: #5a4632;
+  --font-body: 'Modern Antiqua Book', Georgia, 'Times New Roman', serif;
+  --font-display: 'Orotund Heavy', Georgia, 'Times New Roman', serif;
+}

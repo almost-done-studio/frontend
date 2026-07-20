@@ -15,3 +15,4 @@ Tasks:
 [x] Capacitor skill (native builds when ready)
 [x] GitHub repo setup + Vercel connect (issue #2)
 [x] Basic screen routing: character → map → game (issue #3)
+[x] Screen placeholders with asset graphics (issue #5)
