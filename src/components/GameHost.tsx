@@ -30,7 +30,12 @@ export function GameHost({ className }: GameHostProps) {
 
     void import('../game/createGame').then(({ createGame }) => {
       if (cancelled || !containerRef.current) return
-      game = createGame(containerRef.current)
+      const instance = createGame(containerRef.current)
+      if (cancelled) {
+        instance.destroy(true)
+        return
+      }
+      game = instance
     })
 
     return () => {
