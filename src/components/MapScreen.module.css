@@ -138,3 +138,48 @@
   font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
+
+@media (orientation: landscape) {
+  .screen {
+    max-width: none;
+    height: 100%;
+    padding: 12px 20px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    gap: 12px;
+  }
+
+  .header {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+  }
+
+  .title {
+    font-size: 1.35rem;
+    flex: 1;
+  }
+
+  .subtitle {
+    width: 100%;
+    font-size: 0.875rem;
+  }
+
+  .list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .card {
+    flex-direction: column;
+    min-height: 120px;
+    padding: 10px;
+  }
+
+  .cardArt {
+    width: 100%;
+    height: 48px;
+  }
+}

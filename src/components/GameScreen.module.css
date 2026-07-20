@@ -72,3 +72,19 @@
   min-height: 0;
   display: flex;
 }
+
+@media (orientation: landscape) {
+  .hud {
+    min-height: 44px;
+    padding: 4px 12px;
+    padding-top: max(4px, env(safe-area-inset-top));
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+  }
+}

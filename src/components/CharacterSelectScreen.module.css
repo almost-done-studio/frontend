@@ -142,3 +142,45 @@
 .card[data-character='beast'] {
   --accent: #9c5a5a;
 }
+
+@media (orientation: landscape) {
+  .screen {
+    max-width: none;
+    height: 100%;
+    padding: 12px 20px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    gap: 12px;
+  }
+
+  .header {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 1.35rem;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+    text-align: right;
+  }
+
+  .list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .card {
+    min-height: 64px;
+  }
+
+  .namePlate {
+    min-height: 36px;
+    padding: 4px 14px 4px 12px;
+  }
+}

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useDesignViewport } from '../hooks/useDesignViewport'
 import { EventBus } from '../utils/EventBus'
 import { useGameStore } from '../store/useGameStore'
 import type { CharacterId } from '../constants/CHARACTERS'
@@ -23,6 +24,7 @@ export function GameHost({
 }: GameHostProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const setActiveScene = useGameStore((s) => s.setActiveScene)
+  const { width, height } = useDesignViewport()
 
   useEffect(() => {
     const parent = containerRef.current
@@ -46,7 +48,7 @@ export function GameHost({
 
     void import('../game/createGame').then(({ createGame }) => {
       if (cancelled || !containerRef.current) return
-      const instance = createGame(containerRef.current)
+      const instance = createGame(containerRef.current, width, height)
       if (cancelled) {
         instance.destroy(true)
         return
@@ -60,7 +62,7 @@ export function GameHost({
       setActiveScene(null)
       game?.destroy(true)
     }
-  }, [characterId, locationId, setActiveScene])
+  }, [characterId, locationId, height, setActiveScene, width])
 
   const rootClassName = className
     ? `${styles.root} ${className}`
