@@ -52,4 +52,10 @@ Applied via GitHub API on `main` and `develop`:
 
 PR description check skips `dependabot[bot]` so dependency PRs are not blocked on What/Why.
 
-Note: until `package.json` + `package-lock.json` exist, the CI job succeeds by skipping lint/test/build. Branch protection is real only after the Vite app is bootstrapped.
+## Deploy
+
+Hosted on **Vercel** (GitHub integration). See README → Deploy.
+- `main` → production
+- PRs / `develop` → preview URLs
+
+Do not commit `.vercel/` (local link metadata).

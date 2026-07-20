@@ -13,3 +13,4 @@ Tasks:
 [x] .env.example
 [x] Dependabot config
 [x] Capacitor skill (native builds when ready)
+[x] GitHub repo setup + Vercel connect (issue #2)
