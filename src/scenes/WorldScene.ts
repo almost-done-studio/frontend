@@ -68,13 +68,8 @@ export class WorldScene extends Phaser.Scene {
       .setPosition(width / 2, height / 2)
       .setDisplaySize(width, height)
 
-    this.titleText
-      .setPosition(width / 2, height * (isLandscape ? 0.18 : 0.22))
-      .setOrigin(0.5)
-
-    this.detailText
-      .setPosition(width / 2, height * (isLandscape ? 0.28 : 0.3))
-      .setOrigin(0.5)
+    this.titleText.setVisible(false)
+    this.detailText.setVisible(false)
 
     this.playerSprite.setPosition(
       width / 2,

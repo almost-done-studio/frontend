@@ -16,3 +16,38 @@ Tasks:
 [x] GitHub repo setup + Vercel connect (issue #2)
 [x] Basic screen routing: character → map → game (issue #3)
 [x] Screen placeholders with asset graphics (issue #5)
+
+---
+
+MVP — Playable web slice (pace: 2–4 h/week)
+
+Source of truth: docs/MVP.md
+UI source: Figma Marginalia Project — docs/ui/figma-marginalia.md
+
+Phase 0 — Close foundation
+[ ] Merge feature/placeholder-screens → develop; close #5 / #6 if done
+[ ] Figma + MVP docs in repo
+
+Phase 1 — Figma UI + walking Monk
+[ ] Character select carousel per Figma (designer export + React)
+[ ] Integrate Monk idle + walk into WorldScene
+[ ] Touch movement in WorldScene (issue #7)
+[ ] localStorage save/load character + location (issue #4)
+
+Phase 2 — Playable slice
+[ ] One world background (portrait + landscape) from assets #12 slim cut
+[ ] Walk bounds / simple collisions
+[ ] One interact zone + EventBus UI feedback
+[ ] Game HUD: location title + back to map
+
+Phase 3 — Ship MVP
+[ ] Stub/hide non-Monk characters without art
+[ ] Smoke test portrait/landscape on phone browsers
+[ ] Refresh org README milestone bars
+[ ] Title: Marginalia (or final name)
+
+Out of MVP
+- backend (Express/Postgres)
+- Capacitor
+- Five fully illustrated playable characters
+- Full tilemaps for all locations

@@ -2,10 +2,28 @@ export const ASSETS = {
   ui: {
     characterSelectionBg: '/assets/ui/character-selection-bg.png',
     mapPlaceholderBg: '/assets/ui/map-placeholder-bg.png',
+    /** Map select screen — parchment folio with A–Z guides. */
+    mapSelectionBg: '/assets/ui/map-selection-bg.png',
+    fullMoon: '/assets/ui/full-moon.png',
+    crescentMoon: '/assets/ui/crescent-moon.png',
     friarIcon: '/assets/ui/friar-icon.png',
     nameFlag: '/assets/ui/name-flag.png',
     arrowLeft: '/assets/ui/arrow-left.png',
     arrowRight: '/assets/ui/arrow-right.png',
+    characterSelect: {
+      arrowLeft: '/assets/ui/character-select/arrow-left.png',
+      arrowRight: '/assets/ui/character-select/arrow-right.png',
+      portraitFrame: '/assets/ui/character-select/portrait-frame.png',
+      selectButton: '/assets/ui/character-select/select-button.png',
+      portraits: {
+        monk: '/assets/ui/character-select/portraits/monk.png',
+      },
+    },
+    mapThumbs: {
+      scriptorium: '/assets/ui/map/thumbs/scriptorium.png',
+      forest: '/assets/ui/map/thumbs/forest.png',
+      cloister: '/assets/ui/map/thumbs/cloister.png',
+    },
   },
   characters: {
     friarIdle: '/assets/characters/friar-idle.png',

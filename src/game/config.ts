@@ -15,8 +15,10 @@ export function createPhaserConfig(
     backgroundColor: THEME.colors.bgScene,
     scene: [WorldScene],
     scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
+      mode: Phaser.Scale.RESIZE,
+      autoCenter: Phaser.Scale.NO_CENTER,
+      width,
+      height,
     },
     input: {
       activePointers: 3,

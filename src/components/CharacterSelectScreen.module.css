@@ -2,185 +2,208 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
   max-width: 390px;
+  height: 100%;
+  min-height: 100%;
   margin: 0 auto;
-  padding: 20px 16px 32px;
-  padding-bottom: max(32px, env(safe-area-inset-bottom));
+  padding: 28px 12px max(24px, env(safe-area-inset-bottom));
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow: hidden;
+  /* Matches CHARACTER_SELECT_UI (Figma character select) */
+  --cs-title-size: 50px;
+  --cs-name-size: 45px;
+  --cs-portrait-size: 220px;
+  --cs-portrait-inset: 16%;
+  --cs-portrait-bottom: 21px;
+  --cs-portrait-max-width: 70%;
+  --cs-portrait-max-height: 80%;
+  --cs-arrow-hit: 56px;
+  --cs-select-min-height: 56px;
+  --cs-portrait-backing: #7a1f1f;
 }
 
 .backdrop {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgb(14 10 7 / 72%) 0%, rgb(14 10 7 / 88%) 100%),
+    linear-gradient(
+      180deg,
+      rgb(14 10 7 / 28%) 0%,
+      rgb(14 10 7 / 12%) 42%,
+      rgb(14 10 7 / 8%) 100%
+    ),
     url('/assets/ui/character-selection-bg.png') center / cover no-repeat;
   pointer-events: none;
   z-index: 0;
 }
 
-.header,
-.list {
+.title,
+.carousel,
+.name,
+.select {
   position: relative;
   z-index: 1;
 }
 
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .title {
   margin: 0;
+  max-width: 18ch;
   font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 400;
-  color: var(--color-text-primary);
+  font-size: var(--cs-title-size);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  color: #1a120b;
+  text-shadow:
+    0 0 10px rgb(255 255 255 / 85%),
+    0 0 2px rgb(255 255 255 / 95%);
 }
 
-.subtitle {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-}
-
-.list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.card {
+.carousel {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
-  min-height: 72px;
-  padding: 12px 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 0;
-  background: linear-gradient(
-    180deg,
-    rgb(42 31 20 / 92%) 0%,
-    rgb(26 18 11 / 96%) 100%
-  );
-  color: inherit;
-  text-align: left;
+}
+
+.arrow {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: var(--cs-arrow-hit);
+  height: var(--cs-arrow-hit);
+  padding: 0;
+  border: 0;
+  background: transparent;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
-.card:active {
-  border-color: var(--color-border-active);
-  background: rgb(36 25 16 / 96%);
+.arrow img {
+  display: block;
+  width: 44px;
+  height: auto;
+  pointer-events: none;
 }
 
-.portrait {
+.arrow:active {
+  transform: scale(0.94);
+}
+
+.portraitStage {
+  position: relative;
+  width: var(--cs-portrait-size);
+  height: var(--cs-portrait-size);
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+}
+
+.portraitBacking {
+  /* Underlaps gold frame rim (~11.3% hole) so no parchment shows through */
+  position: absolute;
+  inset: 5%;
+  background: var(--cs-portrait-backing);
+  z-index: 0;
+}
+
+.portrait,
+.portraitPlaceholder {
+  position: absolute;
+  top: var(--cs-portrait-inset);
+  right: var(--cs-portrait-inset);
+  bottom: var(--cs-portrait-bottom);
+  left: var(--cs-portrait-inset);
+  z-index: 1;
+  width: auto;
+  height: auto;
+  max-width: var(--cs-portrait-max-width);
+  max-height: var(--cs-portrait-max-height);
+  margin: auto;
   object-fit: contain;
 }
 
-.swatch {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--color-swatch-border);
-  background: var(--accent, var(--color-border-active));
+.portrait {
+  bottom: 0;
 }
 
-.cardBody {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-
-.namePlate {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 6px 18px 6px 14px;
-  background: url('/assets/ui/name-flag.png') left center / auto 100% no-repeat;
+.portraitFrame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
 }
 
 .name {
+  margin: 0;
   font-family: var(--font-display);
-  font-size: 1.125rem;
-  color: var(--color-text-primary);
+  font-size: var(--cs-name-size);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  color: #1a120b;
 }
 
-.blurb {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
+.select {
+  display: block;
+  width: min(100%, 280px);
+  min-height: var(--cs-select-min-height);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.card[data-character='monk'] {
-  --accent: #c4a35a;
+.select img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
 }
 
-.card[data-character='pilgrim'] {
-  --accent: #7a9e7e;
-}
-
-.card[data-character='herald'] {
-  --accent: #8b6b4a;
-}
-
-.card[data-character='scribe'] {
-  --accent: #6b7c9c;
-}
-
-.card[data-character='beast'] {
-  --accent: #9c5a5a;
+.select:active {
+  transform: scale(0.97);
 }
 
 @media (orientation: landscape) {
   .screen {
     max-width: none;
-    height: 100%;
-    padding: 12px 20px;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
-    gap: 12px;
-  }
-
-  .header {
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
+    padding: 12px 24px max(12px, env(safe-area-inset-bottom));
+    justify-content: center;
+    gap: 10px;
   }
 
   .title {
-    font-size: 1.35rem;
+    font-size: clamp(28px, 6vh, 40px);
   }
 
-  .subtitle {
-    font-size: 0.875rem;
-    text-align: right;
+  .name {
+    font-size: clamp(24px, 5.5vh, 36px);
   }
 
-  .list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    overflow-y: auto;
+  .portraitStage {
+    width: min(180px, 42vh);
+    height: min(180px, 42vh);
   }
 
-  .card {
-    min-height: 64px;
+  .arrow {
+    width: 48px;
+    height: 48px;
   }
 
-  .namePlate {
-    min-height: 36px;
-    padding: 4px 14px 4px 12px;
+  .arrow img {
+    width: 36px;
+  }
+
+  .select {
+    width: min(240px, 40vw);
   }
 }

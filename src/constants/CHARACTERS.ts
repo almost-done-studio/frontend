@@ -6,7 +6,7 @@ export const CHARACTERS = [
     name: 'Monk',
     blurb: 'Quiet scribe of the margins.',
     accent: '#c4a35a',
-    portraitSrc: ASSETS.ui.friarIcon,
+    portraitSrc: ASSETS.ui.characterSelect.portraits.monk,
   },
   {
     id: 'pilgrim',

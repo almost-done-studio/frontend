@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react'
-import { useDesignViewport } from '../hooks/useDesignViewport'
+import { useEffect, useRef, useState } from 'react'
 import { EventBus } from '../utils/EventBus'
 import { useGameStore } from '../store/useGameStore'
 import type { CharacterId } from '../constants/CHARACTERS'
@@ -13,8 +12,25 @@ interface GameHostProps {
   className?: string
 }
 
-interface DestroyableGame {
+interface ResizableGame {
   destroy: (removeCanvas: boolean, noReturn?: boolean) => void
+  scale: {
+    resize: (width: number, height: number) => void
+  }
+}
+
+interface ContainerSize {
+  width: number
+  height: number
+}
+
+const MIN_CONTAINER_SIZE: ContainerSize = { width: 390, height: 844 }
+
+function readContainerSize(element: HTMLElement): ContainerSize {
+  const width = Math.round(element.clientWidth)
+  const height = Math.round(element.clientHeight)
+  if (width <= 0 || height <= 0) return MIN_CONTAINER_SIZE
+  return { width, height }
 }
 
 export function GameHost({
@@ -23,14 +39,36 @@ export function GameHost({
   className,
 }: GameHostProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const gameRef = useRef<ResizableGame | null>(null)
+  const sizeRef = useRef<ContainerSize>(MIN_CONTAINER_SIZE)
   const setActiveScene = useGameStore((s) => s.setActiveScene)
-  const { width, height } = useDesignViewport()
+  const [size, setSize] = useState<ContainerSize>(MIN_CONTAINER_SIZE)
+
+  useEffect(() => {
+    sizeRef.current = size
+  }, [size])
+
+  useEffect(() => {
+    const element = containerRef.current
+    if (!element) return
+
+    const sync = () => setSize(readContainerSize(element))
+    sync()
+
+    const observer = new ResizeObserver(sync)
+    observer.observe(element)
+    window.addEventListener('orientationchange', sync)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('orientationchange', sync)
+    }
+  }, [])
 
   useEffect(() => {
     const parent = containerRef.current
     if (!parent) return
 
-    let game: DestroyableGame | null = null
     let cancelled = false
     let started = false
 
@@ -48,21 +86,30 @@ export function GameHost({
 
     void import('../game/createGame').then(({ createGame }) => {
       if (cancelled || !containerRef.current) return
-      const instance = createGame(containerRef.current, width, height)
+      const instance = createGame(
+        containerRef.current,
+        sizeRef.current.width,
+        sizeRef.current.height,
+      ) as ResizableGame
       if (cancelled) {
         instance.destroy(true)
         return
       }
-      game = instance
+      gameRef.current = instance
     })
 
     return () => {
       cancelled = true
       EventBus.off('scene-ready', onSceneReady)
       setActiveScene(null)
-      game?.destroy(true)
+      gameRef.current?.destroy(true)
+      gameRef.current = null
     }
-  }, [characterId, locationId, height, setActiveScene, width])
+  }, [characterId, locationId, setActiveScene])
+
+  useEffect(() => {
+    gameRef.current?.scale.resize(size.width, size.height)
+  }, [size.height, size.width])
 
   const rootClassName = className
     ? `${styles.root} ${className}`
