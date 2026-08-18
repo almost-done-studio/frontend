@@ -24,6 +24,11 @@ export const ASSETS = {
       forest: '/assets/ui/map/thumbs/forest.png',
       cloister: '/assets/ui/map/thumbs/cloister.png',
     },
+    world: {
+      scriptorium: '/assets/ui/world/scriptorium.png',
+      forest: '/assets/ui/world/forest.png',
+      cloister: '/assets/ui/world/cloister.png',
+    },
   },
   characters: {
     friarIdle: '/assets/characters/friar-idle.png',
@@ -40,8 +45,9 @@ export const ASSETS = {
 
 /** Phaser texture keys — keep in sync with preload() calls. */
 export const TEXTURE_KEYS = {
-  WORLD_BG: 'world-bg',
-  MAP_BG: 'map-bg',
+  WORLD_SCRIPTORIUM: 'world-scriptorium',
+  WORLD_FOREST: 'world-forest',
+  WORLD_CLOISTER: 'world-cloister',
   FRIAR_IDLE: 'friar-idle',
 } as const
 
