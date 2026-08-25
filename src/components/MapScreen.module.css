@@ -41,7 +41,7 @@
 .back {
   position: absolute;
   left: max(12px, env(safe-area-inset-left));
-  top: max(22px, env(safe-area-inset-top));
+  bottom: max(12px, env(safe-area-inset-bottom));
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -62,12 +62,16 @@
 }
 
 .back:active {
-  transform: scale(0.94);
+  transform: scale(0.94) rotate(90deg);
+}
+
+.back img {
+  transform: rotate(90deg);
 }
 
 .backIcon {
   display: block;
-  width: 44px;
+  width: 39px;
   height: auto;
   pointer-events: none;
 }
@@ -101,20 +105,19 @@
 .columns {
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  flex: 1;
-  min-height: 0;
+  padding: 0 75px;
+  display: flex;
   width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .column {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 10px;
-  border-right: 1px solid var(--map-rule);
+  padding: 0;
+  border-right: 0;
 }
 
 .column:last-child {
@@ -125,10 +128,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: min(100%, 240px);
-  min-height: 196px;
-  padding: 16px 14px 18px;
+  gap: 6px;
+  width: auto;
+  min-height: auto;
+  padding: 0;
   border: none;
   background: none;
   color: inherit;
@@ -160,8 +163,20 @@
 .thumbStage {
   position: relative;
   flex-shrink: 0;
-  width: 112px;
-  height: 112px;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 160px;
+  height: 185px;
+}
+
+/* Make thumbnail appear clickable when unlocked */
+.thumbStage:not(.locked) {
+  cursor: pointer;
+}
+
+.thumbStage:focus {
+  outline: 3px solid rgba(26,18,11,0.12);
+  outline-offset: 3px;
 }
 
 .thumbStage[data-location='scriptorium'] {
@@ -176,22 +191,12 @@
   --thumb-accent: #4a5568;
 }
 
-.thumbBacking {
-  position: absolute;
-  inset: 8%;
-  background: var(--thumb-accent, #7a1f1f);
-  z-index: 0;
-}
+/* removed .thumbBacking — not used anymore */
 
 .thumb {
-  position: absolute;
-  inset: 12%;
-  z-index: 1;
-  width: auto;
-  height: auto;
-  max-width: 76%;
-  max-height: 76%;
-  margin: auto;
+  display: block;
+  width: 100%;
+  height: 185px;
   object-fit: cover;
   pointer-events: none;
 }
@@ -220,6 +225,76 @@
   color: rgb(26 18 11 / 70%);
 }
 
+/* Card chrome to match new design: parchment panel with rounded thumb */
+.card {
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.thumbStage {
+  border-radius: 8px;
+  overflow: hidden;
+  width: 160px;
+  height: 185px;
+}
+
+
+/* locked thumbnail dimming removed */
+
+/* .lockOverlay removed — no longer used */
+
+.lockedCard {
+  opacity: 1;
+}
+
+
+
+/* Nav buttons at left/right center */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.navButton img {
+  display: block;
+  width: 56px;
+  height: auto;
+  pointer-events: none;
+}
+
+.navButton.prev {
+  left: max(12px, env(safe-area-inset-left));
+}
+
+.navButton.next {
+  right: max(12px, env(safe-area-inset-right));
+}
+
+.lockedFoot {
+  width: min(100%, 168px);
+  height: var(--map-select-min-height, 56px);
+}
+
+/* Place select button under each card and style disabled state */
+.select {
+  margin-top: 4px;
+}
+
+.selectDisabled,
+.select[disabled] {
+  opacity: 0.48;
+  filter: grayscale(40%);
+  pointer-events: none;
+}
+
 @media (orientation: landscape) {
   .screen {
     padding-top: max(10px, env(safe-area-inset-top));
@@ -233,19 +308,10 @@
     padding-bottom: 8px;
   }
 
-  .card {
-    min-height: 180px;
-  }
+  /* landscape: card min-height intentionally unset */
 
-  .thumbStage {
-    width: 96px;
-    height: 96px;
+  /* removed .thumbFrame — frame image is no longer used */
   }
-
-  .name {
-    font-size: 1.15rem;
-  }
-}
 
 @media (max-width: 420px) {
   .title {
