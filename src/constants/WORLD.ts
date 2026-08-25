@@ -1,13 +1,31 @@
 import { TEXTURE_KEYS, type TextureKey } from './ASSETS'
 import type { LocationId } from './LOCATIONS'
 
+export const WORLD_CHUNK_TEXTURE_KEYS = {
+  scriptorium: [
+    TEXTURE_KEYS.WORLD_SCRIPTORIUM,
+    TEXTURE_KEYS.WORLD_SCRIPTORIUM_B,
+    TEXTURE_KEYS.WORLD_SCRIPTORIUM_C,
+  ],
+  forest: [
+    TEXTURE_KEYS.WORLD_FOREST,
+    TEXTURE_KEYS.WORLD_FOREST_B,
+    TEXTURE_KEYS.WORLD_FOREST_C,
+  ],
+  cloister: [
+    TEXTURE_KEYS.WORLD_CLOISTER,
+    TEXTURE_KEYS.WORLD_CLOISTER_B,
+    TEXTURE_KEYS.WORLD_CLOISTER_C,
+  ],
+} as const satisfies Record<LocationId, readonly TextureKey[]>
+
 export const WORLD_TEXTURE_KEYS = {
   scriptorium: TEXTURE_KEYS.WORLD_SCRIPTORIUM,
   forest: TEXTURE_KEYS.WORLD_FOREST,
   cloister: TEXTURE_KEYS.WORLD_CLOISTER,
 } as const satisfies Record<LocationId, TextureKey>
 
-/** Trapezoid walk area in map ratios (feet). Near = bottom of the painting. */
+/** Trapezoid walk area in chunk ratios (feet). Near = bottom of the painting. */
 export interface WalkArea {
   minY: number
   maxY: number
@@ -26,6 +44,13 @@ export interface StepResult extends Point2 {
   arrived: boolean
 }
 
+export interface ChunkRef {
+  gridX: number
+  gridY: number
+  localX: number
+  localY: number
+}
+
 export interface LocationWorld {
   spawn: Point2
   walk: WalkArea
@@ -33,13 +58,14 @@ export interface LocationWorld {
 
 export const WORLD = {
   map: {
-    /** World must be larger than the screen so the camera can travel. */
-    minWidthInViewports: 2,
-    minHeightInViewports: 2.5,
+    /** Each leaf is a bit larger than the screen; neighbors fill in at the edge. */
+    minWidthInViewports: 1.2,
+    minHeightInViewports: 1.5,
+    /** Odd span so the pool stays centered on the monk. */
+    chunkSpan: 3,
   },
   camera: {
     lerp: 0.14,
-    /** Shift follow point up so the monk sits in the lower third. */
     followOffsetYRatio: 0.22,
   },
   player: {
@@ -51,7 +77,6 @@ export const WORLD = {
       landscapeNear: 0.46,
       landscapeFar: 0.22,
     },
-    /** Pixels per second in world space. */
     speed: 280,
     arriveDistance: 10,
   },
@@ -59,34 +84,34 @@ export const WORLD = {
     scriptorium: {
       spawn: { x: 0.48, y: 0.9 },
       walk: {
-        minY: 0.62,
-        maxY: 0.96,
-        nearMinX: 0.1,
-        nearMaxX: 0.9,
-        farMinX: 0.2,
-        farMaxX: 0.8,
+        minY: 0.68,
+        maxY: 0.98,
+        nearMinX: 0.02,
+        nearMaxX: 0.98,
+        farMinX: 0.14,
+        farMaxX: 0.86,
       },
     },
     forest: {
       spawn: { x: 0.5, y: 0.92 },
       walk: {
-        minY: 0.18,
-        maxY: 0.96,
-        nearMinX: 0.18,
-        nearMaxX: 0.82,
-        farMinX: 0.4,
-        farMaxX: 0.6,
+        minY: 0,
+        maxY: 1,
+        nearMinX: 0.2,
+        nearMaxX: 0.8,
+        farMinX: 0.32,
+        farMaxX: 0.68,
       },
     },
     cloister: {
       spawn: { x: 0.26, y: 0.9 },
       walk: {
-        minY: 0.16,
-        maxY: 0.96,
+        minY: 0,
+        maxY: 1,
         nearMinX: 0.06,
         nearMaxX: 0.52,
-        farMinX: 0.1,
-        farMaxX: 0.28,
+        farMinX: 0.08,
+        farMaxX: 0.36,
       },
     },
   } satisfies Record<LocationId, LocationWorld>,
@@ -116,8 +141,72 @@ export function getWorldTextureKey(locationId: LocationId): TextureKey {
   return WORLD_TEXTURE_KEYS[locationId]
 }
 
+export function getChunkTextureKeys(
+  locationId: LocationId,
+): readonly TextureKey[] {
+  return WORLD_CHUNK_TEXTURE_KEYS[locationId]
+}
+
 export function getLocationWorld(locationId: LocationId): LocationWorld {
   return WORLD.locations[locationId]
+}
+
+export function chunkVariantIndex(
+  gridX: number,
+  gridY: number,
+  count: number,
+): number {
+  if (count <= 1) return 0
+  if (gridX === 0 && gridY === 0) return 0
+  const n = ((gridX * 73856093) ^ (gridY * 19349663)) >>> 0
+  return 1 + (n % (count - 1))
+}
+
+export function chunkOrigin(span: number): number {
+  return -Math.floor(span / 2)
+}
+
+export function worldToChunkInto(
+  worldX: number,
+  worldY: number,
+  chunkWidth: number,
+  chunkHeight: number,
+  out: ChunkRef,
+): void {
+  out.gridX = Math.floor(worldX / chunkWidth)
+  out.gridY = Math.floor(worldY / chunkHeight)
+  out.localX = worldX / chunkWidth - out.gridX
+  out.localY = worldY / chunkHeight - out.gridY
+}
+
+export function chunkToWorld(
+  grid: number,
+  local: number,
+  chunkSize: number,
+): number {
+  return (grid + local) * chunkSize
+}
+
+/** Recenter a pooled chunk along one axis so a 3-wide strip follows the player. */
+export function wrapChunkGrid(
+  grid: number,
+  chunkSize: number,
+  playerWorld: number,
+  span: number,
+): number {
+  if (chunkSize <= 0) return grid
+  const spanSize = span * chunkSize
+  let next = grid
+  let world = next * chunkSize
+  while (world + chunkSize < playerWorld - chunkSize) {
+    next += span
+    world += spanSize
+  }
+  while (world > playerWorld + chunkSize) {
+    next -= span
+    world -= spanSize
+  }
+  return next
 }
 
 function lerp(start: number, end: number, t: number): number {

@@ -1,6 +1,6 @@
 /** Map / location select — copy & tokens. */
 export const MAP_UI = {
-  title: 'Choose a leaf',
+  title: 'Choose Your Map',
   backLabel: 'Back',
   subtitlePrefix: 'Traveling as',
   subtitleFallback: 'Pick a location after choosing a character',

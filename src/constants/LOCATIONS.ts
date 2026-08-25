@@ -2,28 +2,29 @@ import { ASSETS } from './ASSETS'
 
 export const LOCATIONS = [
   {
+    id: 'garden',
+    name: 'Garden',
+    blurb: 'Twisting vines along the leaf.',
+    accent: '#3d5c3a',
+    thumbSrc: ASSETS.ui.mapThumbs.garden,
+    worldSrc: ASSETS.ui.world.garden,
+  },
+  {
     id: 'scriptorium',
     name: 'Scriptorium',
     blurb: 'Warm lamps, unfinished pages.',
     accent: '#7a1f1f',
-    thumbSrc: ASSETS.ui.mapThumbs.scriptorium,
-    worldSrc: ASSETS.ui.world.scriptorium,
+    thumbSrc: ASSETS.ui.mapThumbs.castle,
+    worldSrc: ASSETS.ui.world.castle,
   },
-  {
-    id: 'forest',
-    name: 'Forest Margin',
-    blurb: 'Twisting vines along the leaf.',
-    accent: '#3d5c3a',
-    thumbSrc: ASSETS.ui.mapThumbs.forest,
-    worldSrc: ASSETS.ui.world.forest,
-  },
+  
   {
     id: 'cloister',
     name: 'Cloister Walk',
     blurb: 'Stone arches and quiet steps.',
     accent: '#4a5568',
-    thumbSrc: ASSETS.ui.mapThumbs.cloister,
-    worldSrc: ASSETS.ui.world.cloister,
+    thumbSrc: ASSETS.ui.mapThumbs.pond,
+    worldSrc: ASSETS.ui.world.pond,
   },
 ] as const
 

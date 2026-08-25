@@ -20,14 +20,31 @@ export const ASSETS = {
       },
     },
     mapThumbs: {
-      scriptorium: '/assets/ui/map/thumbs/scriptorium.png',
-      forest: '/assets/ui/map/thumbs/forest.png',
-      cloister: '/assets/ui/map/thumbs/cloister.png',
+      garden: '/assets/ui/map/garden.png',
+      castle: '/assets/ui/map/castle.png',
+      pond: '/assets/ui/map/pond.png',
     },
     world: {
-      scriptorium: '/assets/ui/world/scriptorium.png',
-      forest: '/assets/ui/world/forest.png',
-      cloister: '/assets/ui/world/cloister.png',
+      garden: '/assets/ui/world/forest.png',
+      castle: '/assets/ui/world/scriptorium.png',
+      pond: '/assets/ui/world/cloister.png',
+    },
+    worldChunks: {
+      castle: [
+        '/assets/ui/world/scriptorium.png',
+        '/assets/ui/world/scriptorium-b.png',
+        '/assets/ui/world/scriptorium-c.png',
+      ],
+      garden: [
+        '/assets/ui/world/forest.png',
+        '/assets/ui/world/forest-b.png',
+        '/assets/ui/world/forest-c.png',
+      ],
+      pond: [
+        '/assets/ui/world/cloister.png',
+        '/assets/ui/world/cloister-b.png',
+        '/assets/ui/world/cloister-c.png',
+      ],
     },
   },
   characters: {
@@ -46,8 +63,14 @@ export const ASSETS = {
 /** Phaser texture keys — keep in sync with preload() calls. */
 export const TEXTURE_KEYS = {
   WORLD_SCRIPTORIUM: 'world-scriptorium',
+  WORLD_SCRIPTORIUM_B: 'world-scriptorium-b',
+  WORLD_SCRIPTORIUM_C: 'world-scriptorium-c',
   WORLD_FOREST: 'world-forest',
+  WORLD_FOREST_B: 'world-forest-b',
+  WORLD_FOREST_C: 'world-forest-c',
   WORLD_CLOISTER: 'world-cloister',
+  WORLD_CLOISTER_B: 'world-cloister-b',
+  WORLD_CLOISTER_C: 'world-cloister-c',
   FRIAR_IDLE: 'friar-idle',
 } as const
 

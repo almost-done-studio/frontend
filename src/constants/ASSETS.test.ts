@@ -10,6 +10,7 @@ describe('ASSETS', () => {
     )
     expect(ASSETS.ui.mapThumbs.scriptorium).toMatch(/^\/assets\/ui\/map\/thumbs\//)
     expect(ASSETS.ui.world.scriptorium).toMatch(/^\/assets\/ui\/world\//)
+    expect(ASSETS.ui.worldChunks.forest).toHaveLength(3)
     expect(ASSETS.characters.friarIdle).toMatch(/^\/assets\/characters\//)
   })
 

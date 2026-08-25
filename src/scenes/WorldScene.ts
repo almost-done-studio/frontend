@@ -5,28 +5,47 @@ import { ASSETS, TEXTURE_KEYS } from '../constants/ASSETS'
 import { LOCATIONS, type LocationId } from '../constants/LOCATIONS'
 import {
   WORLD,
+  chunkOrigin,
+  chunkToWorld,
+  chunkVariantIndex,
   clampWalkRatioInto,
+  getChunkTextureKeys,
   getLocationWorld,
   getWorldTextureKey,
   playerHeightRatio,
   stepTowardInto,
   worldDisplaySize,
+  worldToChunkInto,
+  wrapChunkGrid,
+  type ChunkRef,
   type Point2,
   type StepResult,
 } from '../constants/WORLD'
 import type { GameStartPayload } from '../types/events'
 
+interface MapChunk {
+  image: Phaser.GameObjects.Image
+  gridX: number
+  gridY: number
+}
+
 export class WorldScene extends Phaser.Scene {
-  private backgroundImage!: Phaser.GameObjects.Image
+  private readonly chunks: MapChunk[] = []
   private playerSprite!: Phaser.GameObjects.Image
   private locationId: LocationId = LOCATIONS[0].id
   private canWalk = false
   private isMoving = false
-  private worldWidth = 0
-  private worldHeight = 0
+  private chunkWidth = 0
+  private chunkHeight = 0
+  private footGridX = 0
+  private footGridY = 0
+  private targetGridX = 0
+  private targetGridY = 0
   private foot!: Point2
   private target!: Point2
   private stepOut!: StepResult
+  private pointerChunk!: ChunkRef
+  private movedChunk!: ChunkRef
 
   private readonly onGameStart = (payload: GameStartPayload): void => {
     this.applyRun(payload)
@@ -48,7 +67,11 @@ export class WorldScene extends Phaser.Scene {
 
   preload(): void {
     for (const location of LOCATIONS) {
-      this.load.image(getWorldTextureKey(location.id), location.worldSrc)
+      const keys = getChunkTextureKeys(location.id)
+      const paths = ASSETS.ui.worldChunks[location.id]
+      for (let i = 0; i < keys.length; i += 1) {
+        this.load.image(keys[i], paths[i])
+      }
     }
     this.load.image(TEXTURE_KEYS.FRIAR_IDLE, ASSETS.characters.friarIdle)
   }
@@ -58,11 +81,24 @@ export class WorldScene extends Phaser.Scene {
     this.foot = { x: spawn.x, y: spawn.y }
     this.target = { x: spawn.x, y: spawn.y }
     this.stepOut = { x: 0, y: 0, arrived: false }
+    this.pointerChunk = { gridX: 0, gridY: 0, localX: 0, localY: 0 }
+    this.movedChunk = { gridX: 0, gridY: 0, localX: 0, localY: 0 }
 
-    this.backgroundImage = this.add
-      .image(0, 0, getWorldTextureKey(this.locationId))
-      .setOrigin(0, 0)
-      .setDepth(0)
+    const span = WORLD.map.chunkSpan
+    const origin = chunkOrigin(span)
+    for (let gy = 0; gy < span; gy += 1) {
+      for (let gx = 0; gx < span; gx += 1) {
+        this.chunks.push({
+          image: this.add
+            .image(0, 0, getWorldTextureKey(this.locationId))
+            .setOrigin(0, 0)
+            .setDepth(0),
+          gridX: origin + gx,
+          gridY: origin + gy,
+        })
+      }
+    }
+
     this.playerSprite = this.add
       .image(0, 0, TEXTURE_KEYS.FRIAR_IDLE)
       .setOrigin(WORLD.player.originX, WORLD.player.originY)
@@ -94,15 +130,24 @@ export class WorldScene extends Phaser.Scene {
 
   private setTargetFromPointer(pointer: Phaser.Input.Pointer): void {
     if (!this.canWalk) return
-    if (this.worldWidth <= 0 || this.worldHeight <= 0) return
+    if (this.chunkWidth <= 0 || this.chunkHeight <= 0) return
 
+    worldToChunkInto(
+      pointer.worldX,
+      pointer.worldY,
+      this.chunkWidth,
+      this.chunkHeight,
+      this.pointerChunk,
+    )
     const walk = getLocationWorld(this.locationId).walk
     clampWalkRatioInto(
-      pointer.worldX / this.worldWidth,
-      pointer.worldY / this.worldHeight,
+      this.pointerChunk.localX,
+      this.pointerChunk.localY,
       walk,
       this.target,
     )
+    this.targetGridX = this.pointerChunk.gridX
+    this.targetGridY = this.pointerChunk.gridY
     this.isMoving = true
   }
 
@@ -130,11 +175,64 @@ export class WorldScene extends Phaser.Scene {
     )
   }
 
+  private paintChunk(chunk: MapChunk): void {
+    const keys = getChunkTextureKeys(this.locationId)
+    const index = chunkVariantIndex(chunk.gridX, chunk.gridY, keys.length)
+    chunk.image
+      .setTexture(keys[index])
+      .setDisplaySize(this.chunkWidth, this.chunkHeight)
+      .setPosition(
+        chunk.gridX * this.chunkWidth,
+        chunk.gridY * this.chunkHeight,
+      )
+  }
+
+  private resetChunkGrid(): void {
+    const span = WORLD.map.chunkSpan
+    const origin = chunkOrigin(span)
+    let i = 0
+    for (let gy = 0; gy < span; gy += 1) {
+      for (let gx = 0; gx < span; gx += 1) {
+        const chunk = this.chunks[i]
+        chunk.gridX = origin + gx
+        chunk.gridY = origin + gy
+        this.paintChunk(chunk)
+        i += 1
+      }
+    }
+  }
+
+  private wrapChunks(): void {
+    if (this.chunkWidth <= 0 || this.chunkHeight <= 0) return
+    const span = WORLD.map.chunkSpan
+    const playerX = this.playerSprite.x
+    const playerY = this.playerSprite.y
+    for (const chunk of this.chunks) {
+      const nextX = wrapChunkGrid(
+        chunk.gridX,
+        this.chunkWidth,
+        playerX,
+        span,
+      )
+      const nextY = wrapChunkGrid(
+        chunk.gridY,
+        this.chunkHeight,
+        playerY,
+        span,
+      )
+      if (nextX === chunk.gridX && nextY === chunk.gridY) continue
+      chunk.gridX = nextX
+      chunk.gridY = nextY
+      this.paintChunk(chunk)
+    }
+  }
+
   private layoutScene(): void {
     const viewWidth = this.scale.width
     const viewHeight = this.scale.height
-    const sourceWidth = this.backgroundImage.width
-    const sourceHeight = this.backgroundImage.height
+    const sample = this.chunks[0]?.image
+    const sourceWidth = sample?.width ?? 0
+    const sourceHeight = sample?.height ?? 0
 
     if (sourceWidth > 0 && sourceHeight > 0) {
       const display = worldDisplaySize(
@@ -145,31 +243,38 @@ export class WorldScene extends Phaser.Scene {
         WORLD.map.minWidthInViewports,
         WORLD.map.minHeightInViewports,
       )
-      this.worldWidth = display.width
-      this.worldHeight = display.height
-      this.backgroundImage.setDisplaySize(this.worldWidth, this.worldHeight)
+      this.chunkWidth = display.width
+      this.chunkHeight = display.height
     }
 
     const camera = this.cameras.main
     camera.setSize(viewWidth, viewHeight)
-    camera.setBounds(0, 0, this.worldWidth, this.worldHeight)
+    camera.useBounds = false
     camera.setFollowOffset(0, viewHeight * WORLD.camera.followOffsetYRatio)
     camera.roundPixels = true
 
+    for (const chunk of this.chunks) {
+      this.paintChunk(chunk)
+    }
+
     this.layoutPlayerSize()
     this.playerSprite.setPosition(
-      this.foot.x * this.worldWidth,
-      this.foot.y * this.worldHeight,
+      chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth),
+      chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight),
     )
+    this.wrapChunks()
   }
 
   private applyRun({ characterId, locationId }: GameStartPayload): void {
     this.locationId = locationId
     this.canWalk = characterId === 'monk'
     this.isMoving = false
-    this.backgroundImage.setTexture(getWorldTextureKey(locationId))
 
     const spawn = getLocationWorld(locationId).spawn
+    this.footGridX = 0
+    this.footGridY = 0
+    this.targetGridX = 0
+    this.targetGridY = 0
     this.foot.x = spawn.x
     this.foot.y = spawn.y
     this.target.x = spawn.x
@@ -177,15 +282,24 @@ export class WorldScene extends Phaser.Scene {
 
     this.playerSprite.setFlipX(false)
     this.playerSprite.setVisible(this.canWalk)
+    this.resetChunkGrid()
     this.layoutScene()
   }
 
   private handleMovement(delta: number): void {
     if (!this.canWalk || !this.isMoving) return
-    if (this.worldWidth <= 0 || this.worldHeight <= 0) return
+    if (this.chunkWidth <= 0 || this.chunkHeight <= 0) return
 
-    const targetX = this.target.x * this.worldWidth
-    const targetY = this.target.y * this.worldHeight
+    const targetX = chunkToWorld(
+      this.targetGridX,
+      this.target.x,
+      this.chunkWidth,
+    )
+    const targetY = chunkToWorld(
+      this.targetGridY,
+      this.target.y,
+      this.chunkHeight,
+    )
     const x = this.playerSprite.x
     const y = this.playerSprite.y
     const dx = targetX - x
@@ -203,10 +317,28 @@ export class WorldScene extends Phaser.Scene {
       WORLD.player.arriveDistance,
       this.stepOut,
     )
-    this.playerSprite.setPosition(this.stepOut.x, this.stepOut.y)
-    this.foot.x = this.stepOut.x / this.worldWidth
-    this.foot.y = this.stepOut.y / this.worldHeight
+    worldToChunkInto(
+      this.stepOut.x,
+      this.stepOut.y,
+      this.chunkWidth,
+      this.chunkHeight,
+      this.movedChunk,
+    )
+    const walk = getLocationWorld(this.locationId).walk
+    clampWalkRatioInto(
+      this.movedChunk.localX,
+      this.movedChunk.localY,
+      walk,
+      this.foot,
+    )
+    this.footGridX = this.movedChunk.gridX
+    this.footGridY = this.movedChunk.gridY
+    this.playerSprite.setPosition(
+      chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth),
+      chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight),
+    )
     this.layoutPlayerSize()
+    this.wrapChunks()
     if (this.stepOut.arrived) {
       this.isMoving = false
     }
