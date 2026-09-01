@@ -20,27 +20,27 @@ export const ASSETS = {
       },
     },
     mapThumbs: {
-      garden: '/assets/ui/map/garden.png',
-      castle: '/assets/ui/map/castle.png',
-      pond: '/assets/ui/map/pond.png',
+      garden: '/assets/ui/map/thumbs/forest.png',
+      scriptorium: '/assets/ui/map/thumbs/scriptorium.png',
+      cloister: '/assets/ui/map/thumbs/cloister.png',
     },
     world: {
       garden: '/assets/ui/world/forest.png',
-      castle: '/assets/ui/world/scriptorium.png',
-      pond: '/assets/ui/world/cloister.png',
+      scriptorium: '/assets/ui/world/scriptorium.png',
+      cloister: '/assets/ui/world/cloister.png',
     },
     worldChunks: {
-      castle: [
-        '/assets/ui/world/scriptorium.png',
-        '/assets/ui/world/scriptorium-b.png',
-        '/assets/ui/world/scriptorium-c.png',
-      ],
       garden: [
         '/assets/ui/world/forest.png',
         '/assets/ui/world/forest-b.png',
         '/assets/ui/world/forest-c.png',
       ],
-      pond: [
+      scriptorium: [
+        '/assets/ui/world/scriptorium.png',
+        '/assets/ui/world/scriptorium-b.png',
+        '/assets/ui/world/scriptorium-c.png',
+      ],
+      cloister: [
         '/assets/ui/world/cloister.png',
         '/assets/ui/world/cloister-b.png',
         '/assets/ui/world/cloister-c.png',

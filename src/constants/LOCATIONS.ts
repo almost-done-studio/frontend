@@ -14,8 +14,8 @@ export const LOCATIONS = [
     name: 'Scriptorium',
     blurb: 'Warm lamps, unfinished pages.',
     accent: '#7a1f1f',
-    thumbSrc: ASSETS.ui.mapThumbs.castle,
-    worldSrc: ASSETS.ui.world.castle,
+    thumbSrc: ASSETS.ui.mapThumbs.scriptorium,
+    worldSrc: ASSETS.ui.world.scriptorium,
   },
   
   {
@@ -23,8 +23,8 @@ export const LOCATIONS = [
     name: 'Cloister Walk',
     blurb: 'Stone arches and quiet steps.',
     accent: '#4a5568',
-    thumbSrc: ASSETS.ui.mapThumbs.pond,
-    worldSrc: ASSETS.ui.world.pond,
+    thumbSrc: ASSETS.ui.mapThumbs.cloister,
+    worldSrc: ASSETS.ui.world.cloister,
   },
 ] as const
 

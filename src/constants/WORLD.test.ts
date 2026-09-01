@@ -60,7 +60,7 @@ describe('WORLD', () => {
   })
 
   it('clamps feet into the walk trapezoid', () => {
-    const walk = WORLD.locations.forest.walk
+    const walk = WORLD.locations.garden.walk
     const out = { x: 0, y: 0 }
 
     clampWalkRatioInto(0.5, -0.2, walk, out)
@@ -73,7 +73,7 @@ describe('WORLD', () => {
   })
 
   it('shrinks the monk as they walk farther into a leaf', () => {
-    const walk = WORLD.locations.forest.walk
+    const walk = WORLD.locations.garden.walk
     const near = playerHeightRatio(walk.maxY, walk, 0.28, 0.14)
     const far = playerHeightRatio(walk.minY, walk, 0.28, 0.14)
     expect(near).toBeCloseTo(0.28)

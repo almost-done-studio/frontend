@@ -9,7 +9,7 @@ describe('useGameStore', () => {
   it('selectCharacter clears previous location', () => {
     const store = useGameStore.getState()
     store.selectCharacter('monk')
-    store.selectLocation('forest')
+    store.selectLocation('garden')
     store.selectCharacter('scribe')
 
     const next = useGameStore.getState()

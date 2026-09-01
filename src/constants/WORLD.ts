@@ -7,7 +7,7 @@ export const WORLD_CHUNK_TEXTURE_KEYS = {
     TEXTURE_KEYS.WORLD_SCRIPTORIUM_B,
     TEXTURE_KEYS.WORLD_SCRIPTORIUM_C,
   ],
-  forest: [
+  garden: [
     TEXTURE_KEYS.WORLD_FOREST,
     TEXTURE_KEYS.WORLD_FOREST_B,
     TEXTURE_KEYS.WORLD_FOREST_C,
@@ -21,7 +21,7 @@ export const WORLD_CHUNK_TEXTURE_KEYS = {
 
 export const WORLD_TEXTURE_KEYS = {
   scriptorium: TEXTURE_KEYS.WORLD_SCRIPTORIUM,
-  forest: TEXTURE_KEYS.WORLD_FOREST,
+  garden: TEXTURE_KEYS.WORLD_FOREST,
   cloister: TEXTURE_KEYS.WORLD_CLOISTER,
 } as const satisfies Record<LocationId, TextureKey>
 
@@ -92,7 +92,7 @@ export const WORLD = {
         farMaxX: 0.86,
       },
     },
-    forest: {
+    garden: {
       spawn: { x: 0.5, y: 0.92 },
       walk: {
         minY: 0,
