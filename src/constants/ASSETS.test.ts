@@ -9,15 +9,15 @@ describe('ASSETS', () => {
       /^\/assets\/ui\/character-select\//,
     )
     expect(ASSETS.ui.mapThumbs.scriptorium).toMatch(/^\/assets\/ui\/map\/thumbs\//)
-    expect(ASSETS.ui.world.scriptorium).toMatch(/^\/assets\/ui\/world\//)
-    expect(ASSETS.ui.worldChunks.garden).toHaveLength(3)
+    expect(ASSETS.ui.map.scriptorium).toMatch(/^\/assets\/ui\/map\//)
+    expect(ASSETS.ui.mapChunks.garden).toHaveLength(3)
     expect(ASSETS.characters.friarIdle).toMatch(/^\/assets\/characters\//)
   })
 
   it('defines Phaser texture keys', () => {
-    expect(TEXTURE_KEYS.WORLD_SCRIPTORIUM).toBe('world-scriptorium')
-    expect(TEXTURE_KEYS.WORLD_FOREST).toBe('world-forest')
-    expect(TEXTURE_KEYS.WORLD_CLOISTER).toBe('world-cloister')
+    expect(TEXTURE_KEYS.MAP_SCRIPTORIUM).toBe('map-scriptorium')
+    expect(TEXTURE_KEYS.MAP_FOREST).toBe('map-forest')
+    expect(TEXTURE_KEYS.MAP_CLOISTER).toBe('map-cloister')
     expect(TEXTURE_KEYS.FRIAR_IDLE).toBe('friar-idle')
   })
 })

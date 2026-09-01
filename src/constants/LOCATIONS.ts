@@ -7,7 +7,7 @@ export const LOCATIONS = [
     blurb: 'Twisting vines along the leaf.',
     accent: '#3d5c3a',
     thumbSrc: ASSETS.ui.mapThumbs.garden,
-    worldSrc: ASSETS.ui.world.garden,
+    mapSrc: ASSETS.ui.map.garden,
   },
   {
     id: 'scriptorium',
@@ -15,7 +15,7 @@ export const LOCATIONS = [
     blurb: 'Warm lamps, unfinished pages.',
     accent: '#7a1f1f',
     thumbSrc: ASSETS.ui.mapThumbs.scriptorium,
-    worldSrc: ASSETS.ui.world.scriptorium,
+    mapSrc: ASSETS.ui.map.scriptorium,
   },
   
   {
@@ -24,7 +24,7 @@ export const LOCATIONS = [
     blurb: 'Stone arches and quiet steps.',
     accent: '#4a5568',
     thumbSrc: ASSETS.ui.mapThumbs.cloister,
-    worldSrc: ASSETS.ui.world.cloister,
+    mapSrc: ASSETS.ui.map.cloister,
   },
 ] as const
 

@@ -93,7 +93,7 @@ export function MapScreen() {
                   onClick={locked ? undefined : handleSelect}
                   onKeyDown={locked ? undefined : handleKey}
                 >
-                    <img className={styles.thumb} src={location.thumbSrc} alt="" />
+                    <img className={styles.thumb} src={location.mapSrc} alt="" />
                 </span>
                 <span className={styles.name}>{displayName}</span>
                 <button

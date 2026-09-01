@@ -2,13 +2,13 @@ import { describe, expect, it } from 'vitest'
 import { LOCATIONS } from './LOCATIONS'
 import {
   WORLD,
-  WORLD_CHUNK_TEXTURE_KEYS,
-  WORLD_TEXTURE_KEYS,
+  MAP_CHUNK_TEXTURE_KEYS,
+  MAP_TEXTURE_KEYS,
   chunkOrigin,
   chunkVariantIndex,
   clampWalkRatioInto,
-  getLocationWorld,
-  getWorldTextureKey,
+  getLocationMap,
+  getMapTextureKey,
   playerHeightRatio,
   stepTowardInto,
   worldDisplaySize,
@@ -19,14 +19,14 @@ import {
 describe('WORLD', () => {
   it('maps every location to origin plus continuation chunk textures', () => {
     for (const location of LOCATIONS) {
-      expect(getWorldTextureKey(location.id)).toBe(
-        WORLD_TEXTURE_KEYS[location.id],
+      expect(getMapTextureKey(location.id)).toBe(
+        MAP_TEXTURE_KEYS[location.id],
       )
-      expect(WORLD_CHUNK_TEXTURE_KEYS[location.id]).toHaveLength(3)
-      expect(location.worldSrc).toMatch(/^\/assets\/ui\/world\//)
-      const world = getLocationWorld(location.id)
-      expect(world.spawn.y).toBeGreaterThan(0.7)
-      expect(world.walk.maxY).toBeGreaterThan(world.walk.minY)
+      expect(MAP_CHUNK_TEXTURE_KEYS[location.id]).toHaveLength(3)
+      expect(location.mapSrc).toMatch(/^\/assets\/ui\/map\//)
+      const locationMap = getLocationMap(location.id)
+      expect(locationMap.spawn.y).toBeGreaterThan(0.7)
+      expect(locationMap.walk.maxY).toBeGreaterThan(locationMap.walk.minY)
     }
   })
 

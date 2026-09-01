@@ -24,12 +24,12 @@ export const ASSETS = {
       scriptorium: '/assets/ui/map/thumbs/scriptorium.png',
       cloister: '/assets/ui/map/thumbs/cloister.png',
     },
-    world: {
-      garden: '/assets/ui/world/forest.png',
-      scriptorium: '/assets/ui/world/scriptorium.png',
-      cloister: '/assets/ui/world/cloister.png',
+    map: {
+      garden: '/assets/ui/map/garden.png',
+      scriptorium: '/assets/ui/map/castle.png',
+      cloister: '/assets/ui/map/pond.png',
     },
-    worldChunks: {
+    mapChunks: {
       garden: [
         '/assets/ui/world/forest.png',
         '/assets/ui/world/forest-b.png',
@@ -62,15 +62,15 @@ export const ASSETS = {
 
 /** Phaser texture keys — keep in sync with preload() calls. */
 export const TEXTURE_KEYS = {
-  WORLD_SCRIPTORIUM: 'world-scriptorium',
-  WORLD_SCRIPTORIUM_B: 'world-scriptorium-b',
-  WORLD_SCRIPTORIUM_C: 'world-scriptorium-c',
-  WORLD_FOREST: 'world-forest',
-  WORLD_FOREST_B: 'world-forest-b',
-  WORLD_FOREST_C: 'world-forest-c',
-  WORLD_CLOISTER: 'world-cloister',
-  WORLD_CLOISTER_B: 'world-cloister-b',
-  WORLD_CLOISTER_C: 'world-cloister-c',
+  MAP_SCRIPTORIUM: 'map-scriptorium',
+  MAP_SCRIPTORIUM_B: 'map-scriptorium-b',
+  MAP_SCRIPTORIUM_C: 'map-scriptorium-c',
+  MAP_FOREST: 'map-forest',
+  MAP_FOREST_B: 'map-forest-b',
+  MAP_FOREST_C: 'map-forest-c',
+  MAP_CLOISTER: 'map-cloister',
+  MAP_CLOISTER_B: 'map-cloister-b',
+  MAP_CLOISTER_C: 'map-cloister-c',
   FRIAR_IDLE: 'friar-idle',
 } as const
 

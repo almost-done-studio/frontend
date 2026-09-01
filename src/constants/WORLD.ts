@@ -1,28 +1,28 @@
 import { TEXTURE_KEYS, type TextureKey } from './ASSETS'
 import type { LocationId } from './LOCATIONS'
 
-export const WORLD_CHUNK_TEXTURE_KEYS = {
+export const MAP_CHUNK_TEXTURE_KEYS = {
   scriptorium: [
-    TEXTURE_KEYS.WORLD_SCRIPTORIUM,
-    TEXTURE_KEYS.WORLD_SCRIPTORIUM_B,
-    TEXTURE_KEYS.WORLD_SCRIPTORIUM_C,
+    TEXTURE_KEYS.MAP_SCRIPTORIUM,
+    TEXTURE_KEYS.MAP_SCRIPTORIUM_B,
+    TEXTURE_KEYS.MAP_SCRIPTORIUM_C,
   ],
   garden: [
-    TEXTURE_KEYS.WORLD_FOREST,
-    TEXTURE_KEYS.WORLD_FOREST_B,
-    TEXTURE_KEYS.WORLD_FOREST_C,
+    TEXTURE_KEYS.MAP_FOREST,
+    TEXTURE_KEYS.MAP_FOREST_B,
+    TEXTURE_KEYS.MAP_FOREST_C,
   ],
   cloister: [
-    TEXTURE_KEYS.WORLD_CLOISTER,
-    TEXTURE_KEYS.WORLD_CLOISTER_B,
-    TEXTURE_KEYS.WORLD_CLOISTER_C,
+    TEXTURE_KEYS.MAP_CLOISTER,
+    TEXTURE_KEYS.MAP_CLOISTER_B,
+    TEXTURE_KEYS.MAP_CLOISTER_C,
   ],
 } as const satisfies Record<LocationId, readonly TextureKey[]>
 
-export const WORLD_TEXTURE_KEYS = {
-  scriptorium: TEXTURE_KEYS.WORLD_SCRIPTORIUM,
-  garden: TEXTURE_KEYS.WORLD_FOREST,
-  cloister: TEXTURE_KEYS.WORLD_CLOISTER,
+export const MAP_TEXTURE_KEYS = {
+  scriptorium: TEXTURE_KEYS.MAP_SCRIPTORIUM,
+  garden: TEXTURE_KEYS.MAP_FOREST,
+  cloister: TEXTURE_KEYS.MAP_CLOISTER,
 } as const satisfies Record<LocationId, TextureKey>
 
 /** Trapezoid walk area in chunk ratios (feet). Near = bottom of the painting. */
@@ -51,7 +51,7 @@ export interface ChunkRef {
   localY: number
 }
 
-export interface LocationWorld {
+export interface LocationMap {
   spawn: Point2
   walk: WalkArea
 }
@@ -114,7 +114,7 @@ export const WORLD = {
         farMaxX: 0.36,
       },
     },
-  } satisfies Record<LocationId, LocationWorld>,
+  } satisfies Record<LocationId, LocationMap>,
 } as const
 
 export type WorldConfig = typeof WORLD
@@ -137,17 +137,17 @@ export function worldDisplaySize(
   }
 }
 
-export function getWorldTextureKey(locationId: LocationId): TextureKey {
-  return WORLD_TEXTURE_KEYS[locationId]
+export function getMapTextureKey(locationId: LocationId): TextureKey {
+  return MAP_TEXTURE_KEYS[locationId]
 }
 
 export function getChunkTextureKeys(
   locationId: LocationId,
 ): readonly TextureKey[] {
-  return WORLD_CHUNK_TEXTURE_KEYS[locationId]
+  return MAP_CHUNK_TEXTURE_KEYS[locationId]
 }
 
-export function getLocationWorld(locationId: LocationId): LocationWorld {
+export function getLocationMap(locationId: LocationId): LocationMap {
   return WORLD.locations[locationId]
 }
 

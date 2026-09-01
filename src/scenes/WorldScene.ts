@@ -10,8 +10,8 @@ import {
   chunkVariantIndex,
   clampWalkRatioInto,
   getChunkTextureKeys,
-  getLocationWorld,
-  getWorldTextureKey,
+  getLocationMap,
+  getMapTextureKey,
   playerHeightRatio,
   stepTowardInto,
   worldDisplaySize,
@@ -68,7 +68,7 @@ export class WorldScene extends Phaser.Scene {
   preload(): void {
     for (const location of LOCATIONS) {
       const keys = getChunkTextureKeys(location.id)
-      const paths = ASSETS.ui.worldChunks[location.id]
+      const paths = ASSETS.ui.mapChunks[location.id]
       for (let i = 0; i < keys.length; i += 1) {
         this.load.image(keys[i], paths[i])
       }
@@ -77,7 +77,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create(): void {
-    const spawn = getLocationWorld(this.locationId).spawn
+    const spawn = getLocationMap(this.locationId).spawn
     this.foot = { x: spawn.x, y: spawn.y }
     this.target = { x: spawn.x, y: spawn.y }
     this.stepOut = { x: 0, y: 0, arrived: false }
@@ -90,7 +90,7 @@ export class WorldScene extends Phaser.Scene {
       for (let gx = 0; gx < span; gx += 1) {
         this.chunks.push({
           image: this.add
-            .image(0, 0, getWorldTextureKey(this.locationId))
+            .image(0, 0, getMapTextureKey(this.locationId))
             .setOrigin(0, 0)
             .setDepth(0),
           gridX: origin + gx,
@@ -139,7 +139,7 @@ export class WorldScene extends Phaser.Scene {
       this.chunkHeight,
       this.pointerChunk,
     )
-    const walk = getLocationWorld(this.locationId).walk
+    const walk = getLocationMap(this.locationId).walk
     clampWalkRatioInto(
       this.pointerChunk.localX,
       this.pointerChunk.localY,
@@ -155,7 +155,7 @@ export class WorldScene extends Phaser.Scene {
     const width = this.scale.width
     const height = this.scale.height
     const isLandscape = width > height
-    const walk = getLocationWorld(this.locationId).walk
+    const walk = getLocationMap(this.locationId).walk
     const ratio = playerHeightRatio(
       this.foot.y,
       walk,
@@ -270,7 +270,7 @@ export class WorldScene extends Phaser.Scene {
     this.canWalk = characterId === 'monk'
     this.isMoving = false
 
-    const spawn = getLocationWorld(locationId).spawn
+    const spawn = getLocationMap(locationId).spawn
     this.footGridX = 0
     this.footGridY = 0
     this.targetGridX = 0
@@ -324,7 +324,7 @@ export class WorldScene extends Phaser.Scene {
       this.chunkHeight,
       this.movedChunk,
     )
-    const walk = getLocationWorld(this.locationId).walk
+    const walk = getLocationMap(this.locationId).walk
     clampWalkRatioInto(
       this.movedChunk.localX,
       this.movedChunk.localY,
