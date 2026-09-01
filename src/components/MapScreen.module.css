@@ -18,6 +18,10 @@
   --map-select-min-height: 56px;
   --map-ink: #1a120b;
   --map-rule: rgb(60 48 36 / 28%);
+  --map-text-glow:
+    0 0 14px rgb(255 255 255 / 95%),
+    0 0 4px rgb(255 255 255 / 100%),
+    0 0 24px rgb(255 255 255 / 55%);
   /* cache-bust 2026-08-18-map-thumbs */
 }
 
@@ -63,7 +67,7 @@
 }
 
 .back:active {
-  transform: scale(0.94) rotate(90deg);
+  transform: scale(0.94);
 }
 
 .back img {
@@ -74,6 +78,15 @@
   display: block;
   width: 39px;
   height: auto;
+  pointer-events: none;
+}
+
+.backLabel {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--map-ink);
+  text-shadow: var(--map-text-glow);
   pointer-events: none;
 }
 
@@ -94,6 +107,7 @@
   font-weight: 900;
   line-height: 1;
   color: var(--map-ink);
+  text-shadow: var(--map-text-glow);
 }
 
 .subtitle {

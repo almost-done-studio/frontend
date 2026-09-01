@@ -54,6 +54,7 @@ export function MapScreen() {
           alt=""
           aria-hidden="true"
         />
+        <span className={styles.backLabel}>{MAP_UI.backLabel}</span>
       </button>
 
       <button type="button" className={`${styles.navButton} ${styles.prev}`} onClick={prev} aria-label="Previous">
