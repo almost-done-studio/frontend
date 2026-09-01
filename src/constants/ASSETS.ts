@@ -4,6 +4,8 @@ export const ASSETS = {
     mapPlaceholderBg: '/assets/ui/map-placeholder-bg.png',
     /** Map select screen — parchment folio with A–Z guides. */
     mapSelectionBg: '/assets/ui/map-selection-bg.png',
+    mainMenuBg: '/assets/ui/main/main.png',
+    mainMenuFlag: '/assets/ui/main/flag.png',
     fullMoon: '/assets/ui/full-moon.png',
     crescentMoon: '/assets/ui/crescent-moon.png',
     friarIcon: '/assets/ui/friar-icon.png',

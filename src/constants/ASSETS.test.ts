@@ -5,6 +5,8 @@ describe('ASSETS', () => {
   it('uses public asset paths for placeholder graphics', () => {
     expect(ASSETS.ui.characterSelectionBg).toMatch(/^\/assets\/ui\//)
     expect(ASSETS.ui.mapSelectionBg).toBe('/assets/ui/map-selection-bg.png')
+    expect(ASSETS.ui.mainMenuBg).toBe('/assets/ui/main/main.png')
+    expect(ASSETS.ui.mainMenuFlag).toBe('/assets/ui/main/flag.png')
     expect(ASSETS.ui.characterSelect.portraits.monk).toMatch(
       /^\/assets\/ui\/character-select\//,
     )
