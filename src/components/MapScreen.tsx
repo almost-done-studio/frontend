@@ -17,6 +17,27 @@ export function MapScreen() {
   const prev = () => setFocusedIndex((s) => (s - 1 + LOCATIONS.length) % LOCATIONS.length)
   const next = () => setFocusedIndex((s) => (s + 1) % LOCATIONS.length)
 
+  const location = LOCATIONS[focusedIndex]
+  const locked = focusedIndex !== 0
+  const displayName = locked ? '???' : location.name
+
+  const handleSelect = () => {
+    if (locked) return
+    if (!characterId) {
+      void navigate(SCREEN_PATHS[SCREENS.CHARACTER_SELECT])
+      return
+    }
+    selectLocation(location.id)
+    void navigate(SCREEN_PATHS[SCREENS.GAME])
+  }
+
+  const handleKey = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleSelect()
+    }
+  }
+
   return (
     <section className={styles.screen} aria-labelledby="map-title">
       <div className={styles.backdrop} aria-hidden="true" />
@@ -59,61 +80,34 @@ export function MapScreen() {
       </header>
 
       <ul className={styles.columns}>
-        {LOCATIONS.map((location, idx) => {
-          const locked = idx !== 0 // first location unlocked by default
-          const displayName = locked ? '???' : location.name
-
-          const handleSelect = () => {
-            if (locked) return
-            if (!characterId) {
-              void navigate(SCREEN_PATHS[SCREENS.CHARACTER_SELECT])
-              return
-            }
-            selectLocation(location.id)
-            void navigate(SCREEN_PATHS[SCREENS.GAME])
-          }
-
-          const handleKey = (e: React.KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              handleSelect()
-            }
-          }
-
-          return (
-            <li key={location.id} className={`${styles.column} ${idx === focusedIndex ? styles.selected : ''}`}>
-              <div
-                className={`${styles.card} ${locked ? styles.lockedCard : ''}`}
-              >
-                <span
-                  className={`${styles.thumbStage} ${locked ? styles.locked : ''}`}
-                  data-location={location.id}
-                  role={locked ? undefined : 'button'}
-                  tabIndex={locked ? undefined : 0}
-                  onClick={locked ? undefined : handleSelect}
-                  onKeyDown={locked ? undefined : handleKey}
-                >
-                    <img className={styles.thumb} src={location.mapSrc} alt="" />
-                </span>
-                <span className={styles.name}>{displayName}</span>
-                <button
-                  type="button"
-                  className={`${styles.select} ${locked ? styles.selectDisabled : ''}`}
-                  onClick={handleSelect}
-                  aria-label={locked ? `Locked ${location.name}` : `Select ${location.name}`}
-                  aria-disabled={locked || !characterId}
-                  disabled={locked || !characterId}
-                >
-                  <img
-                    src={ASSETS.ui.characterSelect.selectButton}
-                    alt={locked ? 'Locked' : 'Select'}
-                    aria-hidden={locked}
-                  />
-                </button>
-              </div>
-            </li>
-          )
-        })}
+        <li className={styles.column}>
+          <div className={`${styles.card} ${locked ? styles.lockedCard : ''}`}>
+            <span
+              className={`${styles.thumbStage} ${locked ? styles.locked : ''}`}
+              data-location={location.id}
+              role={locked ? undefined : 'button'}
+              tabIndex={locked ? undefined : 0}
+              onClick={locked ? undefined : handleSelect}
+              onKeyDown={locked ? undefined : handleKey}
+            >
+              <img className={styles.thumb} src={location.mapSrc} alt="" />
+            </span>
+            <span className={styles.name}>{displayName}</span>
+            <button
+              type="button"
+              className={`${styles.select} ${locked ? styles.selectDisabled : ''}`}
+              onClick={handleSelect}
+              aria-label={locked ? `Locked ${location.name}` : `Select ${location.name}`}
+              aria-disabled={locked}
+            >
+              <img
+                src={ASSETS.ui.characterSelect.selectButton}
+                alt={locked ? 'Locked' : 'Select'}
+                aria-hidden={locked}
+              />
+            </button>
+          </div>
+        </li>
       </ul>
     </section>
   )
