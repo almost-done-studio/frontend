@@ -5,9 +5,9 @@
   height: 100%;
   min-height: 100dvh;
   background:
-    radial-gradient(ellipse at top, #2a1f14 0%, transparent 55%),
-    #0e0a07;
-  color: #e8dcc8;
+    radial-gradient(ellipse at top, var(--color-bg-card-top) 0%, transparent 55%),
+    var(--color-bg-page);
+  color: var(--color-text-primary);
 }
 
 .brandBar {
@@ -21,11 +21,11 @@
 
 .brand {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #a89070;
+  color: var(--color-text-secondary);
 }
 
 .stage {
@@ -34,4 +34,20 @@
   position: relative;
   display: flex;
   flex-direction: column;
+}
+
+.shell[data-hide-brand='true'] .brandBar {
+  display: none;
+}
+
+@media (orientation: landscape) {
+  .brandBar {
+    min-height: 36px;
+    padding: 4px 16px;
+    padding-top: max(4px, env(safe-area-inset-top));
+  }
+
+  .brand {
+    font-size: 0.875rem;
+  }
 }
