@@ -29,22 +29,27 @@ Not required for MVP: 5 fully illustrated heroes, 3 unique tilemaps, Express/Pos
 
 ## Status snapshot
 
+_Updated 2026-09-09 — reflects `feature/placeholder-screens` (merge into `develop` in progress)._
+
 | Area | Status |
 |------|--------|
-| Milestone 1 — Foundation (routing, CI, Vercel, placeholders) | Done (close leftover issues) |
-| Figma character-select UI in code | Not started (code is still a card list) |
-| Monk idle/walk from `assets/` in Phaser | Not started |
-| Touch move in `WorldScene` | Not started |
-| localStorage | Not started |
-| One interactable + one world BG | Not started |
+| Milestone 1 — Foundation (routing, CI, Vercel, placeholders) | Done |
+| Main menu + settings + screen flow | Done |
+| Figma character-select carousel in code | Done (Monk portrait; others stubbed) |
+| Map select + enter Phaser world | Done (chunk map BGs ×3) |
+| Touch move in `WorldScene` (tap-to-walk) | Done |
+| Walk bounds (trapezoid) | Done |
+| Game HUD (location title + back to map) | Done (CSS) |
+| Monk idle/walk animations from `assets/` | Not started (static `friar-idle` placeholder) |
+| localStorage character + location | Not started |
+| One interactable + EventBus UI feedback | Not started |
 | Backend / Capacitor | Deferred |
 
 ## UX decision (important)
 
 Figma character select is a **carousel** (portrait + L/R arrows + name banner), not a vertical list of five cards.
 
-- **MVP follows Figma** for `/` (character select).
-- Current React list cards are a temporary scaffold.
+- **MVP follows Figma** for character select — implemented as carousel (not a card list).
 - Assets issues that assume “5 list cards” (#14) apply to **map cards** and/or post-MVP variants — see [`designer-tasks/character-select-carousel.md`](./designer-tasks/character-select-carousel.md).
 
 ## Phases (calendar ≈ months at 2–4 h/week)
@@ -52,39 +57,41 @@ Figma character select is a **carousel** (portrait + L/R arrows + name banner), 
 ### Phase 0 — Close foundation (1–2 weeks)
 
 - [ ] Merge `feature/placeholder-screens` → `develop`; close frontend #5 / #6 if acceptance met
-- [ ] Document Figma link in repo (this folder + assets mockups)
+- [x] Document Figma link in repo (this folder + assets mockups)
 - [ ] Triage: update assets #7 to carousel/Figma scope
 
-### Phase 1 — Figma UI + walking Monk (3–5 weeks) ← first “something ready”
+### Phase 1 — Figma UI + walking Monk (3–5 weeks) ← largely done on feature branch
 
-| Track | Work |
-|-------|------|
-| Design | Export carousel chrome from Figma (frame, arrows, name plate, layered BG pieces); portrait for Monk |
-| Dev | Rebuild `/` as carousel per Figma; wire exported PNG via `ASSETS.ts` |
-| Dev | Integrate Monk idle + walk animations in `WorldScene` |
-| Dev | Touch movement (frontend #7) |
-| Dev | localStorage character + location (frontend #4) |
+| Track | Work | Status |
+|-------|------|--------|
+| Design | Export carousel chrome from Figma; portrait for Monk | In code via `ASSETS` (polish/exports may remain) |
+| Dev | Rebuild character select as carousel per Figma | Done |
+| Dev | Integrate Monk idle + walk animations in `WorldScene` | **Todo** |
+| Dev | Touch movement (frontend #7) | Done (tap-to-walk + camera follow) |
+| Dev | localStorage character + location (frontend #4) | **Todo** |
 
-**Exit:** phone can select Monk in Figma-like UI and walk on a placeholder world BG.
+**Exit:** phone can select Monk in Figma-like UI and walk on a placeholder world BG.  
+_(UI + walk: done; swap in real Monk anims + localStorage still open.)_
 
 ### Phase 2 — Playable slice (4–6 weeks)
 
-| Track | Work |
-|-------|------|
-| Design | One full-bleed world BG (portrait + landscape) — slim cut of assets #12 |
-| Design | Optional: Creature_1 idle in scene, or map location thumbs |
-| Dev | Walk bounds / simple collisions |
-| Dev | One interact zone + React/HUD feedback via EventBus |
-| Dev | Game HUD: location title + back to map (CSS ok until assets #13) |
+| Track | Work | Status |
+|-------|------|--------|
+| Design | One full-bleed world BG (portrait + landscape) — slim cut of assets #12 | Partial (chunk BGs in game; design pair may remain) |
+| Design | Optional: Creature_1 idle in scene, or map location thumbs | Map thumbs in code; Creature optional |
+| Dev | Walk bounds / simple collisions | Done (walk trapezoid) |
+| Dev | One interact zone + React/HUD feedback via EventBus | **Todo** |
+| Dev | Game HUD: location title + back to map (CSS ok until assets #13) | Done |
 
-**Exit:** full loop menu → map → walk → interact → back to map.
+**Exit:** full loop menu → map → walk → interact → back to map.  
+_(Loop minus interact is playable on the feature branch.)_
 
 ### Phase 3 — Ship MVP (2–3 weeks)
 
-- [ ] Hide or stub non-Monk characters until art exists
-- [ ] One playable location; others reuse BG or “soon”
+- [x] Stub non-Monk characters without art (carousel stubs, null portraits)
+- [ ] One playable location; others reuse BG or “soon” (three locations playable with shared chunk pattern — decide ship cut)
 - [ ] Manual smoke checklist (portrait/landscape, iOS/Android Chrome)
-- [ ] Refresh org README milestone bars
+- [x] Refresh org README milestone bars (2026-09-09)
 - [ ] Name freeze: Marginalia (or final title)
 
 ### After MVP
@@ -107,12 +114,12 @@ Remaining characters & locations, full tilemap, HUD/card polish (#13/#14), Capac
 | Priority | Issue | Notes |
 |----------|-------|--------|
 | P0 | Close [#5](https://github.com/almost-done-studio/frontend/issues/5) / [#6](https://github.com/almost-done-studio/frontend/issues/6) after placeholder merge | Hygiene |
-| P0 | [#29](https://github.com/almost-done-studio/frontend/issues/29) Figma character-select carousel | Blocked on assets #15 exports (can start layout with placeholders) |
-| P0 | [#30](https://github.com/almost-done-studio/frontend/issues/30) Monk sprite integration | |
-| P0 | [#7](https://github.com/almost-done-studio/frontend/issues/7) Touch controls | Core gameplay |
+| P0 | [#30](https://github.com/almost-done-studio/frontend/issues/30) Monk sprite integration | Next gameplay polish — frames exist in `assets/` |
 | P1 | [#4](https://github.com/almost-done-studio/frontend/issues/4) localStorage | Persistence |
-| P1 | [#31](https://github.com/almost-done-studio/frontend/issues/31) Interact zone + EventBus UI | |
-| P0 | [#28](https://github.com/almost-done-studio/frontend/issues/28) Docs PR | Merge MVP + Figma docs |
+| P1 | [#31](https://github.com/almost-done-studio/frontend/issues/31) Interact zone + EventBus UI | Remaining Phase 2 gap |
+| — | [#29](https://github.com/almost-done-studio/frontend/issues/29) Figma character-select carousel | Done on feature branch — close after merge |
+| — | [#7](https://github.com/almost-done-studio/frontend/issues/7) Touch controls | Done (tap-to-walk) — close after merge |
+| — | [#28](https://github.com/almost-done-studio/frontend/issues/28) Docs PR | MVP + Figma docs in repo — close when merged |
 
 ## Weekly rhythm (suggested)
 

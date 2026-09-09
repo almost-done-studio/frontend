@@ -23,27 +23,30 @@ MVP — Playable web slice (pace: 2–4 h/week)
 
 Source of truth: docs/MVP.md
 UI source: Figma Marginalia Project — docs/ui/figma-marginalia.md
+Status refreshed: 2026-09-09
 
 Phase 0 — Close foundation
 [ ] Merge feature/placeholder-screens → develop; close #5 / #6 if done
-[ ] Figma + MVP docs in repo
+[x] Figma + MVP docs in repo
 
 Phase 1 — Figma UI + walking Monk
-[ ] Character select carousel per Figma (designer export + React)
-[ ] Integrate Monk idle + walk into WorldScene
-[ ] Touch movement in WorldScene (issue #7)
+[x] Character select carousel per Figma (React + ASSETS chrome)
+[ ] Integrate Monk idle + walk into WorldScene (still friar-idle placeholder)
+[x] Touch movement in WorldScene (issue #7) — tap-to-walk + camera follow
 [ ] localStorage save/load character + location (issue #4)
 
 Phase 2 — Playable slice
-[ ] One world background (portrait + landscape) from assets #12 slim cut
-[ ] Walk bounds / simple collisions
+[x] Map/world chunk backgrounds in game (design #12 full-bleed pair may remain)
+[x] Walk bounds (trapezoid)
 [ ] One interact zone + EventBus UI feedback
-[ ] Game HUD: location title + back to map
+[x] Game HUD: location title + back to map (CSS)
+
+Also on feature branch: main menu, settings, map select carousel, landscape layout.
 
 Phase 3 — Ship MVP
-[ ] Stub/hide non-Monk characters without art
+[x] Stub non-Monk characters without art
 [ ] Smoke test portrait/landscape on phone browsers
-[ ] Refresh org README milestone bars
+[x] Refresh org README milestone bars (2026-09-09)
 [ ] Title: Marginalia (or final name)
 
 Out of MVP
