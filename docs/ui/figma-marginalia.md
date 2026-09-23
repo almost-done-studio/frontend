@@ -39,20 +39,22 @@ Plus root UI: `Bg_390x844.png`, `Monk_icon.png`, `Name_flag.png`, `Arrow_left.pn
 
 ## Gap vs current frontend
 
+_Updated 2026-09-23 against `develop`._
+
 | Figma | Current `CharacterSelectScreen` |
 |-------|----------------------------------|
-| Centered carousel + arrows | Vertical list of 5 cards |
-| Illustrated manuscript chrome | CSS cards + full-bleed placeholder BG |
-| Name banner under portrait | Name plate inside each list card |
+| Centered carousel + arrows | Done |
+| Illustrated manuscript chrome | Partial: composite backdrop, gold frame, arrows, select button, Monk portrait. Layered ornamental / parchment cuts are not the live backdrop |
+| Name banner under portrait | React text under the portrait; a separate name-banner export is still open |
 
-**MVP:** implement the Figma carousel. Keep list-card CSS only until the new screen lands.
+**MVP:** the Figma carousel is the character-select screen on `develop`.
 
 ## Screens not yet in Figma (or incomplete)
 
 Treat as **follow-ups** — do not block Phase 1:
 
-- Map (`/map`) — still uses list/grid cards + placeholder BG
-- Game HUD (`/game`) — CSS placeholder until assets #13
+- Map (`/map`) — carousel in code with location thumbs; no Figma frame yet
+- Game HUD (`/game`) — CSS location title + back until assets #13
 - Loading bar art exists under `UI retina/Loading Screen/` — optional polish
 
 When new frames appear in Figma, add a subsection here and open a designer brief under `docs/designer-tasks/`.
