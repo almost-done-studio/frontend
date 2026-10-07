@@ -1,7 +1,16 @@
 import Phaser from 'phaser'
 import { EventBus } from '../utils/EventBus'
 import { SCENES } from '../constants/SCENES'
-import { ASSETS, TEXTURE_KEYS } from '../constants/ASSETS'
+import {
+  ASSETS,
+  FACINGS,
+  MONK_ANIMATION_KEYS,
+  MONK_FRAME_COUNT,
+  MONK_STATES,
+  monkFramePath,
+  monkFrameTextureKey,
+  type Facing,
+} from '../constants/ASSETS'
 import { LOCATIONS, type LocationId } from '../constants/LOCATIONS'
 import {
   WORLD,
@@ -31,10 +40,11 @@ interface MapChunk {
 
 export class WorldScene extends Phaser.Scene {
   private readonly chunks: MapChunk[] = []
-  private playerSprite!: Phaser.GameObjects.Image
+  private playerSprite!: Phaser.GameObjects.Sprite
   private locationId: LocationId = LOCATIONS[0].id
   private canWalk = false
   private isMoving = false
+  private facing: Facing = WORLD.player.initialFacing
   private chunkWidth = 0
   private chunkHeight = 0
   private footGridX = 0
@@ -73,7 +83,14 @@ export class WorldScene extends Phaser.Scene {
         this.load.image(keys[i], paths[i])
       }
     }
-    this.load.image(TEXTURE_KEYS.FRIAR_IDLE, ASSETS.characters.friarIdle)
+    for (const state of MONK_STATES) {
+      for (const facing of FACINGS) {
+        for (let i = 0; i < MONK_FRAME_COUNT; i += 1) {
+          const key = monkFrameTextureKey(state, facing, i)
+          this.load.image(key, monkFramePath(key))
+        }
+      }
+    }
   }
 
   create(): void {
@@ -99,11 +116,13 @@ export class WorldScene extends Phaser.Scene {
       }
     }
 
+    this.createMonkAnimations()
     this.playerSprite = this.add
-      .image(0, 0, TEXTURE_KEYS.FRIAR_IDLE)
+      .sprite(0, 0, monkFrameTextureKey('idle', this.facing, 0))
       .setOrigin(WORLD.player.originX, WORLD.player.originY)
       .setDepth(1)
       .setVisible(false)
+    this.playMonkAnimation()
 
     this.layoutScene()
     this.cameras.main.startFollow(
@@ -126,6 +145,31 @@ export class WorldScene extends Phaser.Scene {
 
     EventBus.on('game-start', this.onGameStart)
     EventBus.emit('scene-ready', { scene: SCENES.WORLD })
+  }
+
+  private createMonkAnimations(): void {
+    const { idleFps, walkFps } = WORLD.player.animation
+    for (const state of MONK_STATES) {
+      for (const facing of FACINGS) {
+        const key = MONK_ANIMATION_KEYS[state][facing]
+        if (this.anims.exists(key)) continue
+        const frames: Phaser.Types.Animations.AnimationFrame[] = []
+        for (let i = 0; i < MONK_FRAME_COUNT; i += 1) {
+          frames.push({ key: monkFrameTextureKey(state, facing, i) })
+        }
+        this.anims.create({
+          key,
+          frames,
+          frameRate: state === 'walk' ? walkFps : idleFps,
+          repeat: -1,
+        })
+      }
+    }
+  }
+
+  private playMonkAnimation(): void {
+    const state = this.isMoving ? 'walk' : 'idle'
+    this.playerSprite.play(MONK_ANIMATION_KEYS[state][this.facing], true)
   }
 
   private setTargetFromPointer(pointer: Phaser.Input.Pointer): void {
@@ -168,7 +212,7 @@ export class WorldScene extends Phaser.Scene {
     )
     const targetHeight = height * ratio
     const { width: frameWidth, height: frameHeight } =
-      ASSETS.spriteFrames.friarIdle
+      ASSETS.spriteFrames.monk
     this.playerSprite.setDisplaySize(
       (frameWidth / frameHeight) * targetHeight,
       targetHeight,
@@ -280,7 +324,8 @@ export class WorldScene extends Phaser.Scene {
     this.target.x = spawn.x
     this.target.y = spawn.y
 
-    this.playerSprite.setFlipX(false)
+    this.facing = WORLD.player.initialFacing
+    this.playMonkAnimation()
     this.playerSprite.setVisible(this.canWalk)
     this.resetChunkGrid()
     this.layoutScene()
@@ -304,7 +349,7 @@ export class WorldScene extends Phaser.Scene {
     const y = this.playerSprite.y
     const dx = targetX - x
     if (Math.abs(dx) > 1) {
-      this.playerSprite.setFlipX(dx < 0)
+      this.facing = dx < 0 ? 'left' : 'right'
     }
 
     const maxStep = WORLD.player.speed * (delta / 1000)
@@ -342,6 +387,7 @@ export class WorldScene extends Phaser.Scene {
     if (this.stepOut.arrived) {
       this.isMoving = false
     }
+    this.playMonkAnimation()
   }
 
   update(_time: number, delta: number): void {
