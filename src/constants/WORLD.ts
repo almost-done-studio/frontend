@@ -1,4 +1,4 @@
-import { TEXTURE_KEYS, type TextureKey } from './ASSETS'
+import { TEXTURE_KEYS, type Facing, type TextureKey } from './ASSETS'
 import type { LocationId } from './LOCATIONS'
 
 export const MAP_CHUNK_TEXTURE_KEYS = {
@@ -79,6 +79,13 @@ export const WORLD = {
     },
     speed: 280,
     arriveDistance: 10,
+    initialFacing: 'right' as Facing,
+    animation: {
+      /** 70-frame breathe loop ≈ 3.5 s. */
+      idleFps: 20,
+      /** 70 frames = two steps; ≈ 0.58 s per step (~100 steps/min). */
+      walkFps: 60,
+    },
   },
   locations: {
     scriptorium: {

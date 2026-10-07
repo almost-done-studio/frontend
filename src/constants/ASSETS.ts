@@ -50,11 +50,11 @@ export const ASSETS = {
     },
   },
   characters: {
-    friarIdle: '/assets/characters/friar-idle.png',
+    monkDir: '/assets/characters/monk',
   },
-  /** Known sprite dimensions for placeholder scaling. */
+  /** Known sprite dimensions for display scaling. */
   spriteFrames: {
-    friarIdle: { width: 193, height: 590 },
+    monk: { width: 171, height: 574 },
   },
   fonts: {
     modernAntiqua: '/assets/fonts/modern-antiqua-book.ttf',
@@ -73,7 +73,31 @@ export const TEXTURE_KEYS = {
   MAP_CLOISTER: 'map-cloister',
   MAP_CLOISTER_B: 'map-cloister-b',
   MAP_CLOISTER_C: 'map-cloister-c',
-  FRIAR_IDLE: 'friar-idle',
 } as const
 
 export type TextureKey = (typeof TEXTURE_KEYS)[keyof typeof TEXTURE_KEYS]
+
+export type Facing = 'left' | 'right'
+export type MonkState = 'idle' | 'walk'
+
+export const MONK_FRAME_COUNT = 70
+export const MONK_STATES: readonly MonkState[] = ['idle', 'walk']
+export const FACINGS: readonly Facing[] = ['left', 'right']
+
+/** Phaser animation keys; frame textures are `${key}-00` … `${key}-69`. */
+export const MONK_ANIMATION_KEYS = {
+  idle: { left: 'monk-idle-left', right: 'monk-idle-right' },
+  walk: { left: 'monk-walk-left', right: 'monk-walk-right' },
+} as const satisfies Record<MonkState, Record<Facing, string>>
+
+export function monkFrameTextureKey(
+  state: MonkState,
+  facing: Facing,
+  index: number,
+): string {
+  return `${MONK_ANIMATION_KEYS[state][facing]}-${String(index).padStart(2, '0')}`
+}
+
+export function monkFramePath(textureKey: string): string {
+  return `${ASSETS.characters.monkDir}/${textureKey}.png`
+}
