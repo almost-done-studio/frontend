@@ -5,3 +5,8 @@ dist/
 .env.production
 .claude/audit.log
 .claude/backups/
+coverage/
+*.tsbuildinfo
+.DS_Store
+.vercel/
+.vite/

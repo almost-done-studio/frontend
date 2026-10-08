@@ -86,5 +86,6 @@ When compacting: preserve list of modified files, current task, architecture dec
 - `ship/`         — prepare PR (Cursor: `/ship`)
 - `new-scene/`    — scaffold Phaser scene (Cursor: `/new-scene`)
 - `integrate/`    — pull designer assets (Cursor: `/integrate`)
+- `capacitor/`    — native Android/iOS shell (when ready for device builds)
 
 Also see `@AGENTS.md` (root) and `.cursor/rules/` for Cursor agent config.

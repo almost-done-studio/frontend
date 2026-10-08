@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
   pull_request:
-    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -28,17 +30,11 @@ jobs:
             echo "Add the Vite app bootstrap, then this job will run fully."
           fi
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: steps.app.outputs.ready == 'true'
         with:
           node-version: 20
-
-      - name: Cache node_modules
-        if: steps.app.outputs.ready == 'true'
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          cache: npm
 
       - name: Install dependencies
         if: steps.app.outputs.ready == 'true'

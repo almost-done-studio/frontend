@@ -1,0 +1,171 @@
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  /* Matches MAIN_MENU_UI */
+  --main-menu-title-size: 120px;
+  --main-menu-button-width: 200px;
+  --main-menu-button-min-height: 56px;
+  --main-menu-ink: #1a120b;
+  --main-menu-text-outline:
+    -2px -2px 0 rgb(255 255 255 / 100%),
+    2px -2px 0 rgb(255 255 255 / 100%),
+    -2px 2px 0 rgb(255 255 255 / 100%),
+    2px 2px 0 rgb(255 255 255 / 100%),
+    0 -2px 0 rgb(255 255 255 / 100%),
+    0 2px 0 rgb(255 255 255 / 100%),
+    -2px 0 0 rgb(255 255 255 / 100%),
+    2px 0 0 rgb(255 255 255 / 100%),
+    0 0 18px rgb(255 255 255 / 95%),
+    0 0 36px rgb(255 255 255 / 70%);
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding:
+    max(12px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+  box-sizing: border-box;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  margin: 0;
+  padding-right: 4px;
+  font-family: var(--font-display);
+  font-size: clamp(44px, 14vh, var(--main-menu-title-size));
+  font-weight: 900;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  color: var(--main-menu-ink);
+  -webkit-text-stroke: 2px rgb(255 255 255 / 92%);
+  paint-order: stroke fill;
+  text-shadow: var(--main-menu-text-outline);
+}
+
+.titleLine {
+  display: block;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  justify-self: end;
+  width: min(100%, var(--main-menu-button-width));
+}
+
+.menuButton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: var(--main-menu-button-min-height);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menuButton img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.menuLabel {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 18%;
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--main-menu-ink);
+  -webkit-text-stroke: 1px rgb(255 255 255 / 90%);
+  paint-order: stroke fill;
+  text-shadow: var(--main-menu-text-outline);
+  pointer-events: none;
+}
+
+.menuButton:active {
+  transform: scale(0.97);
+}
+
+@media (orientation: landscape) {
+  .content {
+    grid-template-columns: minmax(0, 1.2fr) minmax(140px, 0.8fr);
+    gap: 12px;
+  }
+
+  .title {
+    font-size: clamp(40px, 12vh, 88px);
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  .actions {
+    --main-menu-button-width: 220px;
+    gap: 16px;
+  }
+
+  .menuLabel {
+    font-size: 1.35rem;
+  }
+}
+
+@media (max-width: 420px) and (orientation: portrait) {
+  .content {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: 6px;
+  }
+
+  .title {
+    font-size: clamp(40px, 11vw, 72px);
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  .actions {
+    --main-menu-button-width: 148px;
+    gap: 12px;
+  }
+
+  .menuLabel {
+    font-size: 1.05rem;
+  }
+}
