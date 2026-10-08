@@ -136,12 +136,15 @@ export class WorldScene extends Phaser.Scene {
     this.input.on('pointerdown', this.onPointerDown)
     this.input.on('pointermove', this.onPointerMove)
 
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+    const teardown = (): void => {
       this.scale.off('resize', this.onResize)
       this.input.off('pointerdown', this.onPointerDown)
       this.input.off('pointermove', this.onPointerMove)
       EventBus.off('game-start', this.onGameStart)
-    })
+    }
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, teardown)
+    // game.destroy() emits DESTROY without SHUTDOWN
+    this.events.once(Phaser.Scenes.Events.DESTROY, teardown)
 
     EventBus.on('game-start', this.onGameStart)
     EventBus.emit('scene-ready', { scene: SCENES.WORLD })
