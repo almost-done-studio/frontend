@@ -45,6 +45,12 @@ React UI  ←──EventBus──→  Phaser Game
 
 See `CLAUDE.md` for full rules and agent configuration.
 
+## Docs
+
+- [`docs/MVP.md`](./docs/MVP.md) — MVP scope (2–4 h/week web slice)
+- [`docs/ui/figma-marginalia.md`](./docs/ui/figma-marginalia.md) — [Figma UI](https://www.figma.com/design/KWaV7hYij6L49tceSNVe08/Marginalia-Project)
+- [`docs/designer-tasks/`](./docs/designer-tasks/) — briefs for the assets repo
+
 ## Deploy (Vercel)
 
 Production and preview deploys come from the Vercel ↔ GitHub integration.

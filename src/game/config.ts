@@ -1,20 +1,24 @@
 import Phaser from 'phaser'
-import { GAME_CONFIG } from '../constants/GAME_CONFIG'
+import { THEME } from '../constants/THEME'
 import { WorldScene } from '../scenes/WorldScene'
 
 export function createPhaserConfig(
   parent: HTMLElement,
+  width: number,
+  height: number,
 ): Phaser.Types.Core.GameConfig {
   return {
     type: Phaser.AUTO,
-    width: GAME_CONFIG.width,
-    height: GAME_CONFIG.height,
+    width,
+    height,
     parent,
-    backgroundColor: GAME_CONFIG.backgroundColor,
+    backgroundColor: THEME.colors.bgScene,
     scene: [WorldScene],
     scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
+      mode: Phaser.Scale.RESIZE,
+      autoCenter: Phaser.Scale.NO_CENTER,
+      width,
+      height,
     },
     input: {
       activePointers: 3,

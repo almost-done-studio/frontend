@@ -1,95 +1,359 @@
 .screen {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
-  max-width: 390px;
+  height: 100%;
+  min-height: 0;
   margin: 0 auto;
-  padding: 16px 16px 32px;
-  padding-bottom: max(32px, env(safe-area-inset-bottom));
+  padding: 16px 0 24px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow: hidden;
+  background-color: #efe4cc;
+  /* Matches MAP_UI */
+  --map-title-size: 42px;
+  --map-back-hit: 56px;
+  --map-select-min-height: 56px;
+  --map-ink: #1a120b;
+  --map-rule: rgb(60 48 36 / 28%);
+  --map-text-glow:
+    0 0 14px rgb(255 255 255 / 95%),
+    0 0 4px rgb(255 255 255 / 100%),
+    0 0 24px rgb(255 255 255 / 55%);
+  /* cache-bust 2026-08-18-map-thumbs */
 }
 
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgb(239 228 204 / 72%), rgb(239 228 204 / 72%)),
+    url('/assets/ui/map-selection-bg.png') center / cover no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header,
+.columns,
+.back,
+.select {
+  position: relative;
+  z-index: 1;
 }
 
 .back {
-  align-self: flex-start;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid #3d2e1f;
-  background: #1a120b;
-  color: #e8dcc8;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1rem;
+  position: absolute;
+  left: max(12px, env(safe-area-inset-left));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: var(--map-back-hit);
+  min-height: var(--map-back-hit);
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  color: #1a120b;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
 .back:active {
-  border-color: #c4a35a;
+  transform: scale(0.94);
+}
+
+.back img {
+  transform: rotate(90deg);
+}
+
+.backIcon {
+  display: block;
+  width: 39px;
+  height: auto;
+  pointer-events: none;
+}
+
+.backLabel {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--map-ink);
+  text-shadow: var(--map-text-glow);
+  pointer-events: none;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 64px 16px;
+  text-align: center;
 }
 
 .title {
   margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.75rem;
-  font-weight: 400;
-  color: #e8dcc8;
+  font-family: var(--font-display);
+  font-size: var(--map-title-size);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--map-ink);
+  text-shadow: var(--map-text-glow);
 }
 
 .subtitle {
   margin: 0;
+  font-family: var(--font-body);
   font-size: 0.95rem;
-  color: #a89070;
+  color: rgb(26 18 11 / 70%);
 }
 
-.subtitle strong {
-  color: #e8dcc8;
-  font-weight: 400;
-}
-
-.list {
+.columns {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 75px;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-right: 0;
+}
+
+.column:last-child {
+  border-right: 0;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 6px;
-  width: 100%;
-  min-height: 72px;
-  padding: 16px;
-  border: 1px solid #3d2e1f;
-  background: linear-gradient(180deg, #2a1f14 0%, #1a120b 100%);
+  width: auto;
+  min-height: auto;
+  padding: 0;
+  border: none;
+  background: none;
   color: inherit;
-  text-align: left;
+  text-align: center;
+}
+
+.select {
+  display: block;
+  width: min(100%, 168px);
+  min-height: var(--map-select-min-height, 56px);
+  padding: 0;
+  border: 0;
+  background: transparent;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
-.card:active {
-  border-color: #c4a35a;
+.select img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.select:active {
+  transform: scale(0.97);
+}
+
+.thumbStage {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 160px;
+  height: 185px;
+}
+
+/* Make thumbnail appear clickable when unlocked */
+.thumbStage:not(.locked) {
+  cursor: pointer;
+}
+
+.thumbStage:focus {
+  outline: 3px solid rgba(26,18,11,0.12);
+  outline-offset: 3px;
+}
+
+.thumbStage[data-location='scriptorium'] {
+  --thumb-accent: #7a1f1f;
+}
+
+.thumbStage[data-location='forest'] {
+  --thumb-accent: #3d5c3a;
+}
+
+.thumbStage[data-location='cloister'] {
+  --thumb-accent: #4a5568;
+}
+
+/* removed .thumbBacking — not used anymore */
+
+.thumb {
+  display: block;
+  width: 100%;
+  height: 185px;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.thumbFrame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
 }
 
 .name {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.25rem;
-  color: #e8dcc8;
+  line-height: 1.15;
+  color: var(--map-ink);
 }
 
 .blurb {
-  font-size: 0.875rem;
-  color: #a89070;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: rgb(26 18 11 / 70%);
+}
+
+/* Card chrome to match new design: parchment panel with rounded thumb */
+.card {
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.thumbStage {
+  border-radius: 8px;
+  overflow: hidden;
+  width: 160px;
+  height: 185px;
+}
+
+
+/* locked thumbnail dimming removed */
+
+/* .lockOverlay removed — no longer used */
+
+.lockedCard {
+  opacity: 1;
+}
+
+
+
+/* Nav buttons at left/right center */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.navButton img {
+  display: block;
+  width: 56px;
+  height: auto;
+  pointer-events: none;
+}
+
+.navButton.prev {
+  left: max(12px, env(safe-area-inset-left));
+}
+
+.navButton.next {
+  right: max(12px, env(safe-area-inset-right));
+}
+
+.lockedFoot {
+  width: min(100%, 168px);
+  height: var(--map-select-min-height, 56px);
+}
+
+/* Place select button under each card and style disabled state */
+.select {
+  margin-top: 4px;
+}
+
+.selectDisabled {
+  opacity: 0.48;
+  filter: grayscale(40%);
+  pointer-events: none;
+}
+
+@media (orientation: landscape) {
+  .screen {
+    padding-top: max(10px, env(safe-area-inset-top));
+  }
+
+  .title {
+    font-size: clamp(28px, 6vh, 40px);
+  }
+
+  .header {
+    padding-bottom: 8px;
+  }
+
+  /* landscape: card min-height intentionally unset */
+
+  /* removed .thumbFrame — frame image is no longer used */
+  }
+
+@media (max-width: 420px) {
+  .title {
+    font-size: 28px;
+  }
+
+  .header {
+    padding: 4px 52px 10px;
+  }
+
+  .thumbStage {
+    width: 84px;
+    height: 84px;
+  }
+
+  .name {
+    font-size: 1rem;
+  }
+
+  .blurb {
+    font-size: 0.75rem;
+  }
+
+  .card {
+    min-height: 128px;
+    padding: 12px 8px 14px;
+    gap: 8px;
+  }
 }

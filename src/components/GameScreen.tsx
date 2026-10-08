@@ -13,7 +13,7 @@ export function GameScreen() {
   const activeScene = useGameStore((s) => s.activeScene)
 
   if (!characterId) {
-    return <Navigate to={SCREEN_PATHS[SCREENS.CHARACTER_SELECT]} replace />
+    return <Navigate to={SCREEN_PATHS[SCREENS.MAIN]} replace />
   }
 
   if (!locationId) {

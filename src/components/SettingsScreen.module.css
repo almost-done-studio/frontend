@@ -1,0 +1,100 @@
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background-color: #efe4cc;
+  --settings-ink: #1a120b;
+  --settings-text-glow:
+    0 0 14px rgb(255 255 255 / 95%),
+    0 0 4px rgb(255 255 255 / 100%),
+    0 0 24px rgb(255 255 255 / 55%);
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgb(239 228 204 / 72%), rgb(239 228 204 / 72%)),
+    url('/assets/ui/map-selection-bg.png') center / cover no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.back,
+.header {
+  position: relative;
+  z-index: 1;
+}
+
+.back {
+  position: absolute;
+  left: max(12px, env(safe-area-inset-left));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 56px;
+  min-height: 56px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--settings-ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.back:active {
+  transform: scale(0.94);
+}
+
+.back img {
+  transform: rotate(90deg);
+}
+
+.backIcon {
+  display: block;
+  width: 39px;
+  height: auto;
+  pointer-events: none;
+}
+
+.backLabel {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1;
+  text-shadow: var(--settings-text-glow);
+  pointer-events: none;
+}
+
+.header {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--settings-ink);
+  text-shadow: var(--settings-text-glow);
+}
+
+.placeholder {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: rgb(26 18 11 / 70%);
+}
