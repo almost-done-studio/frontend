@@ -1,11 +1,11 @@
 # Designer task: Character select — Figma carousel (MVP P0)
 
-**Status:** open  
+**Status:** partial (2026-09-23) — carousel is on frontend `develop`; the kebab-case export pack below is still open  
 **GitHub:** [assets #15](https://github.com/almost-done-studio/assets/issues/15) (export pack) · [assets #7](https://github.com/almost-done-studio/assets/issues/7) (parent UI)  
 **Figma:** [Marginalia Project](https://www.figma.com/design/KWaV7hYij6L49tceSNVe08/Marginalia-Project)  
 **Brief (eng):** [figma-marginalia.md](../ui/figma-marginalia.md)  
 **For:** assets repo / UI artist  
-**Blocks:** [frontend #29](https://github.com/almost-done-studio/frontend/issues/29)  
+**Blocks:** [frontend #29](https://github.com/almost-done-studio/frontend/issues/29) — screen is in code; issue still open  
 **Pace:** fits one design session (1–2 h) + one cleanup pass
 
 ## Goal
@@ -93,6 +93,6 @@ If not ready in week 1, document crop rules for `cover` so Phase 1 can ship port
 
 ## Engineering follow-up
 
-- Rebuild `CharacterSelectScreen` as carousel
-- Register files in `src/constants/ASSETS.ts`
-- Keep dynamic title + name in React  
+- [x] Rebuild `CharacterSelectScreen` as carousel (`develop`)
+- [x] Register the files that exist in `src/constants/ASSETS.ts` (frame, arrows, select button, Monk portrait)
+- [x] Keep dynamic title + name in React  
