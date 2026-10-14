@@ -45,6 +45,7 @@ export class WorldScene extends Phaser.Scene {
   private canWalk = false
   private isMoving = false
   private facing: Facing = WORLD.player.initialFacing
+  private playerDisplayHeight = 0
   private chunkWidth = 0
   private chunkHeight = 0
   private footGridX = 0
@@ -126,7 +127,7 @@ export class WorldScene extends Phaser.Scene {
     this.createMonkAnimations()
     this.playerSprite = this.add
       .sprite(0, 0, monkFrameTextureKey('idle', this.facing, 0))
-      .setOrigin(WORLD.player.originX, WORLD.player.originY)
+      .setOrigin(WORLD.player.footOriginX[this.facing], WORLD.player.originY)
       .setDepth(1)
       .setVisible(false)
     this.playMonkAnimation()
@@ -179,6 +180,10 @@ export class WorldScene extends Phaser.Scene {
 
   private playMonkAnimation(): void {
     const state = this.isMoving ? 'walk' : 'idle'
+    const originX = WORLD.player.footOriginX[this.facing]
+    if (this.playerSprite.originX !== originX) {
+      this.playerSprite.setOrigin(originX, WORLD.player.originY)
+    }
     this.playerSprite.play(MONK_ANIMATION_KEYS[state][this.facing], true)
   }
 
@@ -220,12 +225,22 @@ export class WorldScene extends Phaser.Scene {
         ? WORLD.player.heightRatio.landscapeFar
         : WORLD.player.heightRatio.portraitFar,
     )
-    const targetHeight = height * ratio
+    const targetHeight = Math.round(height * ratio)
+    if (targetHeight === this.playerDisplayHeight) return
+    this.playerDisplayHeight = targetHeight
     const { width: frameWidth, height: frameHeight } =
       ASSETS.spriteFrames.monk
     this.playerSprite.setDisplaySize(
       (frameWidth / frameHeight) * targetHeight,
       targetHeight,
+    )
+  }
+
+  /** Whole-pixel placement matches the rounded camera scroll, so the sprite does not wobble. */
+  private placePlayer(): void {
+    this.playerSprite.setPosition(
+      Math.round(chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth)),
+      Math.round(chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight)),
     )
   }
 
@@ -312,10 +327,7 @@ export class WorldScene extends Phaser.Scene {
     }
 
     this.layoutPlayerSize()
-    this.playerSprite.setPosition(
-      chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth),
-      chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight),
-    )
+    this.placePlayer()
     this.wrapChunks()
   }
 
@@ -355,8 +367,8 @@ export class WorldScene extends Phaser.Scene {
       this.target.y,
       this.chunkHeight,
     )
-    const x = this.playerSprite.x
-    const y = this.playerSprite.y
+    const x = chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth)
+    const y = chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight)
     const dx = targetX - x
     if (Math.abs(dx) > 1) {
       this.facing = dx < 0 ? 'left' : 'right'
@@ -388,10 +400,7 @@ export class WorldScene extends Phaser.Scene {
     )
     this.footGridX = this.movedChunk.gridX
     this.footGridY = this.movedChunk.gridY
-    this.playerSprite.setPosition(
-      chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth),
-      chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight),
-    )
+    this.placePlayer()
     this.layoutPlayerSize()
     this.wrapChunks()
     if (this.stepOut.arrived) {
