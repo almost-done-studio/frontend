@@ -4,6 +4,7 @@ import { getLocation } from '../constants/LOCATIONS'
 import { SCREEN_PATHS, SCREENS } from '../constants/SCREENS'
 import { useGameStore } from '../store/useGameStore'
 import { GameHost } from './GameHost'
+import { LoadingOverlay } from './LoadingOverlay'
 import styles from './GameScreen.module.css'
 
 export function GameScreen() {
@@ -45,6 +46,7 @@ export function GameScreen() {
       </header>
       <div className={styles.stage}>
         <GameHost characterId={characterId} locationId={locationId} />
+        <LoadingOverlay key={`${characterId}-${locationId}`} />
       </div>
     </section>
   )
