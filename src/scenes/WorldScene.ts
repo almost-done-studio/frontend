@@ -60,6 +60,9 @@ export class WorldScene extends Phaser.Scene {
   private readonly onGameStart = (payload: GameStartPayload): void => {
     this.applyRun(payload)
   }
+  private readonly onLoadProgress = (progress: number): void => {
+    EventBus.emit('load-progress', { progress })
+  }
   private readonly onResize = (): void => {
     this.layoutScene()
   }
@@ -76,6 +79,10 @@ export class WorldScene extends Phaser.Scene {
   }
 
   preload(): void {
+    this.load.on(Phaser.Loader.Events.PROGRESS, this.onLoadProgress)
+    this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+      this.load.off(Phaser.Loader.Events.PROGRESS, this.onLoadProgress)
+    })
     for (const location of LOCATIONS) {
       const keys = getChunkTextureKeys(location.id)
       const paths = ASSETS.ui.mapChunks[location.id]
