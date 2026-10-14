@@ -29,7 +29,7 @@ Not required for MVP: 5 fully illustrated heroes, 3 unique tilemaps, Express/Pos
 
 ## Status snapshot
 
-_Updated 2026-09-23 — reflects `develop` (placeholder loop merged in #34)._
+_Updated 2026-10-07 — reflects `develop` and production (`main`)._
 
 | Area | Status |
 |------|--------|
@@ -40,7 +40,9 @@ _Updated 2026-09-23 — reflects `develop` (placeholder loop merged in #34)._
 | Touch move in `WorldScene` (tap-to-walk) | Done |
 | Walk bounds (trapezoid) | Done |
 | Game HUD (location title + back to map) | Done (CSS) |
-| Monk idle/walk animations from `assets/` | Blocked (static `friar-idle`; Idle frames exist, walk cycle does not) |
+| Monk idle/walk animations (left/right, 70 frames each) | Done (#36) |
+| Main menu illustration | Done (final art, optimized JPEG) |
+| Loading screen for world assets | Not started (first load ≈ 34 MB of frames) |
 | localStorage character + location | Not started |
 | One interactable + EventBus UI feedback | Not started |
 | Backend / Capacitor | Deferred |
@@ -66,12 +68,12 @@ Figma character select is a **carousel** (portrait + L/R arrows + name banner), 
 |-------|------|--------|
 | Design | Export carousel chrome from Figma; portrait for Monk | In code via `ASSETS` (polish/exports may remain) |
 | Dev | Rebuild character select as carousel per Figma | Done |
-| Dev | Integrate Monk idle + walk animations in `WorldScene` | **Blocked** — see #30 |
+| Dev | Integrate Monk idle + walk animations in `WorldScene` | Done — left/right sequences, facing from last horizontal move |
 | Dev | Touch movement (frontend #7) | Done (tap-to-walk + camera follow) |
 | Dev | localStorage character + location (frontend #4) | **Todo** |
 
 **Exit:** phone can select Monk in Figma-like UI and walk on a placeholder world BG.  
-_(UI + tap-to-walk are on `develop`. Real Monk anims are blocked on walk art; localStorage still open.)_
+_(UI, tap-to-walk and animated Monk are live on production. localStorage still open.)_
 
 ### Phase 2 — Playable slice (4–6 weeks)
 
@@ -115,11 +117,12 @@ Remaining characters & locations, full tilemap, HUD/card polish (#13/#14), Capac
 |----------|-------|--------|
 | — | [#5](https://github.com/almost-done-studio/frontend/issues/5) closed after #34 | Hygiene done |
 | P0 | [#6](https://github.com/almost-done-studio/frontend/issues/6) mobile-first | Still open |
-| P0 | [#30](https://github.com/almost-done-studio/frontend/issues/30) Monk sprite integration | Blocked on art: `Idle/` is a right-facing breathe cycle (70 frames, 172×577). `Walk_right/` is the same bytes. No up/down/left. Assets [#5](https://github.com/almost-done-studio/assets/issues/5)/[#6](https://github.com/almost-done-studio/assets/issues/6) still open |
+| — | [#30](https://github.com/almost-done-studio/frontend/issues/30) Monk sprite integration | Done in #36 (idle/walk × left/right). Up/down walk waits on assets [#6](https://github.com/almost-done-studio/assets/issues/6) |
+| P0 | Loading screen for world assets | Next — Phaser load progress → EventBus → React overlay |
 | P1 | [#4](https://github.com/almost-done-studio/frontend/issues/4) localStorage | Persistence |
 | P1 | [#31](https://github.com/almost-done-studio/frontend/issues/31) Interact zone + EventBus UI | Remaining Phase 2 gap |
-| — | [#29](https://github.com/almost-done-studio/frontend/issues/29) Figma character-select carousel | Carousel is on `develop`; issue still open |
-| — | [#7](https://github.com/almost-done-studio/frontend/issues/7) Touch controls | Tap-to-walk is on `develop`; issue still open |
+| — | [#29](https://github.com/almost-done-studio/frontend/issues/29) Figma character-select carousel | Done (live on production) |
+| — | [#7](https://github.com/almost-done-studio/frontend/issues/7) Touch controls | Done (tap-to-walk, live on production) |
 | — | [#28](https://github.com/almost-done-studio/frontend/issues/28) Docs PR | Close when this refresh and the org README progress are on their default branches |
 
 ## Weekly rhythm (suggested)
