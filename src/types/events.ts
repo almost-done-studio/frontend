@@ -11,7 +11,13 @@ export interface GameStartPayload {
   locationId: LocationId
 }
 
+export interface LoadProgressPayload {
+  /** 0..1 share of queued assets loaded */
+  progress: number
+}
+
 export interface GameEventMap {
+  'load-progress': LoadProgressPayload
   'scene-ready': SceneReadyPayload
   'game-start': GameStartPayload
 }
