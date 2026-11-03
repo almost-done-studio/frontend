@@ -16,10 +16,15 @@ export interface LoadProgressPayload {
   progress: number
 }
 
+export interface PlayerAttackPayload {
+  characterId: CharacterId
+}
+
 export interface GameEventMap {
   'load-progress': LoadProgressPayload
   'scene-ready': SceneReadyPayload
   'game-start': GameStartPayload
+  'player-attack': PlayerAttackPayload
 }
 
 export type GameEventName = keyof GameEventMap
