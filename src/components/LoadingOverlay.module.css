@@ -24,6 +24,10 @@
   pointer-events: none;
 }
 
+.curtain {
+  z-index: 5;
+}
+
 .title {
   margin: 0;
   font-family: var(--font-display);
