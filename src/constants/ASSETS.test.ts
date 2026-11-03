@@ -3,6 +3,7 @@ import {
   ASSETS,
   MONK_ANIMATION_KEYS,
   MONK_FRAME_COUNT,
+  MONK_FRAME_COUNTS,
   TEXTURE_KEYS,
   monkFramePath,
   monkFrameTextureKey,
@@ -38,5 +39,15 @@ describe('ASSETS', () => {
     expect(monkFramePath('monk-walk-right-07')).toBe(
       '/assets/characters/monk/monk-walk-right-07.png',
     )
+    expect(MONK_FRAME_COUNTS.attack).toBe(50)
+    expect(monkFrameTextureKey('attack', 'left', 0)).toBe('monk-attack-left-00')
+    expect(
+      monkFrameTextureKey('attack', 'right', MONK_FRAME_COUNTS.attack - 1),
+    ).toBe('monk-attack-right-49')
+    expect(ASSETS.spriteFrames.monkAttack).toEqual({
+      width: 239,
+      height: 641,
+      bodyHeight: 574,
+    })
   })
 })
