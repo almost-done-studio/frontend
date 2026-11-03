@@ -35,7 +35,7 @@
       rgb(14 10 7 / 12%) 42%,
       rgb(14 10 7 / 8%) 100%
     ),
-    url('/assets/ui/character-selection-bg.png') center / cover no-repeat;
+    url('/assets/ui/character-selection-bg.webp') center / cover no-repeat;
   pointer-events: none;
   z-index: 0;
 }
