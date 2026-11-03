@@ -5,6 +5,7 @@ import { MainMenuScreen } from './components/MainMenuScreen'
 import { MapScreen } from './components/MapScreen'
 import { GameScreen } from './components/GameScreen'
 import { SettingsScreen } from './components/SettingsScreen'
+import { RouteCurtain } from './components/RouteCurtain'
 import styles from './App.module.css'
 
 export default function App() {
@@ -53,6 +54,7 @@ export default function App() {
             element={<Navigate to={SCREEN_PATHS[SCREENS.MAIN]} replace />}
           />
         </Routes>
+        <RouteCurtain />
       </main>
     </div>
   )

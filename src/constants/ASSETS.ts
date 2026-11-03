@@ -1,9 +1,9 @@
 export const ASSETS = {
   ui: {
-    characterSelectionBg: '/assets/ui/character-selection-bg.png',
+    characterSelectionBg: '/assets/ui/character-selection-bg.webp',
     mapPlaceholderBg: '/assets/ui/map-placeholder-bg.png',
     /** Map select screen — parchment folio with A–Z guides. */
-    mapSelectionBg: '/assets/ui/map-selection-bg.png',
+    mapSelectionBg: '/assets/ui/map-selection-bg.webp',
     mainMenuBg: '/assets/ui/main/main.jpg',
     mainMenuFlag: '/assets/ui/main/flag.png',
     fullMoon: '/assets/ui/full-moon.png',
@@ -22,9 +22,9 @@ export const ASSETS = {
       },
     },
     mapThumbs: {
-      garden: '/assets/ui/map/thumbs/forest.png',
-      scriptorium: '/assets/ui/map/thumbs/scriptorium.png',
-      cloister: '/assets/ui/map/thumbs/cloister.png',
+      garden: '/assets/ui/map/thumbs/forest.webp',
+      scriptorium: '/assets/ui/map/thumbs/scriptorium.webp',
+      cloister: '/assets/ui/map/thumbs/cloister.webp',
     },
     map: {
       garden: '/assets/ui/map/garden.png',
@@ -33,19 +33,19 @@ export const ASSETS = {
     },
     mapChunks: {
       garden: [
-        '/assets/ui/world/forest.png',
-        '/assets/ui/world/forest-b.png',
-        '/assets/ui/world/forest-c.png',
+        '/assets/ui/world/forest.webp',
+        '/assets/ui/world/forest-b.webp',
+        '/assets/ui/world/forest-c.webp',
       ],
       scriptorium: [
-        '/assets/ui/world/scriptorium.png',
-        '/assets/ui/world/scriptorium-b.png',
-        '/assets/ui/world/scriptorium-c.png',
+        '/assets/ui/world/scriptorium.webp',
+        '/assets/ui/world/scriptorium-b.webp',
+        '/assets/ui/world/scriptorium-c.webp',
       ],
       cloister: [
-        '/assets/ui/world/cloister.png',
-        '/assets/ui/world/cloister-b.png',
-        '/assets/ui/world/cloister-c.png',
+        '/assets/ui/world/cloister.webp',
+        '/assets/ui/world/cloister-b.webp',
+        '/assets/ui/world/cloister-c.webp',
       ],
     },
   },
