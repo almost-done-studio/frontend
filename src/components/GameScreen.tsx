@@ -1,8 +1,8 @@
 import { Navigate, useNavigate } from 'react-router-dom'
-import { getCharacter } from '../constants/CHARACTERS'
 import { getLocation } from '../constants/LOCATIONS'
 import { SCREEN_PATHS, SCREENS } from '../constants/SCREENS'
 import { useGameStore } from '../store/useGameStore'
+import { EventBus } from '../utils/EventBus'
 import { GameHost } from './GameHost'
 import { LoadingOverlay } from './LoadingOverlay'
 import styles from './GameScreen.module.css'
@@ -11,7 +11,6 @@ export function GameScreen() {
   const navigate = useNavigate()
   const characterId = useGameStore((s) => s.selectedCharacterId)
   const locationId = useGameStore((s) => s.selectedLocationId)
-  const activeScene = useGameStore((s) => s.activeScene)
 
   if (!characterId) {
     return <Navigate to={SCREEN_PATHS[SCREENS.MAIN]} replace />
@@ -21,7 +20,6 @@ export function GameScreen() {
     return <Navigate to={SCREEN_PATHS[SCREENS.MAP]} replace />
   }
 
-  const character = getCharacter(characterId)
   const location = getLocation(locationId)
 
   return (
@@ -38,11 +36,16 @@ export function GameScreen() {
           <h1 id="game-title" className={styles.title}>
             {location.name}
           </h1>
-          <p className={styles.subtitle}>
-            {character.name}
-            {activeScene ? ` · ${activeScene}` : ''}
-          </p>
         </div>
+        {characterId === 'monk' ? (
+          <button
+            type="button"
+            className={styles.attack}
+            onClick={() => EventBus.emit('player-attack', { characterId })}
+          >
+            Attack
+          </button>
+        ) : null}
       </header>
       <div className={styles.stage}>
         <GameHost characterId={characterId} locationId={locationId} />
