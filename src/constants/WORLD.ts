@@ -69,13 +69,16 @@ export const WORLD = {
     followOffsetYRatio: 0.22,
   },
   player: {
-    originX: 0.5,
+    /** Feet center in the frame differs per facing; keeps turns from jumping sideways. */
+    footOriginX: { left: 0.54, right: 0.46 } satisfies Record<Facing, number>,
+    /** Attack canvas is wider; feet sit further toward the back edge. */
+    attackFootOriginX: { left: 0.65, right: 0.35 } satisfies Record<Facing, number>,
     originY: 1,
     heightRatio: {
-      portraitNear: 0.28,
-      portraitFar: 0.14,
+      portraitNear: 0.38,
+      portraitFar: 0.24,
       landscapeNear: 0.46,
-      landscapeFar: 0.22,
+      landscapeFar: 0.29,
     },
     speed: 280,
     arriveDistance: 10,
@@ -85,6 +88,8 @@ export const WORLD = {
       idleFps: 20,
       /** 70 frames = two steps; ≈ 0.58 s per step (~100 steps/min). */
       walkFps: 60,
+      /** 50 frames, book opens and closes once ≈ 3.1 s. */
+      attackFps: 16,
     },
   },
   locations: {

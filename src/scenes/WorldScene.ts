@@ -5,7 +5,7 @@ import {
   ASSETS,
   FACINGS,
   MONK_ANIMATION_KEYS,
-  MONK_FRAME_COUNT,
+  MONK_FRAME_COUNTS,
   MONK_STATES,
   monkFramePath,
   monkFrameTextureKey,
@@ -30,7 +30,7 @@ import {
   type Point2,
   type StepResult,
 } from '../constants/WORLD'
-import type { GameStartPayload } from '../types/events'
+import type { GameStartPayload, PlayerAttackPayload } from '../types/events'
 
 interface MapChunk {
   image: Phaser.GameObjects.Image
@@ -44,7 +44,9 @@ export class WorldScene extends Phaser.Scene {
   private locationId: LocationId = LOCATIONS[0].id
   private canWalk = false
   private isMoving = false
+  private isAttacking = false
   private facing: Facing = WORLD.player.initialFacing
+  private playerDisplayHeight = 0
   private chunkWidth = 0
   private chunkHeight = 0
   private footGridX = 0
@@ -73,6 +75,22 @@ export class WorldScene extends Phaser.Scene {
     if (!pointer.isDown) return
     this.setTargetFromPointer(pointer)
   }
+  private readonly onPlayerAttack = ({ characterId }: PlayerAttackPayload): void => {
+    if (!this.canWalk || characterId !== 'monk' || this.isAttacking) return
+    if (!this.playerSprite) return
+    this.isMoving = false
+    this.isAttacking = true
+    this.playMonkAnimation()
+  }
+  private readonly onMonkAnimationComplete = (
+    anim: Phaser.Animations.Animation,
+  ): void => {
+    if (!this.isAttacking) return
+    const attackKey = MONK_ANIMATION_KEYS.attack[this.facing]
+    if (anim.key !== attackKey) return
+    this.isAttacking = false
+    this.playMonkAnimation()
+  }
 
   constructor() {
     super({ key: SCENES.WORLD })
@@ -92,7 +110,7 @@ export class WorldScene extends Phaser.Scene {
     }
     for (const state of MONK_STATES) {
       for (const facing of FACINGS) {
-        for (let i = 0; i < MONK_FRAME_COUNT; i += 1) {
+        for (let i = 0; i < MONK_FRAME_COUNTS[state]; i += 1) {
           const key = monkFrameTextureKey(state, facing, i)
           this.load.image(key, monkFramePath(key))
         }
@@ -126,9 +144,13 @@ export class WorldScene extends Phaser.Scene {
     this.createMonkAnimations()
     this.playerSprite = this.add
       .sprite(0, 0, monkFrameTextureKey('idle', this.facing, 0))
-      .setOrigin(WORLD.player.originX, WORLD.player.originY)
+      .setOrigin(WORLD.player.footOriginX[this.facing], WORLD.player.originY)
       .setDepth(1)
       .setVisible(false)
+    this.playerSprite.on(
+      Phaser.Animations.Events.ANIMATION_COMPLETE,
+      this.onMonkAnimationComplete,
+    )
     this.playMonkAnimation()
 
     this.layoutScene()
@@ -148,43 +170,65 @@ export class WorldScene extends Phaser.Scene {
       this.input.off('pointerdown', this.onPointerDown)
       this.input.off('pointermove', this.onPointerMove)
       EventBus.off('game-start', this.onGameStart)
+      EventBus.off('player-attack', this.onPlayerAttack)
     }
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, teardown)
     // game.destroy() emits DESTROY without SHUTDOWN
     this.events.once(Phaser.Scenes.Events.DESTROY, teardown)
 
     EventBus.on('game-start', this.onGameStart)
+    EventBus.on('player-attack', this.onPlayerAttack)
     EventBus.emit('scene-ready', { scene: SCENES.WORLD })
   }
 
   private createMonkAnimations(): void {
-    const { idleFps, walkFps } = WORLD.player.animation
+    const { idleFps, walkFps, attackFps } = WORLD.player.animation
     for (const state of MONK_STATES) {
       for (const facing of FACINGS) {
         const key = MONK_ANIMATION_KEYS[state][facing]
         if (this.anims.exists(key)) continue
         const frames: Phaser.Types.Animations.AnimationFrame[] = []
-        for (let i = 0; i < MONK_FRAME_COUNT; i += 1) {
+        for (let i = 0; i < MONK_FRAME_COUNTS[state]; i += 1) {
           frames.push({ key: monkFrameTextureKey(state, facing, i) })
         }
+        const frameRate =
+          state === 'walk' ? walkFps : state === 'attack' ? attackFps : idleFps
         this.anims.create({
           key,
           frames,
-          frameRate: state === 'walk' ? walkFps : idleFps,
-          repeat: -1,
+          frameRate,
+          repeat: state === 'attack' ? 0 : -1,
         })
       }
     }
   }
 
   private playMonkAnimation(): void {
-    const state = this.isMoving ? 'walk' : 'idle'
+    const state = this.isAttacking ? 'attack' : this.isMoving ? 'walk' : 'idle'
     this.playerSprite.play(MONK_ANIMATION_KEYS[state][this.facing], true)
+    const originX = this.isAttacking
+      ? WORLD.player.attackFootOriginX[this.facing]
+      : WORLD.player.footOriginX[this.facing]
+    if (
+      this.playerSprite.originX !== originX ||
+      this.playerSprite.originY !== WORLD.player.originY
+    ) {
+      this.playerSprite.setOrigin(originX, WORLD.player.originY)
+    }
+    this.layoutPlayerSize()
+  }
+
+  private cancelAttack(): void {
+    if (!this.isAttacking) return
+    this.isAttacking = false
+    this.playerSprite.anims.stop()
   }
 
   private setTargetFromPointer(pointer: Phaser.Input.Pointer): void {
     if (!this.canWalk) return
     if (this.chunkWidth <= 0 || this.chunkHeight <= 0) return
+    const resumeFromAttack = this.isAttacking
+    this.cancelAttack()
 
     worldToChunkInto(
       pointer.worldX,
@@ -203,6 +247,7 @@ export class WorldScene extends Phaser.Scene {
     this.targetGridX = this.pointerChunk.gridX
     this.targetGridY = this.pointerChunk.gridY
     this.isMoving = true
+    if (resumeFromAttack) this.playMonkAnimation()
   }
 
   private layoutPlayerSize(): void {
@@ -220,12 +265,22 @@ export class WorldScene extends Phaser.Scene {
         ? WORLD.player.heightRatio.landscapeFar
         : WORLD.player.heightRatio.portraitFar,
     )
-    const targetHeight = height * ratio
-    const { width: frameWidth, height: frameHeight } =
-      ASSETS.spriteFrames.monk
-    this.playerSprite.setDisplaySize(
-      (frameWidth / frameHeight) * targetHeight,
-      targetHeight,
+    const targetHeight = Math.round(height * ratio)
+    if (targetHeight === this.playerDisplayHeight) return
+    this.playerDisplayHeight = targetHeight
+    // Scale from the body, not the current frame. Attack's canvas is taller;
+    // setDisplaySize would bake that into the scale and the monk would pulse.
+    const bodyHeight = this.isAttacking
+      ? ASSETS.spriteFrames.monkAttack.bodyHeight
+      : ASSETS.spriteFrames.monk.height
+    this.playerSprite.setScale(targetHeight / bodyHeight)
+  }
+
+  /** Whole-pixel placement matches the rounded camera scroll, so the sprite does not wobble. */
+  private placePlayer(): void {
+    this.playerSprite.setPosition(
+      Math.round(chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth)),
+      Math.round(chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight)),
     )
   }
 
@@ -312,10 +367,7 @@ export class WorldScene extends Phaser.Scene {
     }
 
     this.layoutPlayerSize()
-    this.playerSprite.setPosition(
-      chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth),
-      chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight),
-    )
+    this.placePlayer()
     this.wrapChunks()
   }
 
@@ -323,6 +375,7 @@ export class WorldScene extends Phaser.Scene {
     this.locationId = locationId
     this.canWalk = characterId === 'monk'
     this.isMoving = false
+    this.isAttacking = false
 
     const spawn = getLocationMap(locationId).spawn
     this.footGridX = 0
@@ -342,7 +395,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private handleMovement(delta: number): void {
-    if (!this.canWalk || !this.isMoving) return
+    if (!this.canWalk || !this.isMoving || this.isAttacking) return
     if (this.chunkWidth <= 0 || this.chunkHeight <= 0) return
 
     const targetX = chunkToWorld(
@@ -355,8 +408,8 @@ export class WorldScene extends Phaser.Scene {
       this.target.y,
       this.chunkHeight,
     )
-    const x = this.playerSprite.x
-    const y = this.playerSprite.y
+    const x = chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth)
+    const y = chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight)
     const dx = targetX - x
     if (Math.abs(dx) > 1) {
       this.facing = dx < 0 ? 'left' : 'right'
@@ -388,10 +441,7 @@ export class WorldScene extends Phaser.Scene {
     )
     this.footGridX = this.movedChunk.gridX
     this.footGridY = this.movedChunk.gridY
-    this.playerSprite.setPosition(
-      chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth),
-      chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight),
-    )
+    this.placePlayer()
     this.layoutPlayerSize()
     this.wrapChunks()
     if (this.stepOut.arrived) {
