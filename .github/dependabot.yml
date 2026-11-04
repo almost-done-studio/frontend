@@ -6,7 +6,33 @@ updates:
       interval: weekly
       day: monday
     target-branch: develop
-    open-pull-requests-limit: 5
+    # Version-update PRs stay paused until the web MVP ships.
+    # Security updates still open. Raise this limit to resume.
+    open-pull-requests-limit: 0
+    # These majors are a migration (CI already fails). They stay ignored
+    # after the pause ends, until this block is removed.
+    ignore:
+      - dependency-name: phaser
+        update-types:
+          - version-update:semver-major
+      - dependency-name: vite
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "@vitejs/*"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: typescript
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "eslint*"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "@eslint/*"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: vitest
+        update-types:
+          - version-update:semver-major
     groups:
       phaser:
         patterns:
@@ -28,4 +54,5 @@ updates:
       interval: weekly
       day: monday
     target-branch: develop
-    open-pull-requests-limit: 3
+    # Same pause as npm. Security updates still open.
+    open-pull-requests-limit: 0
