@@ -53,7 +53,7 @@
 }
 
 .back img {
-  transform: rotate(90deg);
+  transform: none;
 }
 
 .backIcon {
