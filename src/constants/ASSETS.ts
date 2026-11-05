@@ -4,6 +4,9 @@ export const ASSETS = {
     mapPlaceholderBg: '/assets/ui/map-placeholder-bg.png',
     /** Map select screen — parchment folio with A–Z guides. */
     mapSelectionBg: '/assets/ui/map-selection-bg.webp',
+    /** Full-size map page from the Design mockup, plus its bottom band. */
+    mapMockupBg: '/assets/ui/map-mockup-bg.webp',
+    mapMockupFloor: '/assets/ui/map-mockup-floor.webp',
     mainMenuBg: '/assets/ui/main/main.jpg',
     mainMenuFlag: '/assets/ui/main/flag.png',
     fullMoon: '/assets/ui/full-moon.png',

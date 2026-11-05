@@ -80,36 +80,37 @@ export function MapScreen() {
         </p>
       </header>
 
-      <ul className={styles.columns}>
-        <li className={styles.column}>
-          <div className={styles.card}>
-            <span
-              className={`${styles.thumbStage} ${locked ? styles.locked : ''}`}
-              data-location={location.id}
-              role={locked ? undefined : 'button'}
-              tabIndex={locked ? undefined : 0}
-              onClick={locked ? undefined : handleSelect}
-              onKeyDown={locked ? undefined : handleKey}
-            >
-              <img className={styles.thumb} src={location.mapSrc} alt="" />
-            </span>
-            <span className={styles.name}>{displayName}</span>
-            <button
-              type="button"
-              className={`${styles.select} ${locked ? styles.selectDisabled : ''}`}
-              onClick={handleSelect}
-              aria-label={locked ? `Locked ${location.name}` : `Select ${location.name}`}
-              aria-disabled={locked}
-            >
-              <img
-                src={ASSETS.ui.characterSelect.selectButton}
-                alt={locked ? 'Locked' : 'Select'}
-                aria-hidden={locked}
-              />
-            </button>
-          </div>
-        </li>
-      </ul>
+      <div className={styles.spread}>
+        <div className={styles.copy}>
+          <p className={styles.name}>{displayName}</p>
+          <p className={styles.blurb}>{locked ? 'This page is still closed.' : location.blurb}</p>
+        </div>
+        <div className={styles.card}>
+          <span
+            className={`${styles.thumbStage} ${locked ? styles.locked : ''}`}
+            data-location={location.id}
+            role={locked ? undefined : 'button'}
+            tabIndex={locked ? undefined : 0}
+            onClick={locked ? undefined : handleSelect}
+            onKeyDown={locked ? undefined : handleKey}
+          >
+            <img className={styles.thumb} src={location.mapSrc} alt="" />
+          </span>
+          <button
+            type="button"
+            className={`${styles.select} ${locked ? styles.selectDisabled : ''}`}
+            onClick={handleSelect}
+            aria-label={locked ? `Locked ${location.name}` : `Select ${location.name}`}
+            aria-disabled={locked}
+          >
+            <img
+              src={ASSETS.ui.characterSelect.selectButton}
+              alt={locked ? 'Locked' : 'Select'}
+              aria-hidden={locked}
+            />
+          </button>
+        </div>
+      </div>
     </section>
   )
 }
