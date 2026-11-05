@@ -71,7 +71,7 @@
 }
 
 .back img {
-  transform: rotate(90deg);
+  transform: none;
 }
 
 .backIcon {
@@ -258,12 +258,9 @@
 }
 
 
-/* locked thumbnail dimming removed */
-
-/* .lockOverlay removed — no longer used */
-
-.lockedCard {
-  opacity: 1;
+.thumbStage.locked {
+  filter: grayscale(0.85);
+  opacity: 0.4;
 }
 
 
@@ -306,9 +303,10 @@
 }
 
 .selectDisabled {
-  opacity: 0.48;
-  filter: grayscale(40%);
+  opacity: 0.28;
+  filter: grayscale(1);
   pointer-events: none;
+  cursor: default;
 }
 
 @media (orientation: landscape) {

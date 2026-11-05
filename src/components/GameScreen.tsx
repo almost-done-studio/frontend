@@ -1,5 +1,7 @@
 import { Navigate, useNavigate } from 'react-router-dom'
+import { ASSETS } from '../constants/ASSETS'
 import { getLocation } from '../constants/LOCATIONS'
+import { MAP_UI } from '../constants/MAP_UI'
 import { SCREEN_PATHS, SCREENS } from '../constants/SCREENS'
 import { useGameStore } from '../store/useGameStore'
 import { EventBus } from '../utils/EventBus'
@@ -24,33 +26,38 @@ export function GameScreen() {
 
   return (
     <section className={styles.screen} aria-labelledby="game-title">
-      <header className={styles.hud}>
-        <button
-          type="button"
-          className={styles.back}
-          onClick={() => void navigate(SCREEN_PATHS[SCREENS.MAP])}
-        >
-          Map
-        </button>
-        <div className={styles.meta}>
-          <h1 id="game-title" className={styles.title}>
-            {location.name}
-          </h1>
-        </div>
-        {characterId === 'monk' ? (
-          <button
-            type="button"
-            className={styles.attack}
-            onClick={() => EventBus.emit('player-attack', { characterId })}
-          >
-            Attack
-          </button>
-        ) : null}
-      </header>
       <div className={styles.stage}>
         <GameHost characterId={characterId} locationId={locationId} />
         <LoadingOverlay key={`${characterId}-${locationId}`} />
       </div>
+      <h1 id="game-title" className={styles.title}>
+        {location.name}
+      </h1>
+      <button
+        type="button"
+        className={styles.back}
+        onClick={() => void navigate(SCREEN_PATHS[SCREENS.MAP])}
+        aria-label={MAP_UI.backLabel}
+      >
+        <img
+          className={styles.backIcon}
+          src={ASSETS.ui.characterSelect.arrowLeft}
+          alt=""
+          aria-hidden="true"
+        />
+        <span className={styles.backLabel}>{MAP_UI.backLabel}</span>
+      </button>
+      {characterId === 'monk' ? (
+        <button
+          type="button"
+          className={styles.attack}
+          onClick={() => EventBus.emit('player-attack', { characterId })}
+          aria-label="Attack"
+        >
+          <img src={ASSETS.ui.mainMenuFlag} alt="" aria-hidden="true" />
+          <span className={styles.attackLabel}>Attack</span>
+        </button>
+      ) : null}
     </section>
   )
 }

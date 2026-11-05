@@ -151,21 +151,25 @@
 
 @media (max-width: 420px) and (orientation: portrait) {
   .content {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-    gap: 6px;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    justify-items: center;
+    gap: 28px;
   }
 
   .title {
-    font-size: clamp(40px, 11vw, 72px);
+    padding-right: 0;
+    font-size: clamp(36px, 10.5vw, 52px);
     -webkit-text-stroke-width: 1.5px;
   }
 
   .actions {
-    --main-menu-button-width: 148px;
-    gap: 12px;
+    justify-self: center;
+    --main-menu-button-width: 200px;
+    gap: 14px;
   }
 
   .menuLabel {
-    font-size: 1.05rem;
+    font-size: 1.15rem;
   }
 }
