@@ -82,7 +82,7 @@ export function MapScreen() {
 
       <ul className={styles.columns}>
         <li className={styles.column}>
-          <div className={`${styles.card} ${locked ? styles.lockedCard : ''}`}>
+          <div className={styles.card}>
             <span
               className={`${styles.thumbStage} ${locked ? styles.locked : ''}`}
               data-location={location.id}

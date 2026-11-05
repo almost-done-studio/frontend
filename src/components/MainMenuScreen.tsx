@@ -38,18 +38,6 @@ export function MainMenuScreen() {
             <span className={styles.menuLabel}>{MAIN_MENU_UI.playLabel}</span>
           </button>
 
-          <button
-            type="button"
-            className={styles.menuButton}
-            onClick={() => void navigate(SCREEN_PATHS[SCREENS.SETTINGS])}
-          >
-            <img
-              src={ASSETS.ui.mainMenuFlag}
-              alt=""
-              aria-hidden="true"
-            />
-            <span className={styles.menuLabel}>{MAIN_MENU_UI.settingsLabel}</span>
-          </button>
         </nav>
       </div>
     </section>
