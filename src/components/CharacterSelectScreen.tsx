@@ -11,21 +11,29 @@ function characterDisplayName(name: string): string {
   return name.startsWith('The ') ? name : `The ${name}`
 }
 
+const roster = CHARACTERS.filter(
+  (character): character is (typeof CHARACTERS)[number] & { portraitSrc: string } =>
+    character.portraitSrc !== null,
+)
+
 export function CharacterSelectScreen() {
   const navigate = useNavigate()
   const selectCharacter = useGameStore((s) => s.selectCharacter)
   const [index, setIndex] = useState(0)
 
-  const character = CHARACTERS[index]
+  const character = roster[index] ?? roster[0]
   const chrome = ASSETS.ui.characterSelect
+  const hasNeighbors = roster.length > 1
 
   const goPrev = () => {
-    setIndex((current) => (current - 1 + CHARACTERS.length) % CHARACTERS.length)
+    setIndex((current) => (current - 1 + roster.length) % roster.length)
   }
 
   const goNext = () => {
-    setIndex((current) => (current + 1) % CHARACTERS.length)
+    setIndex((current) => (current + 1) % roster.length)
   }
+
+  if (!character) return null
 
   const onSelect = () => {
     selectCharacter(character.id)
@@ -41,14 +49,16 @@ export function CharacterSelectScreen() {
       </h1>
 
       <div className={styles.carousel}>
-        <button
-          type="button"
-          className={styles.arrow}
-          onClick={goPrev}
-          aria-label="Previous character"
-        >
-          <img src={chrome.arrowLeft} alt="" aria-hidden="true" />
-        </button>
+        {hasNeighbors ? (
+          <button
+            type="button"
+            className={styles.arrow}
+            onClick={goPrev}
+            aria-label="Previous character"
+          >
+            <img src={chrome.arrowLeft} alt="" aria-hidden="true" />
+          </button>
+        ) : null}
 
         <div
           className={styles.portraitStage}
@@ -56,16 +66,12 @@ export function CharacterSelectScreen() {
           aria-live="polite"
         >
           <div className={styles.portraitBacking} aria-hidden="true" />
-          {character.portraitSrc ? (
-            <img
-              className={styles.portrait}
-              src={character.portraitSrc}
-              alt=""
-              aria-hidden="true"
-            />
-          ) : (
-            <span className={styles.portraitPlaceholder} aria-hidden="true" />
-          )}
+          <img
+            className={styles.portrait}
+            src={character.portraitSrc}
+            alt=""
+            aria-hidden="true"
+          />
           <img
             className={styles.portraitFrame}
             src={chrome.portraitFrame}
@@ -74,17 +80,22 @@ export function CharacterSelectScreen() {
           />
         </div>
 
-        <button
-          type="button"
-          className={styles.arrow}
-          onClick={goNext}
-          aria-label="Next character"
-        >
-          <img src={chrome.arrowRight} alt="" aria-hidden="true" />
-        </button>
+        {hasNeighbors ? (
+          <button
+            type="button"
+            className={styles.arrow}
+            onClick={goNext}
+            aria-label="Next character"
+          >
+            <img src={chrome.arrowRight} alt="" aria-hidden="true" />
+          </button>
+        ) : null}
       </div>
 
-      <p className={styles.name}>{characterDisplayName(character.name)}</p>
+      <div className={styles.identity}>
+        <p className={styles.name}>{characterDisplayName(character.name)}</p>
+        <p className={styles.blurb}>{character.blurb}</p>
+      </div>
 
       <button
         type="button"

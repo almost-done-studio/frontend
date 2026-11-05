@@ -42,7 +42,7 @@
 
 .title,
 .carousel,
-.name,
+.identity,
 .select {
   position: relative;
   z-index: 1;
@@ -140,6 +140,13 @@
   pointer-events: none;
 }
 
+.identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
 .name {
   margin: 0;
   font-family: var(--font-display);
@@ -149,6 +156,16 @@
   letter-spacing: 0;
   text-align: center;
   color: #1a120b;
+}
+
+.blurb {
+  margin: 0;
+  max-width: 24ch;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  text-align: center;
+  color: rgb(26 18 11 / 72%);
 }
 
 .select {
