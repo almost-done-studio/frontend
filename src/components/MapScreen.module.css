@@ -29,14 +29,14 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(rgb(239 228 204 / 72%), rgb(239 228 204 / 72%)),
-    url('/assets/ui/map-selection-bg.webp') center / cover no-repeat;
+    url('/assets/ui/map-mockup-floor.webp') center / cover no-repeat,
+    url('/assets/ui/map-mockup-bg.webp') center / cover no-repeat;
   pointer-events: none;
   z-index: 0;
 }
 
 .header,
-.columns,
+.spread,
 .back,
 .select {
   position: relative;
@@ -46,7 +46,7 @@
 .back {
   position: absolute;
   left: max(12px, env(safe-area-inset-left));
-  bottom: max(12px, env(safe-area-inset-bottom));
+  bottom: max(12%, env(safe-area-inset-bottom));
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -117,28 +117,23 @@
   color: rgb(26 18 11 / 70%);
 }
 
-.columns {
-  list-style: none;
-  margin: 0;
-  padding: 0 75px;
-  display: flex;
+.spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  width: min(100% - 120px, 640px);
+  margin: 0 auto;
+  padding: 8px 0 14%;
   flex: 1;
-  min-height: 0;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
 }
 
-.column {
+.copy {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 0;
-  border-right: 0;
-}
-
-.column:last-child {
-  border-right: 0;
+  gap: 12px;
+  text-align: center;
 }
 
 .card {
@@ -229,17 +224,21 @@
 }
 
 .name {
+  margin: 0;
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  line-height: 1.15;
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.05;
   color: var(--map-ink);
 }
 
 .blurb {
+  margin: 0;
+  max-width: 18ch;
   font-family: var(--font-body);
-  font-size: 0.85rem;
-  line-height: 1.3;
-  color: rgb(26 18 11 / 70%);
+  font-size: 1rem;
+  line-height: 1.35;
+  color: rgb(26 18 11 / 78%);
 }
 
 /* Card chrome to match new design: parchment panel with rounded thumb */
@@ -328,6 +327,16 @@
   }
 
 @media (max-width: 420px) {
+  .spread {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    width: min(100% - 96px, 280px);
+    padding-top: 8px;
+    padding-bottom: 18%;
+    justify-items: center;
+    gap: 16px;
+  }
+
   .title {
     font-size: 28px;
   }
@@ -336,22 +345,17 @@
     padding: 4px 52px 10px;
   }
 
-  .thumbStage {
-    width: 84px;
-    height: 84px;
+  .thumbStage,
+  .thumb {
+    width: 140px;
+    height: 162px;
   }
 
   .name {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 
   .blurb {
-    font-size: 0.75rem;
-  }
-
-  .card {
-    min-height: 128px;
-    padding: 12px 8px 14px;
-    gap: 8px;
+    font-size: 0.95rem;
   }
 }

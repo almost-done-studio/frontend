@@ -19,7 +19,8 @@ export const SCREEN_IMAGES = {
     ...characterPortraits,
   ],
   [SCREEN_PATHS[SCREENS.MAP]]: [
-    ASSETS.ui.mapSelectionBg,
+    ASSETS.ui.mapMockupBg,
+    ASSETS.ui.mapMockupFloor,
     ASSETS.ui.characterSelect.arrowLeft,
     ASSETS.ui.characterSelect.arrowRight,
     ASSETS.ui.characterSelect.selectButton,
