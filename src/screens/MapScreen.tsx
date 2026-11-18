@@ -2,15 +2,15 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ASSETS } from '../constants/ASSETS'
 import { LOCATIONS } from '../constants/LOCATIONS'
-import { V2_UI } from '../constants/V2_UI'
+import { SCREEN_PATHS, SCREENS } from '../constants/SCREENS'
+import { UI } from '../constants/UI'
 import { useGameStore } from '../store/useGameStore'
 import { ArrowButton } from './chrome'
-import { V2_PATHS } from './paths'
 import styles from './page.module.css'
 
 const OPEN_INDEX = 0
 
-export function V2MapScreen() {
+export function MapScreen() {
   const navigate = useNavigate()
   const characterId = useGameStore((s) => s.selectedCharacterId)
   const selectLocation = useGameStore((s) => s.selectLocation)
@@ -19,11 +19,11 @@ export function V2MapScreen() {
   const handleSelect = (index: number) => {
     if (index !== OPEN_INDEX) return
     if (!characterId) {
-      void navigate(V2_PATHS.character)
+      void navigate(SCREEN_PATHS[SCREENS.CHARACTER_SELECT])
       return
     }
     selectLocation(LOCATIONS[index].id)
-    void navigate(V2_PATHS.game)
+    void navigate(SCREEN_PATHS[SCREENS.GAME])
   }
 
   const moveFocus = (delta: number) => {
@@ -33,12 +33,12 @@ export function V2MapScreen() {
   return (
     <section className={`${styles.page} ${styles.mapBoard}`} aria-labelledby="map-title">
       <h1 id="map-title" className={styles.mapTitle}>
-        {V2_UI.mapTitle}
+        {UI.mapTitle}
       </h1>
       <div className={styles.mapRow}>
         <ArrowButton
           direction="previous"
-          label={V2_UI.previousLeaf}
+          label={UI.previousLeaf}
           onClick={() => moveFocus(-1)}
         />
         <ul className={styles.mapCards}>
@@ -54,7 +54,7 @@ export function V2MapScreen() {
                   className={`${styles.mapSelect} ${focusedIndex === index ? styles.mapSelectFocused : ''}`}
                   onClick={() => handleSelect(index)}
                   aria-disabled={locked}
-                  aria-label={locked ? V2_UI.closedBlurb : `${V2_UI.selectLabel} ${location.name}`}
+                  aria-label={locked ? UI.closedBlurb : `${UI.selectLabel} ${location.name}`}
                 >
                   <img src={ASSETS.ui.characterSelect.selectButton} alt="" />
                 </button>
@@ -62,19 +62,15 @@ export function V2MapScreen() {
             )
           })}
         </ul>
-        <ArrowButton
-          direction="next"
-          label={V2_UI.nextLeaf}
-          onClick={() => moveFocus(1)}
-        />
+        <ArrowButton direction="next" label={UI.nextLeaf} onClick={() => moveFocus(1)} />
       </div>
       <button
         type="button"
         className={styles.back}
-        onClick={() => void navigate(V2_PATHS.character)}
+        onClick={() => void navigate(SCREEN_PATHS[SCREENS.CHARACTER_SELECT])}
       >
         <img src={ASSETS.ui.characterSelect.arrowLeft} alt="" />
-        <span>{V2_UI.returnLabel}</span>
+        <span>{UI.returnLabel}</span>
       </button>
     </section>
   )

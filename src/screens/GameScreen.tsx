@@ -1,28 +1,28 @@
 import { Navigate, useNavigate } from 'react-router-dom'
-import { ASSETS } from '../constants/ASSETS'
-import { getLocation } from '../constants/LOCATIONS'
-import { V2_UI } from '../constants/V2_UI'
-import { useGameStore } from '../store/useGameStore'
-import { EventBus } from '../utils/EventBus'
 import { GameHost } from '../components/GameHost'
 import { LoadingOverlay } from '../components/LoadingOverlay'
+import { ASSETS } from '../constants/ASSETS'
+import { getLocation } from '../constants/LOCATIONS'
+import { SCREEN_PATHS, SCREENS } from '../constants/SCREENS'
+import { UI } from '../constants/UI'
 import { useAfterLoad } from '../hooks/useAfterLoad'
+import { useGameStore } from '../store/useGameStore'
+import { EventBus } from '../utils/EventBus'
 import { Ribbon } from './chrome'
-import { V2_PATHS } from './paths'
 import styles from './page.module.css'
 
-export function V2GameScreen() {
+export function GameScreen() {
   const navigate = useNavigate()
   const characterId = useGameStore((s) => s.selectedCharacterId)
   const locationId = useGameStore((s) => s.selectedLocationId)
   const { ready: hudReady, onIdle } = useAfterLoad(`${characterId ?? ''}-${locationId ?? ''}`)
 
   if (!characterId) {
-    return <Navigate to={V2_PATHS.menu} replace />
+    return <Navigate to={SCREEN_PATHS[SCREENS.MAIN]} replace />
   }
 
   if (!locationId) {
-    return <Navigate to={V2_PATHS.map} replace />
+    return <Navigate to={SCREEN_PATHS[SCREENS.MAP]} replace />
   }
 
   const location = getLocation(locationId)
@@ -31,7 +31,7 @@ export function V2GameScreen() {
   return (
     <section className={`${styles.page} ${styles.world}`} aria-label={location.name}>
       {hudReady ? (
-        <h1 id="v2-game-title" className={`${styles.ribbonFace} ${styles.placePlate} ${styles.hudTitle}`}>
+        <h1 id="game-title" className={`${styles.ribbonFace} ${styles.placePlate} ${styles.hudTitle}`}>
           {location.name}
         </h1>
       ) : null}
@@ -47,16 +47,16 @@ export function V2GameScreen() {
         <button
           type="button"
           className={styles.back}
-          onClick={() => void navigate(V2_PATHS.map)}
+          onClick={() => void navigate(SCREEN_PATHS[SCREENS.MAP])}
         >
           <img src={ASSETS.ui.characterSelect.arrowLeft} alt="" />
-          <span>{V2_UI.returnLabel}</span>
+          <span>{UI.returnLabel}</span>
         </button>
       ) : null}
       {hudReady && characterId === 'monk' ? (
         <Ribbon
           className={styles.hudStrike}
-          label={V2_UI.strikeLabel}
+          label={UI.strikeLabel}
           onClick={() => EventBus.emit('player-attack', { characterId })}
         />
       ) : null}

@@ -1,7 +1,7 @@
 import { MAIN_MENU_UI } from './MAIN_MENU_UI'
 
-/** Copy for the live folio. One voice across menu, choice, and the world. */
-export const V2_UI = {
+/** Copy for the live game. One voice across menu, choice, and the world. */
+export const UI = {
   titleLines: MAIN_MENU_UI.titleLines,
   beginLabel: 'Begin',
   settingsLabel: 'Settings',

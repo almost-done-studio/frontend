@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { ASSETS } from '../constants/ASSETS'
-import { V2_UI } from '../constants/V2_UI'
+import { UI } from '../constants/UI'
 import styles from './page.module.css'
 
 interface FolioScreenProps {
@@ -20,7 +20,7 @@ export function FolioScreen({ titleId, onReturn, ornament, children }: FolioScre
       </div>
       <button type="button" className={styles.back} onClick={onReturn}>
         <img src={ASSETS.ui.characterSelect.arrowLeft} alt="" />
-        <span>{V2_UI.returnLabel}</span>
+        <span>{UI.returnLabel}</span>
       </button>
     </section>
   )

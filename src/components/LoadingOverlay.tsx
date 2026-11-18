@@ -5,7 +5,7 @@ import type { LoadProgressPayload } from '../types/events'
 import styles from './LoadingOverlay.module.css'
 
 interface LoadingOverlayProps {
-  /** Parchment sheet used on the v2 folio. The night surface stays the default. */
+  /** Parchment sheet. The night surface stays the default. */
   surface?: 'folio'
   /** Fires once the sheet has finished fading, so controls can appear. */
   onIdle?: () => void

@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CHARACTERS } from '../constants/CHARACTERS'
-import { folioName, V2_UI } from '../constants/V2_UI'
+import { SCREEN_PATHS, SCREENS } from '../constants/SCREENS'
+import { folioName, UI } from '../constants/UI'
 import { useGameStore } from '../store/useGameStore'
 import { ArrowButton, FolioScreen, Portrait, Ribbon } from './chrome'
-import { V2_PATHS } from './paths'
 import styles from './page.module.css'
 
 const roster = CHARACTERS.filter(
@@ -12,7 +12,7 @@ const roster = CHARACTERS.filter(
     character.portraitSrc !== null,
 )
 
-export function V2CharacterScreen() {
+export function CharacterScreen() {
   const navigate = useNavigate()
   const selectCharacter = useGameStore((s) => s.selectCharacter)
   const [index, setIndex] = useState(0)
@@ -25,19 +25,19 @@ export function V2CharacterScreen() {
 
   const onSelect = () => {
     selectCharacter(character.id)
-    void navigate(V2_PATHS.map)
+    void navigate(SCREEN_PATHS[SCREENS.MAP])
   }
 
   return (
     <FolioScreen
-      titleId="v2-character-title"
-      onReturn={() => void navigate(V2_PATHS.menu)}
+      titleId="character-title"
+      onReturn={() => void navigate(SCREEN_PATHS[SCREENS.MAIN])}
       ornament={
         <div className={styles.carousel}>
           {hasNeighbors ? (
             <ArrowButton
               direction="previous"
-              label={V2_UI.previousCompanion}
+              label={UI.previousCompanion}
               onClick={() => setIndex((current) => (current - 1 + roster.length) % roster.length)}
             />
           ) : null}
@@ -45,19 +45,19 @@ export function V2CharacterScreen() {
           {hasNeighbors ? (
             <ArrowButton
               direction="next"
-              label={V2_UI.nextCompanion}
+              label={UI.nextCompanion}
               onClick={() => setIndex((current) => (current + 1) % roster.length)}
             />
           ) : null}
         </div>
       }
     >
-      <h1 id="v2-character-title" className={styles.kicker}>
-        {V2_UI.characterTitle}
+      <h1 id="character-title" className={styles.kicker}>
+        {UI.characterTitle}
       </h1>
       <p className={styles.name}>{name}</p>
       <p className={styles.blurb}>{character.blurb}</p>
-      <Ribbon label={V2_UI.enterLabel} onClick={onSelect} ariaLabel={`Enter as ${name}`} />
+      <Ribbon label={UI.enterLabel} onClick={onSelect} ariaLabel={`Enter as ${name}`} />
     </FolioScreen>
   )
 }
