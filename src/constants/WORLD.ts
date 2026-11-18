@@ -8,9 +8,9 @@ export const MAP_CHUNK_TEXTURE_KEYS = {
     TEXTURE_KEYS.MAP_SCRIPTORIUM_C,
   ],
   garden: [
-    TEXTURE_KEYS.MAP_FOREST,
-    TEXTURE_KEYS.MAP_FOREST_B,
-    TEXTURE_KEYS.MAP_FOREST_C,
+    TEXTURE_KEYS.MAP_PAGE,
+    TEXTURE_KEYS.MAP_PAGE_B,
+    TEXTURE_KEYS.MAP_PAGE_C,
   ],
   cloister: [
     TEXTURE_KEYS.MAP_CLOISTER,
@@ -21,7 +21,7 @@ export const MAP_CHUNK_TEXTURE_KEYS = {
 
 export const MAP_TEXTURE_KEYS = {
   scriptorium: TEXTURE_KEYS.MAP_SCRIPTORIUM,
-  garden: TEXTURE_KEYS.MAP_FOREST,
+  garden: TEXTURE_KEYS.MAP_PAGE,
   cloister: TEXTURE_KEYS.MAP_CLOISTER,
 } as const satisfies Record<LocationId, TextureKey>
 
@@ -54,6 +54,8 @@ export interface ChunkRef {
 export interface LocationMap {
   spawn: Point2
   walk: WalkArea
+  /** `screen` paints one page across the view. Omitted pages stay larger than the view. */
+  fit?: 'screen'
 }
 
 export const WORLD = {
@@ -105,14 +107,16 @@ export const WORLD = {
       },
     },
     garden: {
-      spawn: { x: 0.5, y: 0.92 },
+      fit: 'screen',
+      spawn: { x: 0.5, y: 0.84 },
+      /** The whole tile is walkable, so the repeated page has no edge. */
       walk: {
         minY: 0,
         maxY: 1,
-        nearMinX: 0.2,
-        nearMaxX: 0.8,
-        farMinX: 0.32,
-        farMaxX: 0.68,
+        nearMinX: 0,
+        nearMaxX: 1,
+        farMinX: 0,
+        farMaxX: 1,
       },
     },
     cloister: {
@@ -130,6 +134,20 @@ export const WORLD = {
 } as const
 
 export type WorldConfig = typeof WORLD
+
+/** Scale one page so it covers the view and keeps its own proportions. */
+export function screenFitSize(
+  sourceWidth: number,
+  sourceHeight: number,
+  viewWidth: number,
+  viewHeight: number,
+): { width: number; height: number } {
+  const scale = Math.max(viewWidth / sourceWidth, viewHeight / sourceHeight)
+  return {
+    width: sourceWidth * scale,
+    height: sourceHeight * scale,
+  }
+}
 
 export function worldDisplaySize(
   sourceWidth: number,
@@ -253,6 +271,24 @@ export function clampWalkRatioInto(
   const minX = lerp(walk.farMinX, walk.nearMinX, t)
   const maxX = lerp(walk.farMaxX, walk.nearMaxX, t)
   out.x = Math.min(maxX, Math.max(minX, xRatio))
+  out.y = y
+}
+
+/** Arrow and WASD. Opposing keys cancel. Diagonal steps stay the same speed. */
+export function keyDirection(
+  left: boolean,
+  right: boolean,
+  up: boolean,
+  down: boolean,
+  out: Point2,
+): void {
+  let x = (right ? 1 : 0) - (left ? 1 : 0)
+  let y = (down ? 1 : 0) - (up ? 1 : 0)
+  if (x !== 0 && y !== 0) {
+    x *= Math.SQRT1_2
+    y *= Math.SQRT1_2
+  }
+  out.x = x
   out.y = y
 }
 

@@ -1,10 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { EventBus } from '../utils/EventBus'
 import { LOADING_UI, loadingPercent } from '../constants/LOADING_UI'
 import type { LoadProgressPayload } from '../types/events'
 import styles from './LoadingOverlay.module.css'
 
-export function LoadingOverlay() {
+interface LoadingOverlayProps {
+  /** Parchment sheet. The night surface stays the default. */
+  surface?: 'folio'
+  /** Fires once the sheet has finished fading, so controls can appear. */
+  onIdle?: () => void
+}
+
+export function LoadingOverlay({ surface, onIdle }: LoadingOverlayProps) {
+  const onIdleRef = useRef(onIdle)
+  onIdleRef.current = onIdle
   const [percent, setPercent] = useState(0)
   const [ready, setReady] = useState(false)
   const [gone, setGone] = useState(false)
@@ -27,7 +36,10 @@ export function LoadingOverlay() {
 
   useEffect(() => {
     if (!ready) return
-    const timer = window.setTimeout(() => setGone(true), LOADING_UI.fadeOutMs)
+    const timer = window.setTimeout(() => {
+      setGone(true)
+      onIdleRef.current?.()
+    }, LOADING_UI.fadeOutMs)
     return () => window.clearTimeout(timer)
   }, [ready])
 
@@ -35,7 +47,13 @@ export function LoadingOverlay() {
 
   return (
     <div
-      className={ready ? `${styles.overlay} ${styles.hidden}` : styles.overlay}
+      className={[
+        styles.overlay,
+        surface === 'folio' ? styles.folio : '',
+        ready ? styles.hidden : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       style={{ transitionDuration: `${LOADING_UI.fadeOutMs}ms` }}
       data-testid="loading-overlay"
     >

@@ -213,6 +213,11 @@
   pointer-events: none;
 }
 
+.thumbStage[data-location='garden'] .thumb {
+  object-fit: contain;
+  background: var(--color-parchment, #efe4cc);
+}
+
 .thumbFrame {
   position: absolute;
   inset: 0;

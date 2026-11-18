@@ -12,22 +12,20 @@ export const SCREEN_IMAGES = {
   [SCREEN_PATHS[SCREENS.MAIN]]: [ASSETS.ui.mainMenuBg, ASSETS.ui.mainMenuFlag],
   [SCREEN_PATHS[SCREENS.CHARACTER_SELECT]]: [
     ASSETS.ui.characterSelectionBg,
+    ASSETS.ui.mainMenuFlag,
     ASSETS.ui.characterSelect.arrowLeft,
-    ASSETS.ui.characterSelect.arrowRight,
     ASSETS.ui.characterSelect.portraitFrame,
-    ASSETS.ui.characterSelect.selectButton,
     ...characterPortraits,
   ],
   [SCREEN_PATHS[SCREENS.MAP]]: [
-    ASSETS.ui.mapMockupBg,
-    ASSETS.ui.mapMockupFloor,
+    ASSETS.ui.mapSelectionBg,
     ASSETS.ui.characterSelect.arrowLeft,
     ASSETS.ui.characterSelect.arrowRight,
     ASSETS.ui.characterSelect.selectButton,
-    ...LOCATIONS.map((location) => location.mapSrc),
+    ...LOCATIONS.map((location) => location.cardSrc),
   ],
   [SCREEN_PATHS[SCREENS.SETTINGS]]: [
-    ASSETS.ui.mapSelectionBg,
+    ASSETS.ui.characterSelectionBg,
     ASSETS.ui.characterSelect.arrowLeft,
   ],
 } as const satisfies Record<string, readonly string[]>
@@ -35,8 +33,6 @@ export const SCREEN_IMAGES = {
 const NEXT_SCREEN = {
   [SCREEN_PATHS[SCREENS.MAIN]]: SCREEN_PATHS[SCREENS.CHARACTER_SELECT],
   [SCREEN_PATHS[SCREENS.CHARACTER_SELECT]]: SCREEN_PATHS[SCREENS.MAP],
-  [SCREEN_PATHS[SCREENS.MAP]]: SCREEN_PATHS[SCREENS.SETTINGS],
-  [SCREEN_PATHS[SCREENS.SETTINGS]]: SCREEN_PATHS[SCREENS.MAIN],
 } as const satisfies Record<string, string>
 
 export function imagesForPath(pathname: string): readonly string[] {

@@ -58,3 +58,24 @@
   color: var(--color-text-secondary);
   font-variant-numeric: tabular-nums;
 }
+
+.overlay.folio {
+  background: var(--color-parchment);
+}
+
+.folio .title {
+  color: var(--color-ink);
+}
+
+.folio .track {
+  border-color: var(--color-ink-soft);
+  background: transparent;
+}
+
+.folio .fill {
+  background: var(--color-rubric);
+}
+
+.folio .percent {
+  color: var(--color-ink-soft);
+}

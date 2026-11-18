@@ -30,15 +30,20 @@ export const ASSETS = {
       cloister: '/assets/ui/map/thumbs/cloister.webp',
     },
     map: {
+      garden: '/assets/ui/map-mockup-bg.webp',
+      scriptorium: '/assets/ui/map/castle.png',
+      cloister: '/assets/ui/map/pond.png',
+    },
+    mapCards: {
       garden: '/assets/ui/map/garden.png',
       scriptorium: '/assets/ui/map/castle.png',
       cloister: '/assets/ui/map/pond.png',
     },
     mapChunks: {
       garden: [
-        '/assets/ui/world/forest.webp',
-        '/assets/ui/world/forest-b.webp',
-        '/assets/ui/world/forest-c.webp',
+        '/assets/ui/map-mockup-bg.webp',
+        '/assets/ui/map-mockup-bg.webp',
+        '/assets/ui/map-mockup-bg.webp',
       ],
       scriptorium: [
         '/assets/ui/world/scriptorium.webp',
@@ -75,6 +80,9 @@ export const TEXTURE_KEYS = {
   MAP_SCRIPTORIUM: 'map-scriptorium',
   MAP_SCRIPTORIUM_B: 'map-scriptorium-b',
   MAP_SCRIPTORIUM_C: 'map-scriptorium-c',
+  MAP_PAGE: 'map-page',
+  MAP_PAGE_B: 'map-page-b',
+  MAP_PAGE_C: 'map-page-c',
   MAP_FOREST: 'map-forest',
   MAP_FOREST_B: 'map-forest-b',
   MAP_FOREST_C: 'map-forest-c',
