@@ -21,7 +21,9 @@ import {
   getChunkTextureKeys,
   getLocationMap,
   getMapTextureKey,
+  keyDirection,
   playerHeightRatio,
+  screenFitSize,
   stepTowardInto,
   worldDisplaySize,
   worldToChunkInto,
@@ -31,6 +33,17 @@ import {
   type StepResult,
 } from '../constants/WORLD'
 import type { GameStartPayload, PlayerAttackPayload } from '../types/events'
+
+const WALK_KEY_CODES = [
+  Phaser.Input.Keyboard.KeyCodes.UP,
+  Phaser.Input.Keyboard.KeyCodes.DOWN,
+  Phaser.Input.Keyboard.KeyCodes.LEFT,
+  Phaser.Input.Keyboard.KeyCodes.RIGHT,
+  Phaser.Input.Keyboard.KeyCodes.W,
+  Phaser.Input.Keyboard.KeyCodes.A,
+  Phaser.Input.Keyboard.KeyCodes.S,
+  Phaser.Input.Keyboard.KeyCodes.D,
+]
 
 interface MapChunk {
   image: Phaser.GameObjects.Image
@@ -58,6 +71,15 @@ export class WorldScene extends Phaser.Scene {
   private stepOut!: StepResult
   private pointerChunk!: ChunkRef
   private movedChunk!: ChunkRef
+  private keyDir!: Point2
+  private keySteering = false
+  private cursors: Phaser.Types.Input.Keyboard.CursorKeys | null = null
+  private walkKeys: {
+    w: Phaser.Input.Keyboard.Key
+    a: Phaser.Input.Keyboard.Key
+    s: Phaser.Input.Keyboard.Key
+    d: Phaser.Input.Keyboard.Key
+  } | null = null
 
   private readonly onGameStart = (payload: GameStartPayload): void => {
     this.applyRun(payload)
@@ -125,6 +147,7 @@ export class WorldScene extends Phaser.Scene {
     this.stepOut = { x: 0, y: 0, arrived: false }
     this.pointerChunk = { gridX: 0, gridY: 0, localX: 0, localY: 0 }
     this.movedChunk = { gridX: 0, gridY: 0, localX: 0, localY: 0 }
+    this.keyDir = { x: 0, y: 0 }
 
     const span = WORLD.map.chunkSpan
     const origin = chunkOrigin(span)
@@ -164,11 +187,13 @@ export class WorldScene extends Phaser.Scene {
     this.scale.on('resize', this.onResize)
     this.input.on('pointerdown', this.onPointerDown)
     this.input.on('pointermove', this.onPointerMove)
+    this.bindKeyboard()
 
     const teardown = (): void => {
       this.scale.off('resize', this.onResize)
       this.input.off('pointerdown', this.onPointerDown)
       this.input.off('pointermove', this.onPointerMove)
+      this.releaseKeyboard()
       EventBus.off('game-start', this.onGameStart)
       EventBus.off('player-attack', this.onPlayerAttack)
     }
@@ -224,6 +249,76 @@ export class WorldScene extends Phaser.Scene {
     this.playerSprite.anims.stop()
   }
 
+  private bindKeyboard(): void {
+    const keyboard = this.input.keyboard
+    if (!keyboard) return
+    this.cursors = keyboard.createCursorKeys()
+    this.walkKeys = {
+      w: keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+      a: keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+      s: keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+      d: keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+    }
+    keyboard.addCapture(WALK_KEY_CODES)
+  }
+
+  private releaseKeyboard(): void {
+    this.input.keyboard?.removeCapture(WALK_KEY_CODES)
+    this.cursors = null
+    this.walkKeys = null
+  }
+
+  private moveByKeys(delta: number): boolean {
+    if (!this.canWalk || this.chunkWidth <= 0 || this.chunkHeight <= 0) return false
+    const cursors = this.cursors
+    const keys = this.walkKeys
+    keyDirection(
+      Boolean(cursors?.left.isDown || keys?.a.isDown),
+      Boolean(cursors?.right.isDown || keys?.d.isDown),
+      Boolean(cursors?.up.isDown || keys?.w.isDown),
+      Boolean(cursors?.down.isDown || keys?.s.isDown),
+      this.keyDir,
+    )
+    if (this.keyDir.x === 0 && this.keyDir.y === 0) return false
+
+    this.cancelAttack()
+    const maxStep = WORLD.player.speed * (delta / 1000)
+    const x = chunkToWorld(this.footGridX, this.foot.x, this.chunkWidth)
+    const y = chunkToWorld(this.footGridY, this.foot.y, this.chunkHeight)
+    worldToChunkInto(
+      x + this.keyDir.x * maxStep,
+      y + this.keyDir.y * maxStep,
+      this.chunkWidth,
+      this.chunkHeight,
+      this.movedChunk,
+    )
+    clampWalkRatioInto(
+      this.movedChunk.localX,
+      this.movedChunk.localY,
+      getLocationMap(this.locationId).walk,
+      this.foot,
+    )
+    this.footGridX = this.movedChunk.gridX
+    this.footGridY = this.movedChunk.gridY
+    if (this.keyDir.x < 0) this.facing = 'left'
+    else if (this.keyDir.x > 0) this.facing = 'right'
+    this.isMoving = true
+    this.placePlayer()
+    this.layoutPlayerSize()
+    this.wrapChunks()
+    this.playMonkAnimation()
+    return true
+  }
+
+  private stopKeySteering(): void {
+    this.isMoving = false
+    this.target.x = this.foot.x
+    this.target.y = this.foot.y
+    this.targetGridX = this.footGridX
+    this.targetGridY = this.footGridY
+    this.playMonkAnimation()
+  }
+
   private setTargetFromPointer(pointer: Phaser.Input.Pointer): void {
     if (!this.canWalk) return
     if (this.chunkWidth <= 0 || this.chunkHeight <= 0) return
@@ -255,16 +350,16 @@ export class WorldScene extends Phaser.Scene {
     const height = this.scale.height
     const isLandscape = width > height
     const walk = getLocationMap(this.locationId).walk
-    const ratio = playerHeightRatio(
-      this.foot.y,
-      walk,
-      isLandscape
-        ? WORLD.player.heightRatio.landscapeNear
-        : WORLD.player.heightRatio.portraitNear,
-      isLandscape
-        ? WORLD.player.heightRatio.landscapeFar
-        : WORLD.player.heightRatio.portraitFar,
-    )
+    const near = isLandscape
+      ? WORLD.player.heightRatio.landscapeNear
+      : WORLD.player.heightRatio.portraitNear
+    const far = isLandscape
+      ? WORLD.player.heightRatio.landscapeFar
+      : WORLD.player.heightRatio.portraitFar
+    const ratio =
+      getLocationMap(this.locationId).fit === 'screen'
+        ? near
+        : playerHeightRatio(this.foot.y, walk, near, far)
     const targetHeight = Math.round(height * ratio)
     if (targetHeight === this.playerDisplayHeight) return
     this.playerDisplayHeight = targetHeight
@@ -344,14 +439,17 @@ export class WorldScene extends Phaser.Scene {
     const sourceHeight = sample?.height ?? 0
 
     if (sourceWidth > 0 && sourceHeight > 0) {
-      const display = worldDisplaySize(
-        sourceWidth,
-        sourceHeight,
-        viewWidth,
-        viewHeight,
-        WORLD.map.minWidthInViewports,
-        WORLD.map.minHeightInViewports,
-      )
+      const display =
+        getLocationMap(this.locationId).fit === 'screen'
+          ? screenFitSize(sourceWidth, sourceHeight, viewWidth, viewHeight)
+          : worldDisplaySize(
+              sourceWidth,
+              sourceHeight,
+              viewWidth,
+              viewHeight,
+              WORLD.map.minWidthInViewports,
+              WORLD.map.minHeightInViewports,
+            )
       this.chunkWidth = display.width
       this.chunkHeight = display.height
     }
@@ -451,6 +549,15 @@ export class WorldScene extends Phaser.Scene {
   }
 
   update(_time: number, delta: number): void {
+    if (this.moveByKeys(delta)) {
+      this.keySteering = true
+      return
+    }
+    if (this.keySteering) {
+      this.keySteering = false
+      this.stopKeySteering()
+      return
+    }
     this.handleMovement(delta)
   }
 }

@@ -3,11 +3,12 @@ import { ASSETS } from './ASSETS'
 export const LOCATIONS = [
   {
     id: 'garden',
-    name: 'Garden',
-    blurb: 'Twisting vines along the leaf.',
+    name: 'The Garden',
+    blurb: 'A ruled page, still open.',
     accent: '#3d5c3a',
     thumbSrc: ASSETS.ui.mapThumbs.garden,
     mapSrc: ASSETS.ui.map.garden,
+    cardSrc: ASSETS.ui.mapCards.garden,
   },
   {
     id: 'scriptorium',
@@ -16,6 +17,7 @@ export const LOCATIONS = [
     accent: '#7a1f1f',
     thumbSrc: ASSETS.ui.mapThumbs.scriptorium,
     mapSrc: ASSETS.ui.map.scriptorium,
+    cardSrc: ASSETS.ui.mapCards.scriptorium,
   },
   
   {
@@ -25,6 +27,7 @@ export const LOCATIONS = [
     accent: '#4a5568',
     thumbSrc: ASSETS.ui.mapThumbs.cloister,
     mapSrc: ASSETS.ui.map.cloister,
+    cardSrc: ASSETS.ui.mapCards.cloister,
   },
 ] as const
 

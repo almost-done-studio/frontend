@@ -52,10 +52,14 @@ export function RouteCurtain() {
 
   if (phase === 'off') return null
 
-  const className =
-    phase === 'fade'
-      ? `${styles.overlay} ${styles.curtain} ${styles.hidden}`
-      : `${styles.overlay} ${styles.curtain}`
+  const className = [
+    styles.overlay,
+    styles.curtain,
+    styles.folio,
+    phase === 'fade' ? styles.hidden : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <div

@@ -9,8 +9,10 @@ import {
   clampWalkRatioInto,
   getLocationMap,
   getMapTextureKey,
+  keyDirection,
   playerHeightRatio,
   stepTowardInto,
+  screenFitSize,
   worldDisplaySize,
   worldToChunkInto,
   wrapChunkGrid,
@@ -23,7 +25,7 @@ describe('WORLD', () => {
         MAP_TEXTURE_KEYS[location.id],
       )
       expect(MAP_CHUNK_TEXTURE_KEYS[location.id]).toHaveLength(3)
-      expect(location.mapSrc).toMatch(/^\/assets\/ui\/map\//)
+      expect(location.mapSrc).toMatch(/^\/assets\/ui\//)
       const locationMap = getLocationMap(location.id)
       expect(locationMap.spawn.y).toBeGreaterThan(0.7)
       expect(locationMap.walk.maxY).toBeGreaterThan(locationMap.walk.minY)
@@ -53,6 +55,22 @@ describe('WORLD', () => {
     expect(out.localX).toBeCloseTo(0.9)
   })
 
+  it('lets the repeated page be crossed in every direction', () => {
+    const walk = WORLD.locations.garden.walk
+    const out = { x: 0, y: 0 }
+    clampWalkRatioInto(0, 0, walk, out)
+    expect(out).toEqual({ x: 0, y: 0 })
+    clampWalkRatioInto(1, 1, walk, out)
+    expect(out).toEqual({ x: 1, y: 1 })
+  })
+
+  it('covers the screen with the wide page and leaves no side gap', () => {
+    const size = screenFitSize(2048, 947, 1920, 1080)
+    expect(size.width).toBeGreaterThanOrEqual(1920)
+    expect(size.height).toBeGreaterThanOrEqual(1080)
+    expect(size.width / size.height).toBeCloseTo(2048 / 947)
+  })
+
   it('builds each leaf larger than the viewport', () => {
     const size = worldDisplaySize(780, 1170, 390, 844, 1.2, 1.5)
     expect(size.width).toBeGreaterThan(390)
@@ -60,7 +78,7 @@ describe('WORLD', () => {
   })
 
   it('clamps feet into the walk trapezoid', () => {
-    const walk = WORLD.locations.garden.walk
+    const walk = WORLD.locations.scriptorium.walk
     const out = { x: 0, y: 0 }
 
     clampWalkRatioInto(0.5, -0.2, walk, out)
@@ -73,11 +91,25 @@ describe('WORLD', () => {
   })
 
   it('shrinks the monk as they walk farther into a leaf', () => {
-    const walk = WORLD.locations.garden.walk
+    const walk = WORLD.locations.scriptorium.walk
     const near = playerHeightRatio(walk.maxY, walk, 0.28, 0.14)
     const far = playerHeightRatio(walk.minY, walk, 0.28, 0.14)
     expect(near).toBeCloseTo(0.28)
     expect(far).toBeCloseTo(0.14)
+  })
+
+  it('keeps a keyboard step at the same speed on a diagonal', () => {
+    const out = { x: 0, y: 0 }
+
+    keyDirection(false, true, false, false, out)
+    expect(out).toEqual({ x: 1, y: 0 })
+
+    keyDirection(true, true, false, false, out)
+    expect(out).toEqual({ x: 0, y: 0 })
+
+    keyDirection(false, true, true, false, out)
+    expect(out.x).toBeCloseTo(Math.SQRT1_2)
+    expect(out.y).toBeCloseTo(-Math.SQRT1_2)
   })
 
   it('steps toward a target without allocating, and arrives when close', () => {

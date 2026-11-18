@@ -10,6 +10,10 @@
   --color-border: #3d2e1f;
   --color-border-active: #c4a35a;
   --color-swatch-border: #5a4632;
+  --color-ink: #1a120b;
+  --color-ink-soft: rgb(26 18 11 / 72%);
+  --color-parchment: #efe4cc;
+  --color-rubric: #7a1f1f;
   --font-body: 'Modern Antiqua Book', Georgia, 'Times New Roman', serif;
   --font-display: 'Orotund Heavy', Georgia, 'Times New Roman', serif;
 }

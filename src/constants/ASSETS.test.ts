@@ -20,7 +20,11 @@ describe('ASSETS', () => {
     )
     expect(ASSETS.ui.mapThumbs.scriptorium).toMatch(/^\/assets\/ui\/map\/thumbs\//)
     expect(ASSETS.ui.map.scriptorium).toMatch(/^\/assets\/ui\/map\//)
-    expect(ASSETS.ui.mapChunks.garden).toHaveLength(3)
+    expect(ASSETS.ui.mapChunks.garden).toEqual([
+      ASSETS.ui.mapMockupBg,
+      ASSETS.ui.mapMockupBg,
+      ASSETS.ui.mapMockupBg,
+    ])
     expect(ASSETS.characters.monkDir).toBe('/assets/characters/monk')
   })
 
