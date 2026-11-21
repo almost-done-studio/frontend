@@ -71,6 +71,7 @@ When new frames appear in Figma, add a subsection here and open a designer brief
 
 - [MVP.md](../MVP.md) — scope and phases  
 - [character-select-carousel.md](../designer-tasks/character-select-carousel.md) — designer deliverables  
-- [landscape-full-bleed-backgrounds.md](../designer-tasks/landscape-full-bleed-backgrounds.md) — assets #12  
-- [hud-chrome.md](../designer-tasks/hud-chrome.md) — assets #13  
-- [card-chrome.md](../designer-tasks/card-chrome.md) — assets #14 (map / post-MVP; not Figma carousel)  
+- [landscape-full-bleed-backgrounds.md](../designer-tasks/landscape-full-bleed-backgrounds.md) — assets #12 (MVP: Scriptorium world BG)  
+- [hud-chrome.md](../designer-tasks/hud-chrome.md) — assets #13 (Post-MVP)  
+- [card-chrome.md](../designer-tasks/card-chrome.md) — assets #14 (Post-MVP map cards; not Figma carousel)  
+- [DESIGN-WORKFLOW.md](../DESIGN-WORKFLOW.md) · [PROJECT-PLAN.md](../PROJECT-PLAN.md)  

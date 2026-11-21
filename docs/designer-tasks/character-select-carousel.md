@@ -1,12 +1,13 @@
 # Designer task: Character select — Figma carousel (MVP P0)
 
-**Status:** partial (2026-09-23) — carousel is on frontend `develop`; the kebab-case export pack below is still open  
-**GitHub:** [assets #15](https://github.com/almost-done-studio/assets/issues/15) (export pack) · [assets #7](https://github.com/almost-done-studio/assets/issues/7) (parent UI)  
+**Status:** partial (2026-11-22) — carousel is live in frontend; kebab-case export pack still open (**MVP P0**)  
+**GitHub:** [assets #15](https://github.com/almost-done-studio/assets/issues/15) (export pack) · parent UI [#7](https://github.com/almost-done-studio/assets/issues/7) closed  
 **Figma:** [Marginalia Project](https://www.figma.com/design/KWaV7hYij6L49tceSNVe08/Marginalia-Project)  
 **Brief (eng):** [figma-marginalia.md](../ui/figma-marginalia.md)  
-**For:** assets repo / UI artist  
-**Blocks:** [frontend #29](https://github.com/almost-done-studio/frontend/issues/29) — screen is in code; issue still open  
-**Pace:** fits one design session (1–2 h) + one cleanup pass
+**For:** `sukharrr` / assets repo  
+**Does not block:** carousel code ([frontend #29](https://github.com/almost-done-studio/frontend/issues/29) closed) — this issue is exports for polish/integrate  
+**Pace:** fits one design session (1–2 h) + one cleanup pass  
+**Workflow:** see [`DESIGN-WORKFLOW.md`](../DESIGN-WORKFLOW.md)
 
 ## Goal
 

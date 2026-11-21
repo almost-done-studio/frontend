@@ -1,10 +1,10 @@
 # Designer task: HUD (Heads-Up Display) — flat fantasy UI chrome
 
-**Status:** open  
+**Status:** open — **Post-MVP** (CSS HUD is enough for MVP)  
 **GitHub:** [assets #13](https://github.com/almost-done-studio/assets/issues/13)  
-**For:** assets repo / UI artist  
-**Related:** [assets #12](https://github.com/almost-done-studio/assets/issues/12) (full-bleed backgrounds)  
-**Blocks:** consistent overlay UI across all React screens
+**For:** `sukharrr` / assets repo  
+**Related:** [assets #12](https://github.com/almost-done-studio/assets/issues/12) (Scriptorium world BG for MVP)  
+**Does not block MVP:** current CSS HUD ships the loop
 
 ## Branch
 
