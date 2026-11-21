@@ -74,4 +74,4 @@ When new frames appear in Figma, add a subsection here and open a designer brief
 - [landscape-full-bleed-backgrounds.md](../designer-tasks/landscape-full-bleed-backgrounds.md) — assets #12 (MVP: Scriptorium world BG)  
 - [hud-chrome.md](../designer-tasks/hud-chrome.md) — assets #13 (Post-MVP)  
 - [card-chrome.md](../designer-tasks/card-chrome.md) — assets #14 (Post-MVP map cards; not Figma carousel)  
-- [DESIGN-WORKFLOW.md](../DESIGN-WORKFLOW.md) · [PROJECT-PLAN.md](../PROJECT-PLAN.md)  
+- Org plan: [MVP](https://github.com/almost-done-studio/.github/blob/main/docs/MVP.md) · [PROJECT-PLAN](https://github.com/almost-done-studio/.github/blob/main/docs/PROJECT-PLAN.md) · [DESIGN-WORKFLOW](https://github.com/almost-done-studio/.github/blob/main/docs/DESIGN-WORKFLOW.md)  

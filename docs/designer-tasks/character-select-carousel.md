@@ -7,7 +7,7 @@
 **For:** `sukharrr` / assets repo  
 **Does not block:** carousel code ([frontend #29](https://github.com/almost-done-studio/frontend/issues/29) closed) — this issue is exports for polish/integrate  
 **Pace:** fits one design session (1–2 h) + one cleanup pass  
-**Workflow:** see [`DESIGN-WORKFLOW.md`](../DESIGN-WORKFLOW.md)
+**Workflow:** see [DESIGN-WORKFLOW](https://github.com/almost-done-studio/.github/blob/main/docs/DESIGN-WORKFLOW.md)
 
 ## Goal
 
