@@ -1,12 +1,12 @@
 # Designer task: Card UI chrome — Character select + Map
 
-**Status:** open (MVP: **map cards only**; character select follows Figma carousel)  
+**Status:** open — **Post-MVP** (Map CSS cards are enough for MVP)  
 **GitHub:** [assets #14](https://github.com/almost-done-studio/assets/issues/14)  
-**For:** assets repo / UI artist  
-**Related:** [assets #12](https://github.com/almost-done-studio/assets/issues/12) (backgrounds), [assets #13](https://github.com/almost-done-studio/assets/issues/13) (HUD), [character-select-carousel.md](./character-select-carousel.md), [figma-marginalia.md](../ui/figma-marginalia.md)  
-**Blocks:** polished list cards on `/map` (and post-MVP list variants)
+**For:** `sukharrr` / assets repo  
+**Related:** [assets #12](https://github.com/almost-done-studio/assets/issues/12) (Scriptorium BG), [assets #13](https://github.com/almost-done-studio/assets/issues/13) (HUD), [character-select-carousel.md](./character-select-carousel.md), [figma-marginalia.md](../ui/figma-marginalia.md)  
+**Does not block MVP:** Map already works without illustrated card chrome
 
-> **MVP note:** Character select UI source of truth is the [Figma Marginalia Project](https://www.figma.com/design/KWaV7hYij6L49tceSNVe08/Marginalia-Project) **carousel**, not the five-card list described below. Prioritize [character-select-carousel.md](./character-select-carousel.md). Keep this brief for **map location cards** and any future list layouts.
+> **MVP note:** Character select UI source of truth is the [Figma Marginalia Project](https://www.figma.com/design/KWaV7hYij6L49tceSNVe08/Marginalia-Project) **carousel** — see [character-select-carousel.md](./character-select-carousel.md) / assets #15. This brief is **map location cards** only and is deferred.
 
 ## Branch
 
