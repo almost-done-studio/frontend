@@ -1,6 +1,6 @@
 # Designer task: Character select — Figma carousel (MVP P0)
 
-**Status:** partial (2026-11-22) — carousel is live in frontend; kebab-case export pack still open (**MVP P0**)  
+**Status:** core done (2026-11-22) — carousel + main chrome live; residual layered polish is **Post-MVP** ([assets #15](https://github.com/almost-done-studio/assets/issues/15))  
 **GitHub:** [assets #15](https://github.com/almost-done-studio/assets/issues/15) (export pack) · parent UI [#7](https://github.com/almost-done-studio/assets/issues/7) closed  
 **Figma:** [Marginalia Project](https://www.figma.com/design/KWaV7hYij6L49tceSNVe08/Marginalia-Project)  
 **Brief (eng):** [figma-marginalia.md](../ui/figma-marginalia.md)  

@@ -1,6 +1,6 @@
 # Designer task: Scriptorium world backgrounds (portrait + landscape)
 
-**Status:** open — **MVP P1** (narrowed 2026-11-22)  
+**Status:** closed for MVP (2026-11-22) — Scriptorium world chunks already ship in frontend; [assets #12](https://github.com/almost-done-studio/assets/issues/12) closed
 **GitHub:** [assets #12](https://github.com/almost-done-studio/assets/issues/12)  
 **For:** `sukharrr` / assets repo  
 **Blocks:** polished Scriptorium presentation on wide phones and landscape; **does not** block coding the interact zone
