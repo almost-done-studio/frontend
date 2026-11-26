@@ -71,8 +71,8 @@ export const WORLD = {
   player: {
     /** Feet center in the frame differs per facing; keeps turns from jumping sideways. */
     footOriginX: { left: 0.54, right: 0.46 } satisfies Record<Facing, number>,
-    /** Attack canvas is wider; feet sit further toward the back edge. */
-    attackFootOriginX: { left: 0.65, right: 0.35 } satisfies Record<Facing, number>,
+    /** Attack canvas is wider; feet sit on the back edge of that canvas. */
+    attackFootOriginX: { left: 0.85, right: 0.15 } satisfies Record<Facing, number>,
     originY: 1,
     heightRatio: {
       portraitNear: 0.38,
@@ -86,9 +86,13 @@ export const WORLD = {
     animation: {
       /** 70-frame breathe loop ≈ 3.5 s. */
       idleFps: 20,
-      /** 70 frames = two steps; ≈ 0.58 s per step (~100 steps/min). */
-      walkFps: 60,
-      /** 50 frames, book opens and closes once ≈ 3.1 s. */
+      /**
+       * Two steps per cycle, ≈ 0.58 s per step.
+       * Left is the 40-frame clip (34 fps). Right is still 70 frames, so it
+       * keeps 60 fps until that clip is the same length.
+       */
+      walkFps: { left: 34, right: 60 },
+      /** 35 frames, book opens and closes once ≈ 2.2 s. */
       attackFps: 16,
     },
   },
