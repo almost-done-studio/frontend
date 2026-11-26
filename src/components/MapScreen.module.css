@@ -324,7 +324,7 @@
   /* landscape: card min-height intentionally unset */
 
   /* removed .thumbFrame — frame image is no longer used */
-  }
+}
 
 @media (max-width: 420px) {
   .spread {
@@ -357,5 +357,47 @@
 
   .blurb {
     font-size: 0.95rem;
+  }
+}
+
+/* Short landscape: width-based padding and a tall thumb push Select off the screen. */
+@media (orientation: landscape) and (max-height: 420px) {
+  .header {
+    gap: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .spread {
+    align-items: center;
+    gap: 12px;
+    padding-top: 0;
+    padding-bottom: 8px;
+  }
+
+  .copy {
+    gap: 6px;
+  }
+
+  .thumbStage,
+  .thumb {
+    width: min(132px, 38vh);
+    height: min(148px, 42vh);
+  }
+
+  .name {
+    font-size: 1.35rem;
+  }
+
+  .blurb {
+    font-size: 0.9rem;
+  }
+
+  .back {
+    bottom: max(8px, env(safe-area-inset-bottom));
   }
 }
