@@ -86,13 +86,9 @@ export const WORLD = {
     animation: {
       /** 70-frame breathe loop ≈ 3.5 s. */
       idleFps: 20,
-      /**
-       * Two steps per cycle, ≈ 0.58 s per step.
-       * Left is the 40-frame clip (34 fps). Right is still 70 frames, so it
-       * keeps 60 fps until that clip is the same length.
-       */
-      walkFps: { left: 34, right: 60 },
-      /** 35 frames, book opens and closes once ≈ 2.2 s. */
+      /** 40 frames = two steps; ≈ 0.59 s per step. */
+      walkFps: 34,
+      /** 35 frames. The burst is drawn in the frames; book opens and closes once ≈ 2.2 s. */
       attackFps: 16,
     },
   },

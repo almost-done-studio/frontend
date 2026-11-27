@@ -89,13 +89,10 @@ export type TextureKey = (typeof TEXTURE_KEYS)[keyof typeof TEXTURE_KEYS]
 export type Facing = 'left' | 'right'
 export type MonkState = 'idle' | 'walk' | 'attack'
 
-/**
- * Frames per clip. Walk right is still the previous 70-frame cycle:
- * the updated pack has no Walk Right frames.
- */
+/** Frames per clip. Walk and anathema match on both facings. */
 export const MONK_FRAME_COUNTS = {
   idle: { left: 70, right: 70 },
-  walk: { left: 40, right: 70 },
+  walk: { left: 40, right: 40 },
   attack: { left: 35, right: 35 },
 } as const satisfies Record<MonkState, Record<Facing, number>>
 

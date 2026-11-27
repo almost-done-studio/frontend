@@ -192,11 +192,7 @@ export class WorldScene extends Phaser.Scene {
           frames.push({ key: monkFrameTextureKey(state, facing, i) })
         }
         const frameRate =
-          state === 'walk'
-            ? walkFps[facing]
-            : state === 'attack'
-              ? attackFps
-              : idleFps
+          state === 'walk' ? walkFps : state === 'attack' ? attackFps : idleFps
         this.anims.create({
           key,
           frames,
