@@ -59,10 +59,11 @@ export const ASSETS = {
   spriteFrames: {
     monk: { width: 171, height: 574 },
     /**
-     * Attack canvas is taller than the body. `bodyHeight` matches the idle
-     * frame so the monk stays the same size; the extra pixels are the book.
+     * Attack canvas is wider and taller than the body. `bodyHeight` matches
+     * the idle frame so the monk stays the same size; the extra pixels are
+     * the book and the anathema burst.
      */
-    monkAttack: { width: 239, height: 641, bodyHeight: 574 },
+    monkAttack: { width: 546, height: 641, bodyHeight: 574 },
   },
   fonts: {
     modernAntiqua: '/assets/fonts/modern-antiqua-book.ttf',
@@ -88,14 +89,15 @@ export type TextureKey = (typeof TEXTURE_KEYS)[keyof typeof TEXTURE_KEYS]
 export type Facing = 'left' | 'right'
 export type MonkState = 'idle' | 'walk' | 'attack'
 
+/** Frames per clip. Walk and anathema match on both facings. */
 export const MONK_FRAME_COUNTS = {
-  idle: 70,
-  walk: 70,
-  attack: 50,
-} as const satisfies Record<MonkState, number>
+  idle: { left: 70, right: 70 },
+  walk: { left: 40, right: 40 },
+  attack: { left: 35, right: 35 },
+} as const satisfies Record<MonkState, Record<Facing, number>>
 
-/** Idle and walk length. Attack is shorter — see `MONK_FRAME_COUNTS`. */
-export const MONK_FRAME_COUNT = MONK_FRAME_COUNTS.idle
+/** Idle length. Walk and attack differ — see `MONK_FRAME_COUNTS`. */
+export const MONK_FRAME_COUNT = MONK_FRAME_COUNTS.idle.left
 export const MONK_STATES: readonly MonkState[] = ['idle', 'walk', 'attack']
 export const FACINGS: readonly Facing[] = ['left', 'right']
 

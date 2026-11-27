@@ -110,7 +110,7 @@ export class WorldScene extends Phaser.Scene {
     }
     for (const state of MONK_STATES) {
       for (const facing of FACINGS) {
-        for (let i = 0; i < MONK_FRAME_COUNTS[state]; i += 1) {
+        for (let i = 0; i < MONK_FRAME_COUNTS[state][facing]; i += 1) {
           const key = monkFrameTextureKey(state, facing, i)
           this.load.image(key, monkFramePath(key))
         }
@@ -188,7 +188,7 @@ export class WorldScene extends Phaser.Scene {
         const key = MONK_ANIMATION_KEYS[state][facing]
         if (this.anims.exists(key)) continue
         const frames: Phaser.Types.Animations.AnimationFrame[] = []
-        for (let i = 0; i < MONK_FRAME_COUNTS[state]; i += 1) {
+        for (let i = 0; i < MONK_FRAME_COUNTS[state][facing]; i += 1) {
           frames.push({ key: monkFrameTextureKey(state, facing, i) })
         }
         const frameRate =

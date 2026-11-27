@@ -31,21 +31,25 @@ describe('ASSETS', () => {
   })
 
   it('names Monk frames after the kebab-case files in public/assets', () => {
+    expect(MONK_FRAME_COUNT).toBe(MONK_FRAME_COUNTS.idle.left)
     expect(MONK_ANIMATION_KEYS.walk.left).toBe('monk-walk-left')
     expect(monkFrameTextureKey('idle', 'right', 0)).toBe('monk-idle-right-00')
     expect(
-      monkFrameTextureKey('walk', 'left', MONK_FRAME_COUNT - 1),
-    ).toBe('monk-walk-left-69')
+      monkFrameTextureKey('walk', 'left', MONK_FRAME_COUNTS.walk.left - 1),
+    ).toBe('monk-walk-left-39')
+    expect(
+      monkFrameTextureKey('walk', 'right', MONK_FRAME_COUNTS.walk.right - 1),
+    ).toBe('monk-walk-right-39')
     expect(monkFramePath('monk-walk-right-07')).toBe(
       '/assets/characters/monk/monk-walk-right-07.png',
     )
-    expect(MONK_FRAME_COUNTS.attack).toBe(50)
+    expect(MONK_FRAME_COUNTS.attack).toEqual({ left: 35, right: 35 })
     expect(monkFrameTextureKey('attack', 'left', 0)).toBe('monk-attack-left-00')
     expect(
-      monkFrameTextureKey('attack', 'right', MONK_FRAME_COUNTS.attack - 1),
-    ).toBe('monk-attack-right-49')
+      monkFrameTextureKey('attack', 'right', MONK_FRAME_COUNTS.attack.right - 1),
+    ).toBe('monk-attack-right-34')
     expect(ASSETS.spriteFrames.monkAttack).toEqual({
-      width: 239,
+      width: 546,
       height: 641,
       bodyHeight: 574,
     })
